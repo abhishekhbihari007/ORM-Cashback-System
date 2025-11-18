@@ -1,0 +1,102 @@
+@import "tailwindcss";
+
+:root {
+  --brand-primary: #0f172a;
+  --brand-secondary: #2563eb;
+  --brand-accent: #f97316;
+  --brand-muted: #475569;
+  --brand-surface: #f8fafc;
+  --brand-border: #e2e8f0;
+  --brand-success: #16a34a;
+  --brand-danger: #dc2626;
+}
+
+* {
+  border-color: var(--brand-border);
+}
+
+body {
+  background-color: #ffffff;
+  color: #0f172a;
+  -webkit-font-smoothing: antialiased;
+  font-family: var(--font-inter, "Inter"), "Poppins", system-ui, -apple-system,
+    BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+.page-wrapper {
+  min-height: 100vh;
+  background-color: #ffffff;
+  color: #0f172a;
+}
+
+.text-balance {
+  text-wrap: balance;
+}
+
+.container-responsive {
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+  max-width: 72rem; /* tailwind 6xl */
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+@media (min-width: 640px) {
+  .container-responsive {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .container-responsive {
+    padding-left: 2.5rem;
+    padding-right: 2.5rem;
+  }
+}
+
+.glass-panel {
+  border-radius: 1.5rem; /* 3xl */
+  border: 1px solid #f1f5f9; /* slate-100 */
+  background-color: rgba(255, 255, 255, 0.7);
+  padding: 1.5rem;
+  box-shadow: 0 10px 25px rgba(148, 163, 184, 0.4);
+  backdrop-filter: blur(8px);
+}
+
+.section-title {
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: #64748b;
+}
+
+.metric-number {
+  font-size: 2.25rem;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+@media (min-width: 768px) {
+  .metric-number {
+    font-size: 3rem;
+  }
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  border-radius: 9999px;
+  padding: 0.25rem 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.grid-auto-fit {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}
+

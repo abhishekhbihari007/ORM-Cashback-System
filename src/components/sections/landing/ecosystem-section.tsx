@@ -1,0 +1,49 @@
+import { SectionHeading } from "@/components/ui/section-heading";
+
+const ecosystemPillars = [
+  {
+    title: "Shared Operations Pod",
+    description: "Leverage influencer agency ops + cashback logistics for rapid onboarding.",
+  },
+  {
+    title: "Creator Intelligence",
+    description: "100K+ reviewers pre-vetted with purchase proof & sentiment scoring.",
+  },
+  {
+    title: "Unified Analytics",
+    description: "Cross-marketplace insights, CRM, and alerting stitched into one screen.",
+  },
+  {
+    title: "Compliance Guardrails",
+    description: "Marketplace policies embedded directly into reviewer instructions.",
+  },
+];
+
+export function EcosystemSection() {
+  return (
+    <section className="bg-slate-50 py-20" id="ecosystem">
+      <div className="container-responsive space-y-10">
+        <SectionHeading
+          eyebrow="Influencer Agency Synergy"
+          title="Shared teams, CRM, and analytics accelerate ORM launches"
+          description="Our ORM arm starts with zero cold start thanks to influencer marketing demand, creator sourcing, and shared support systems."
+          align="center"
+        />
+        <div className="grid gap-6 md:grid-cols-2">
+          {ecosystemPillars.map((pillar) => (
+            <div
+              key={pillar.title}
+              className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm hover:shadow-lg"
+            >
+              <p className="text-sm font-semibold uppercase tracking-[0.2em] text-slate-500">
+                {pillar.title}
+              </p>
+              <p className="mt-3 text-base text-slate-600">{pillar.description}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
