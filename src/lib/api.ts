@@ -9,6 +9,13 @@ import {
   reviewRequests,
   sentimentInsights,
   storefronts,
+  pendingReviews,
+  users,
+  payoutRequests,
+  campaigns,
+  reviewReports,
+  deals,
+  wallet,
 } from "./mock-data";
 import { groupOrdersByStatus, sentimentTotals, velocityIndex } from "./analytics";
 
@@ -32,5 +39,15 @@ export const api = {
     simulateLatency(groupOrdersByStatus(orderItems)),
   fetchVelocityIndex: () => simulateLatency(velocityIndex()),
   fetchSentimentTotals: () => simulateLatency(sentimentTotals()),
+  // Admin Panel APIs
+  fetchPendingReviews: () => simulateLatency(pendingReviews),
+  fetchUsers: () => simulateLatency(users),
+  fetchPayoutRequests: () => simulateLatency(payoutRequests),
+  // Brand Portal APIs
+  fetchCampaigns: () => simulateLatency(campaigns),
+  fetchReviewReports: () => simulateLatency(reviewReports),
+  // User Portal APIs
+  fetchDeals: () => simulateLatency(deals),
+  fetchWallet: () => simulateLatency(wallet),
 };
 

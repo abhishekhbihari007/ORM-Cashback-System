@@ -3,7 +3,10 @@ import { Inter, Poppins } from "next/font/google";
 import "./globals.css";
 import { SiteHeader } from "@/components/layout/site-header";
 import { SiteFooter } from "@/components/layout/site-footer";
+import { SocialSidebar } from "@/components/layout/social-sidebar";
 import { QueryProvider } from "@/providers/query-provider";
+import { AuthProvider } from "@/contexts/AuthContext";
+import { AnimationProvider } from "@/contexts/AnimationContext";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -31,9 +34,14 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${inter.variable} ${poppins.variable} bg-white text-slate-900`}>
         <QueryProvider>
-          <SiteHeader />
-          <main>{children}</main>
-          <SiteFooter />
+          <AuthProvider>
+            <AnimationProvider>
+              <SocialSidebar />
+              <SiteHeader />
+              <main>{children}</main>
+              <SiteFooter />
+            </AnimationProvider>
+          </AuthProvider>
         </QueryProvider>
       </body>
     </html>

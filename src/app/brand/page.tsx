@@ -1,11 +1,11 @@
 import { BrandOverview } from "@/components/sections/brand/brand-overview";
-import { LiveOrdersWidget } from "@/components/sections/brand/live-orders-widget";
+import { LiveAnalyticsBoard } from "@/components/sections/brand/live-analytics-board";
 import { ReviewPipeline } from "@/components/sections/brand/review-pipeline";
 import { BudgetWidget } from "@/components/sections/brand/budget-widget";
 import { api } from "@/lib/api";
 
 export default async function BrandPage() {
-  const [productData, sentiments, sentimentTotals, velocityIndex, reviewData, budget] =
+  const [productData, sentiments, sentimentTotals, velocityIndex, reviewData, budget, campaigns] =
     await Promise.all([
       api.fetchProducts(),
       api.fetchSentiments(),
@@ -13,6 +13,7 @@ export default async function BrandPage() {
       api.fetchVelocityIndex(),
       api.fetchReviewRequests(),
       api.fetchBudget(),
+      api.fetchCampaigns(),
     ]);
 
   return (
@@ -24,11 +25,11 @@ export default async function BrandPage() {
           velocityIndex={velocityIndex}
           sentiments={sentiments}
         />
+        <LiveAnalyticsBoard campaigns={campaigns} />
         <div className="grid gap-6 lg:grid-cols-[1.3fr,0.7fr]">
-          <LiveOrdersWidget />
+          <ReviewPipeline requests={reviewData} />
           <BudgetWidget snapshot={budget} />
         </div>
-        <ReviewPipeline requests={reviewData} />
       </div>
     </div>
   );

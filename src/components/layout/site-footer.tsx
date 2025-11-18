@@ -1,61 +1,120 @@
 import Link from "next/link";
-import { quickLinks, serviceHighlights } from "@/lib/constants";
 import { FaFacebook, FaInstagram, FaLinkedin, FaXTwitter, FaYoutube } from "react-icons/fa6";
 
 export function SiteFooter() {
   return (
-    <footer className="border-t border-slate-200 bg-slate-50" id="contact">
-      <div className="container-responsive grid gap-10 py-12 md:grid-cols-[1.5fr,1fr,1fr]">
-        <div className="space-y-4">
-          <div>
-            <p className="text-sm font-semibold uppercase tracking-[0.3em] text-slate-500">
-              Cashback ORM Suite
+    <footer className="bg-slate-950 text-white" id="contact">
+      <div className="container-responsive py-16">
+        <div className="grid gap-8 md:grid-cols-4">
+          {/* Column 1: Brand */}
+          <div className="space-y-4">
+            <div className="flex items-center gap-3">
+              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white text-slate-950 font-black">
+                K
+              </div>
+              <p className="text-xl font-bold text-white">Kudos</p>
+            </div>
+            <p className="text-sm leading-relaxed text-slate-400">
+              Building trust for global brands
             </p>
-            <p className="mt-3 text-3xl font-bold text-slate-900">
-              Trusted marketplace reputation partners
-            </p>
-            <p className="mt-4 text-slate-600">
-              Integrated with our influencer marketing agency and cashback ecosystem to deliver
-              verified, policy-compliant reviews across 5+ geographies.
-            </p>
+            <div className="flex items-center gap-4 text-slate-400">
+              <Link href="#" className="hover:text-white transition">
+                <FaFacebook size={20} />
+              </Link>
+              <Link href="#" className="hover:text-white transition">
+                <FaInstagram size={20} />
+              </Link>
+              <Link href="#" className="hover:text-white transition">
+                <FaXTwitter size={20} />
+              </Link>
+              <Link href="#" className="hover:text-white transition">
+                <FaLinkedin size={20} />
+              </Link>
+              <Link href="#" className="hover:text-white transition">
+                <FaYoutube size={20} />
+              </Link>
+            </div>
           </div>
-          <div className="flex flex-wrap items-center gap-3 text-slate-500">
-            <FaFacebook />
-            <FaInstagram />
-            <FaXTwitter />
-            <FaLinkedin />
-            <FaYoutube />
-          </div>
-          <div className="text-sm text-slate-500">
-            Splendor Spectrum One, Tower 1, Gurugram 122001 • hello@cashback-orm.com
-          </div>
-        </div>
 
-        <div>
-          <p className="section-title">Quick Links</p>
-          <ul className="mt-4 space-y-2 text-sm text-slate-600">
-            {quickLinks.map((item) => (
-              <li key={item.label}>
-                <Link href={item.href} className="hover:text-slate-900">
-                  {item.label}
+          {/* Column 2: Company */}
+          <div>
+            <h4 className="mb-4 text-sm font-semibold uppercase tracking-wider text-white">
+              Company
+            </h4>
+            <ul className="space-y-3 text-sm">
+              <li>
+                <Link href="#about" className="text-slate-400 hover:text-white transition">
+                  About
                 </Link>
               </li>
-            ))}
-          </ul>
-        </div>
+              <li>
+                <Link href="#partners" className="text-slate-400 hover:text-white transition">
+                  Partners
+                </Link>
+              </li>
+              <li>
+                <Link href="#contact" className="text-slate-400 hover:text-white transition">
+                  Contact
+                </Link>
+              </li>
+            </ul>
+          </div>
 
-        <div>
-          <p className="section-title">Capabilities</p>
-          <ul className="mt-4 space-y-2 text-sm text-slate-600">
-            {serviceHighlights.map((item) => (
-              <li key={item}>{item}</li>
-            ))}
-          </ul>
+          {/* Column 3: Capabilities */}
+          <div>
+            <h4 className="mb-4 text-sm font-semibold uppercase tracking-wider text-white">
+              Capabilities
+            </h4>
+            <ul className="space-y-3 text-sm">
+              <li>
+                <Link href="#" className="text-slate-400 hover:text-white transition">
+                  Real-time Intelligence
+                </Link>
+              </li>
+              <li>
+                <Link href="#" className="text-slate-400 hover:text-white transition">
+                  Verified Reviews
+                </Link>
+              </li>
+              <li>
+                <Link href="#" className="text-slate-400 hover:text-white transition">
+                  Sentiment Analysis
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* Column 4: Legal & Trust */}
+          <div>
+            <h4 className="mb-4 text-sm font-semibold uppercase tracking-wider text-white">
+              Legal & Trust
+            </h4>
+            <ul className="space-y-3 text-sm">
+              <li>
+                <Link href="/privacy" className="text-slate-400 hover:text-white transition">
+                  Privacy Policy
+                </Link>
+              </li>
+              <li>
+                <Link href="/terms" className="text-slate-400 hover:text-white transition">
+                  Terms of Service
+                </Link>
+              </li>
+              <li>
+                <Link href="/gdpr" className="text-slate-400 hover:text-white transition">
+                  GDPR Compliance
+                </Link>
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
 
-      <div className="border-t border-slate-200 bg-white/60 py-5 text-center text-sm text-slate-500">
-        © {new Date().getFullYear()} Cashback ORM. Built for compliant global reputation programs.
+      {/* Bottom Bar */}
+      <div className="border-t border-slate-800 py-5">
+        <div className="container-responsive text-center text-sm text-slate-400">
+          © {new Date().getFullYear()} Kudos. All rights reserved.
+        </div>
       </div>
     </footer>
   );

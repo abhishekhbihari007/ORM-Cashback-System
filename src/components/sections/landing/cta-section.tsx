@@ -1,29 +1,31 @@
 export function CtaSection() {
   return (
-    <section className="relative overflow-hidden bg-gradient-to-r from-blue-600 to-indigo-700 py-16 text-white">
-      <div className="container-responsive flex flex-col gap-8 md:flex-row md:items-center md:justify-between">
-        <div className="space-y-3">
-          <p className="text-sm font-semibold uppercase tracking-[0.4em] text-white/80">
-            Ready to scale reviews
-          </p>
-          <h3 className="text-3xl font-bold md:text-4xl">
-            Launch a compliant review engine in less than 7 days.
+    <section className="relative bg-white py-20">
+      {/* Glow effect behind the card */}
+      <div className="absolute inset-0 flex items-center justify-center">
+        <div className="h-96 w-full max-w-4xl rounded-3xl bg-slate-900/20 blur-3xl" />
+      </div>
+      
+      {/* Floating CTA Card */}
+      <div className="container-responsive relative z-10">
+        <div className="mx-auto max-w-4xl rounded-3xl border border-slate-800 bg-slate-900 p-12 text-center shadow-2xl">
+          <h3 className="text-4xl font-bold text-white">
+            Start turning reviews into revenue.
           </h3>
-          <p className="text-white/80">
+          <p className="mx-auto mt-4 max-w-[600px] text-slate-400">
             Plug into our cashback users, incentive playbooks, and marketplace policy desk to boost
             visibility across every SKU.
           </p>
-        </div>
-        <div className="flex flex-col gap-3 md:items-end">
-          <button className="rounded-full bg-white px-6 py-3 text-sm font-semibold text-slate-900 shadow-xl shadow-slate-900/20">
-            Talk to Reputation Strategist
-          </button>
-          <button className="rounded-full border border-white/60 px-6 py-3 text-sm font-semibold text-white">
-            Download Product One-pager
-          </button>
+          <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
+            <button className="rounded-full bg-white px-6 py-3 font-semibold text-slate-900 shadow-lg transition hover:bg-slate-100">
+              Talk to Reputation Strategist
+            </button>
+            <button className="rounded-full border border-white px-6 py-3 font-semibold text-white transition hover:bg-white/10">
+              Download Product One-pager
+            </button>
+          </div>
         </div>
       </div>
-      <div className="pointer-events-none absolute inset-0 opacity-60 [background:radial-gradient(circle_at_20%_20%,_rgba(255,255,255,0.2),_transparent_45%),radial-gradient(circle_at_80%_0,_rgba(14,165,233,0.25),_transparent_40%)]" />
     </section>
   );
 }

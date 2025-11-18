@@ -2,8 +2,8 @@ import { SectionHeading } from "@/components/ui/section-heading";
 
 const ecosystemPillars = [
   {
-    title: "Shared Operations Pod",
-    description: "Leverage influencer agency ops + cashback logistics for rapid onboarding.",
+    title: "Dedicated Account Management",
+    description: "Our team handles logistics and reviewer onboarding so you don't have to.",
   },
   {
     title: "Creator Intelligence",

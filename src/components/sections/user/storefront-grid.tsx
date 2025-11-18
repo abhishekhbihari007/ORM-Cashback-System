@@ -27,10 +27,10 @@ export function StorefrontGrid({ storefronts }: Props) {
             <h3 className="text-2xl font-semibold text-slate-900">{store.name}</h3>
             <p className="text-sm text-slate-500">Reward: {store.reward}</p>
             <Link
-              href={store.link}
-              className="inline-flex items-center text-sm font-semibold text-blue-600"
+              href={`/user/shop/${store.id}`}
+              className="inline-flex items-center text-sm font-semibold text-blue-600 hover:text-blue-700"
             >
-              Shop now →
+              View Products →
             </Link>
           </div>
         </div>

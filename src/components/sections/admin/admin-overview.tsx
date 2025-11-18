@@ -7,10 +7,15 @@ type Props = {
 };
 
 export function AdminOverview({ activities, alerts }: Props) {
+  // Calculate stats (in real app, these would come from API)
+  const totalRevenue = 125000; // Total revenue in currency
+  const pendingApprovals = 8; // Pending reviews to approve
+  const activeUsers = 1240; // Active users count
+
   const cards = [
-    { label: "Active Alerts", value: `${alerts.length}`, helper: "Need review" },
-    { label: "User Actions (24h)", value: `${activities.length}`, helper: "Audited" },
-    { label: "Policy Compliance", value: "98%", helper: "Across marketplaces" },
+    { label: "Total Revenue", value: `₹${totalRevenue.toLocaleString()}`, helper: "All time" },
+    { label: "Pending Approvals", value: `${pendingApprovals}`, helper: "Awaiting review" },
+    { label: "Active Users", value: `${activeUsers.toLocaleString()}`, helper: "Registered users" },
   ];
 
   return (

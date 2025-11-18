@@ -10,10 +10,10 @@ type Props = {
 
 export function StatCard({ label, value, helper, trend }: Props) {
   return (
-    <div className="glass-panel flex flex-col gap-4 rounded-3xl">
-      <p className="text-sm font-medium text-slate-500">{label}</p>
+    <div className="flex flex-col gap-3 rounded-2xl bg-slate-200/90 border border-slate-300/50 p-6 shadow-sm">
+      <p className="text-sm font-semibold text-slate-700 uppercase tracking-wide">{label}</p>
       <div className="flex items-end justify-between gap-3">
-        <span className="metric-number">{value}</span>
+        <span className="text-4xl font-bold text-slate-900">{value}</span>
         {trend ? (
           <span
             className={`pill text-xs ${
@@ -24,7 +24,7 @@ export function StatCard({ label, value, helper, trend }: Props) {
           </span>
         ) : null}
       </div>
-      {helper ? <p className="text-sm text-slate-500">{helper}</p> : null}
+      {helper ? <p className="text-sm text-slate-600">{helper}</p> : null}
     </div>
   );
 }
