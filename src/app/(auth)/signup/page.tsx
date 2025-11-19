@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useAuth } from "@/contexts/AuthContext";
 import Link from "next/link";
 import { ArrowLeft, Mail, Lock, Eye, EyeOff, User, Phone } from "lucide-react";
 import { LogoIcon } from "@/components/ui/logo-icon";
@@ -11,6 +12,7 @@ export default function SignUpPage() {
   const [activeTab, setActiveTab] = useState<"shoppers" | "brands">("shoppers");
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
+  const { login } = useAuth();
 
   // Shopper form fields
   const [shopperName, setShopperName] = useState("");
@@ -25,29 +27,74 @@ export default function SignUpPage() {
   const [brandPassword, setBrandPassword] = useState("");
   const [showBrandPassword, setShowBrandPassword] = useState(false);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsLoading(true);
+  const handleSubmit = async (e?: React.FormEvent) => {
+    if (e) {
+      e.preventDefault();
+    }
+    
+    console.log("handleSubmit called", { activeTab, isLoading });
+    
+    if (isLoading) {
+      console.log("Already loading, returning");
+      return;
+    }
+    
+    try {
+      setIsLoading(true);
+      console.log("Loading state set to true");
 
-    // Simulate API call delay
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+      // Validate form fields based on active tab
+      if (activeTab === "shoppers") {
+        if (!shopperName || !shopperEmail || !shopperPassword) {
+          console.log("Validation failed for shoppers", { shopperName, shopperEmail, shopperPassword: !!shopperPassword });
+          alert("Please fill in all fields");
+          setIsLoading(false);
+          return;
+        }
+      } else {
+        if (!brandName || !brandEmail || !brandPhone || !brandPassword) {
+          console.log("Validation failed for brands", { brandName, brandEmail, brandPhone, brandPassword: !!brandPassword });
+          alert("Please fill in all fields");
+          setIsLoading(false);
+          return;
+        }
+      }
 
-    setIsLoading(false);
+      console.log("Validation passed, simulating API call");
+      // Simulate API call delay
+      await new Promise((resolve) => setTimeout(resolve, 1000));
 
-    // Show browser alert
-    alert("Account Created Successfully!");
-
-    // Redirect to login page
-    router.push("/login");
+      console.log("API call completed, logging in user");
+      
+      // Show success message before redirect
+      alert("Account Created Successfully!");
+      
+      // Log the user in based on their selected role
+      // The login function will handle the redirect automatically
+      if (activeTab === "shoppers") {
+        login("user");
+        console.log("Logged in as user, redirecting to feed");
+      } else {
+        login("brand");
+        console.log("Logged in as brand, redirecting to dashboard");
+      }
+    } catch (error) {
+      console.error("Signup error:", error);
+      alert("An error occurred. Please try again.");
+    } finally {
+      setIsLoading(false);
+      console.log("Loading state set to false");
+    }
   };
 
   return (
     <div className="w-full min-h-screen bg-slate-50 flex flex-col">
       {/* Back to Home Link */}
-      <div className="container-responsive pt-8 pb-4 px-4">
+      <div className="container-responsive pt-8 pb-4 px-4 relative z-50">
         <Link
           href="/"
-          className="inline-flex items-center gap-2 text-slate-600 hover:text-slate-900 transition text-sm font-medium"
+          className="inline-flex items-center gap-2 text-slate-600 hover:text-slate-900 transition text-sm font-medium relative z-50 cursor-pointer"
+          style={{ pointerEvents: 'auto' }}
         >
           <ArrowLeft className="h-4 w-4" />
           Back to Home
@@ -58,14 +105,14 @@ export default function SignUpPage() {
       <div className="flex-1 flex items-center justify-center px-4 pb-8">
         <div className="max-w-6xl w-full bg-white rounded-3xl shadow-2xl overflow-hidden grid md:grid-cols-2 min-h-[650px]">
           {/* Left Column - Branding & Vibes (Hidden on Mobile) */}
-          <div className="hidden md:flex relative bg-gradient-to-br from-blue-600 to-slate-900 p-8 md:p-12 flex-col justify-between overflow-hidden">
+          <div className="hidden md:flex relative bg-gradient-to-br from-orange-600 to-red-900 p-8 md:p-12 flex-col justify-between overflow-hidden">
             {/* Particle Background Animation */}
             <ParticleBackground />
             
             {/* Decorative Blobs */}
-            <div className="absolute top-0 right-0 w-64 h-64 bg-cyan-400 rounded-full blur-3xl opacity-50 -translate-y-1/2 translate-x-1/2 z-10" />
-            <div className="absolute bottom-0 left-0 w-48 h-48 bg-blue-500 rounded-full blur-3xl opacity-50 translate-y-1/2 -translate-x-1/2 z-10" />
-            <div className="absolute top-1/2 left-1/2 w-32 h-32 bg-cyan-400 rounded-full blur-3xl opacity-50 -translate-x-1/2 -translate-y-1/2 z-10" />
+            <div className="absolute top-0 right-0 w-64 h-64 bg-yellow-400 rounded-full blur-3xl opacity-50 -translate-y-1/2 translate-x-1/2 z-10" />
+            <div className="absolute bottom-0 left-0 w-48 h-48 bg-orange-500 rounded-full blur-3xl opacity-50 translate-y-1/2 -translate-x-1/2 z-10" />
+            <div className="absolute top-1/2 left-1/2 w-32 h-32 bg-red-400 rounded-full blur-3xl opacity-50 -translate-x-1/2 -translate-y-1/2 z-10" />
 
             {/* Content */}
             <div className="relative z-10">
@@ -102,7 +149,7 @@ export default function SignUpPage() {
           </div>
 
           {/* Right Column - Form */}
-          <div className="p-12 md:p-16 flex flex-col justify-center">
+          <div className="p-12 md:p-16 flex flex-col justify-center bg-gradient-to-br from-orange-50 via-white to-yellow-50">
             {/* Header */}
             <div className="mb-8">
               <h2 className="text-2xl font-bold text-slate-900 mb-2">Create your account</h2>
@@ -110,35 +157,43 @@ export default function SignUpPage() {
             </div>
 
             {/* Card */}
-            <div className="w-full">
+            <div className="w-full relative z-10">
               {/* Tabs */}
-              <div className="flex gap-2 mb-6 p-1 bg-slate-100 rounded-lg">
+              <div className="flex gap-2 mb-6 p-1 bg-orange-100 rounded-lg relative z-10">
                 <button
                   type="button"
-                  onClick={() => setActiveTab("shoppers")}
-                  className={`flex-1 rounded-lg px-4 py-2.5 text-sm font-semibold transition-all ${
+                  onClick={() => {
+                    console.log("Shoppers tab clicked");
+                    setActiveTab("shoppers");
+                  }}
+                  className={`flex-1 rounded-lg px-4 py-2.5 text-sm font-semibold transition-all cursor-pointer relative z-10 ${
                     activeTab === "shoppers"
-                      ? "bg-white text-blue-600 shadow-sm"
+                      ? "bg-white text-orange-600 shadow-sm"
                       : "text-slate-600 hover:text-slate-900"
                   }`}
+                  style={{ pointerEvents: 'auto' }}
                 >
                   For Shoppers
                 </button>
                 <button
                   type="button"
-                  onClick={() => setActiveTab("brands")}
-                  className={`flex-1 rounded-lg px-4 py-2.5 text-sm font-semibold transition-all ${
+                  onClick={() => {
+                    console.log("Brands tab clicked");
+                    setActiveTab("brands");
+                  }}
+                  className={`flex-1 rounded-lg px-4 py-2.5 text-sm font-semibold transition-all cursor-pointer relative z-10 ${
                     activeTab === "brands"
-                      ? "bg-white text-blue-600 shadow-sm"
+                      ? "bg-white text-orange-600 shadow-sm"
                       : "text-slate-600 hover:text-slate-900"
                   }`}
+                  style={{ pointerEvents: 'auto' }}
                 >
                   For Brands
                 </button>
               </div>
 
               {/* Form */}
-              <form onSubmit={handleSubmit} className="space-y-5">
+              <form onSubmit={handleSubmit} className="space-y-5 relative z-10">
                 {activeTab === "shoppers" ? (
                   <>
                     <div>
@@ -156,7 +211,7 @@ export default function SignUpPage() {
                           onChange={(e) => setShopperName(e.target.value)}
                           required
                           placeholder="John Doe"
-                          className="w-full rounded-xl border border-slate-200 pl-10 pr-4 py-3 text-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-100 transition"
+                          className="w-full rounded-xl border border-orange-200 bg-white pl-10 pr-4 py-3 text-sm focus:border-orange-500 focus:outline-none focus:ring-2 focus:ring-orange-100 transition"
                         />
                       </div>
                     </div>
@@ -176,7 +231,7 @@ export default function SignUpPage() {
                           onChange={(e) => setShopperEmail(e.target.value)}
                           required
                           placeholder="you@example.com"
-                          className="w-full rounded-xl border border-slate-200 pl-10 pr-4 py-3 text-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-100 transition"
+                          className="w-full rounded-xl border border-orange-200 bg-white pl-10 pr-4 py-3 text-sm focus:border-orange-500 focus:outline-none focus:ring-2 focus:ring-orange-100 transition"
                         />
                       </div>
                     </div>
@@ -196,7 +251,7 @@ export default function SignUpPage() {
                           onChange={(e) => setShopperPassword(e.target.value)}
                           required
                           placeholder="••••••••"
-                          className="w-full rounded-xl border border-slate-200 pl-10 pr-10 py-3 text-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-100 transition"
+                          className="w-full rounded-xl border border-orange-200 bg-white pl-10 pr-10 py-3 text-sm focus:border-orange-500 focus:outline-none focus:ring-2 focus:ring-orange-100 transition"
                         />
                         <button
                           type="button"
@@ -229,7 +284,7 @@ export default function SignUpPage() {
                           onChange={(e) => setBrandName(e.target.value)}
                           required
                           placeholder="Acme Corporation"
-                          className="w-full rounded-xl border border-slate-200 pl-10 pr-4 py-3 text-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-100 transition"
+                          className="w-full rounded-xl border border-orange-200 bg-white pl-10 pr-4 py-3 text-sm focus:border-orange-500 focus:outline-none focus:ring-2 focus:ring-orange-100 transition"
                         />
                       </div>
                     </div>
@@ -249,7 +304,7 @@ export default function SignUpPage() {
                           onChange={(e) => setBrandEmail(e.target.value)}
                           required
                           placeholder="contact@company.com"
-                          className="w-full rounded-xl border border-slate-200 pl-10 pr-4 py-3 text-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-100 transition"
+                          className="w-full rounded-xl border border-orange-200 bg-white pl-10 pr-4 py-3 text-sm focus:border-orange-500 focus:outline-none focus:ring-2 focus:ring-orange-100 transition"
                         />
                       </div>
                     </div>
@@ -269,7 +324,7 @@ export default function SignUpPage() {
                           onChange={(e) => setBrandPhone(e.target.value)}
                           required
                           placeholder="+1 (555) 123-4567"
-                          className="w-full rounded-xl border border-slate-200 pl-10 pr-4 py-3 text-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-100 transition"
+                          className="w-full rounded-xl border border-orange-200 bg-white pl-10 pr-4 py-3 text-sm focus:border-orange-500 focus:outline-none focus:ring-2 focus:ring-orange-100 transition"
                         />
                       </div>
                     </div>
@@ -289,7 +344,7 @@ export default function SignUpPage() {
                           onChange={(e) => setBrandPassword(e.target.value)}
                           required
                           placeholder="••••••••"
-                          className="w-full rounded-xl border border-slate-200 pl-10 pr-10 py-3 text-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-100 transition"
+                          className="w-full rounded-xl border border-orange-200 bg-white pl-10 pr-10 py-3 text-sm focus:border-orange-500 focus:outline-none focus:ring-2 focus:ring-orange-100 transition"
                         />
                         <button
                           type="button"
@@ -310,7 +365,13 @@ export default function SignUpPage() {
                 <button
                   type="submit"
                   disabled={isLoading}
-                  className="w-full rounded-xl bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 px-4 py-3 text-sm font-semibold text-white shadow-lg shadow-blue-500/25 transition hover:shadow-xl hover:shadow-blue-500/30 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                  onClick={(e) => {
+                    console.log("Button clicked", { isLoading });
+                    e.preventDefault();
+                    handleSubmit();
+                  }}
+                  className="w-full rounded-xl bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 px-4 py-3 text-sm font-semibold text-white shadow-lg shadow-orange-500/25 transition hover:shadow-xl hover:shadow-orange-500/30 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 relative z-10 cursor-pointer"
+                  style={{ pointerEvents: isLoading ? 'none' : 'auto' }}
                 >
                 {isLoading ? (
                   <>
@@ -347,7 +408,7 @@ export default function SignUpPage() {
                 <div className="mt-6 text-center">
                   <p className="text-sm text-slate-600">
                     Already have an account?{" "}
-                    <Link href="/login" className="font-semibold text-blue-600 hover:text-blue-700">
+                    <Link href="/login" className="font-semibold text-orange-600 hover:text-orange-700">
                       Login
                     </Link>
                   </p>

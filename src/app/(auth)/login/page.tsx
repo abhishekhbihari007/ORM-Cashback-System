@@ -20,38 +20,57 @@ export default function LoginPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsLoading(true);
-
-    // Secret admin logic - check email before processing
-    // Works regardless of which tab is active
-    if (email === "admin@orm-ecosystem.com" || email.endsWith("@orm-ecosystem-admin.com")) {
-      login("admin");
-      setIsLoading(false);
-      router.push("/admin/dashboard");
+    
+    if (isLoading) {
       return;
     }
+    
+    try {
+      setIsLoading(true);
 
-    // Simulate API call delay
-    await new Promise((resolve) => setTimeout(resolve, 800));
+      // Validate email and password
+      if (!email || !password) {
+        alert("Please enter both email and password");
+        setIsLoading(false);
+        return;
+      }
 
-    if (activeTab === "shoppers") {
-      login("user");
-      router.push("/feed");
-    } else {
-      login("brand");
-      router.push("/dashboard");
+      // Secret admin logic - check email before processing
+      // Works regardless of which tab is active
+      if (email === "admin@orm-ecosystem.com" || email.endsWith("@orm-ecosystem-admin.com")) {
+        login("admin");
+        setIsLoading(false);
+        router.push("/admin/dashboard");
+        return;
+      }
+
+      // Simulate API call delay
+      await new Promise((resolve) => setTimeout(resolve, 800));
+
+      if (activeTab === "shoppers") {
+        login("user");
+        // Auth context will handle redirect to /feed
+      } else {
+        login("brand");
+        // Auth context will handle redirect to /dashboard
+      }
+
+      setIsLoading(false);
+    } catch (error) {
+      console.error("Login error:", error);
+      alert("An error occurred. Please try again.");
+      setIsLoading(false);
     }
-
-    setIsLoading(false);
   };
 
   return (
     <div className="w-full min-h-screen bg-slate-50 flex flex-col">
       {/* Back to Home Link */}
-      <div className="container-responsive pt-8 pb-4 px-4">
+      <div className="container-responsive pt-8 pb-4 px-4 relative z-50">
         <Link
           href="/"
-          className="inline-flex items-center gap-2 text-slate-600 hover:text-slate-900 transition text-sm font-medium"
+          className="inline-flex items-center gap-2 text-slate-600 hover:text-slate-900 transition text-sm font-medium relative z-50 cursor-pointer"
+          style={{ pointerEvents: 'auto' }}
         >
           <ArrowLeft className="h-4 w-4" />
           Back to Home
@@ -62,14 +81,14 @@ export default function LoginPage() {
       <div className="flex-1 flex items-center justify-center px-4 pb-8">
         <div className="max-w-6xl w-full bg-white rounded-3xl shadow-2xl overflow-hidden grid md:grid-cols-2 min-h-[650px]">
           {/* Left Column - Branding & Vibes (Hidden on Mobile) */}
-          <div className="hidden md:flex relative bg-gradient-to-br from-blue-600 to-slate-900 p-8 md:p-12 flex-col justify-between overflow-hidden">
+            <div className="hidden md:flex relative bg-gradient-to-br from-orange-600 to-red-900 p-8 md:p-12 flex-col justify-between overflow-hidden">
             {/* Particle Background Animation */}
             <ParticleBackground />
             
             {/* Decorative Blobs */}
-            <div className="absolute top-0 right-0 w-64 h-64 bg-cyan-400 rounded-full blur-3xl opacity-50 -translate-y-1/2 translate-x-1/2 z-10" />
-            <div className="absolute bottom-0 left-0 w-48 h-48 bg-blue-500 rounded-full blur-3xl opacity-50 translate-y-1/2 -translate-x-1/2 z-10" />
-            <div className="absolute top-1/2 left-1/2 w-32 h-32 bg-cyan-400 rounded-full blur-3xl opacity-50 -translate-x-1/2 -translate-y-1/2 z-10" />
+            <div className="absolute top-0 right-0 w-64 h-64 bg-yellow-400 rounded-full blur-3xl opacity-50 -translate-y-1/2 translate-x-1/2 z-10" />
+            <div className="absolute bottom-0 left-0 w-48 h-48 bg-orange-500 rounded-full blur-3xl opacity-50 translate-y-1/2 -translate-x-1/2 z-10" />
+            <div className="absolute top-1/2 left-1/2 w-32 h-32 bg-red-400 rounded-full blur-3xl opacity-50 -translate-x-1/2 -translate-y-1/2 z-10" />
 
             {/* Content */}
             <div className="relative z-10">
@@ -106,7 +125,7 @@ export default function LoginPage() {
           </div>
 
           {/* Right Column - Form */}
-          <div className="p-12 md:p-16 flex flex-col justify-center">
+          <div className="p-12 md:p-16 flex flex-col justify-center relative z-10 bg-gradient-to-br from-orange-50 via-white to-yellow-50">
             {/* Header */}
             <div className="mb-8">
               <h2 className="text-2xl font-bold text-slate-900 mb-2">Sign In</h2>
@@ -114,33 +133,41 @@ export default function LoginPage() {
             </div>
 
             {/* Tabs */}
-            <div className="flex gap-2 mb-6 p-1 bg-slate-100 rounded-lg">
+            <div className="flex gap-2 mb-6 p-1 bg-orange-100 rounded-lg relative z-10">
               <button
                 type="button"
-                onClick={() => setActiveTab("shoppers")}
-                className={`flex-1 rounded-lg px-4 py-2.5 text-sm font-semibold transition-all ${
-                  activeTab === "shoppers"
-                    ? "bg-white text-blue-600 shadow-sm"
-                    : "text-slate-600 hover:text-slate-900"
-                }`}
+                onClick={() => {
+                  console.log("Shoppers tab clicked");
+                  setActiveTab("shoppers");
+                }}
+                  className={`flex-1 rounded-lg px-4 py-2.5 text-sm font-semibold transition-all cursor-pointer relative z-10 ${
+                    activeTab === "shoppers"
+                      ? "bg-white text-orange-600 shadow-sm"
+                      : "text-slate-600 hover:text-slate-900"
+                  }`}
+                style={{ pointerEvents: 'auto' }}
               >
                 For Shoppers
               </button>
               <button
                 type="button"
-                onClick={() => setActiveTab("brands")}
-                className={`flex-1 rounded-lg px-4 py-2.5 text-sm font-semibold transition-all ${
-                  activeTab === "brands"
-                    ? "bg-white text-blue-600 shadow-sm"
-                    : "text-slate-600 hover:text-slate-900"
-                }`}
+                onClick={() => {
+                  console.log("Brands tab clicked");
+                  setActiveTab("brands");
+                }}
+                  className={`flex-1 rounded-lg px-4 py-2.5 text-sm font-semibold transition-all cursor-pointer relative z-10 ${
+                    activeTab === "brands"
+                      ? "bg-white text-orange-600 shadow-sm"
+                      : "text-slate-600 hover:text-slate-900"
+                  }`}
+                style={{ pointerEvents: 'auto' }}
               >
                 For Brands
               </button>
             </div>
 
             {/* Form */}
-            <form onSubmit={handleSubmit} className="space-y-5">
+            <form onSubmit={handleSubmit} className="space-y-5 relative z-10">
               {/* Email Field */}
               <div>
                 <label htmlFor="email" className="block text-slate-700 font-medium mb-2 text-sm">
@@ -157,7 +184,7 @@ export default function LoginPage() {
                     onChange={(e) => setEmail(e.target.value)}
                     required
                     placeholder="you@example.com"
-                    className="w-full rounded-xl border border-slate-200 pl-10 pr-4 py-3 text-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-100 transition"
+                    className="w-full rounded-xl border border-orange-200 bg-white pl-10 pr-4 py-3 text-sm focus:border-orange-500 focus:outline-none focus:ring-2 focus:ring-orange-100 transition"
                   />
                 </div>
               </div>
@@ -178,7 +205,7 @@ export default function LoginPage() {
                     onChange={(e) => setPassword(e.target.value)}
                     required
                     placeholder="••••••••"
-                    className="w-full rounded-xl border border-slate-200 pl-10 pr-10 py-3 text-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-100 transition"
+                    className="w-full rounded-xl border border-orange-200 bg-white pl-10 pr-10 py-3 text-sm focus:border-orange-500 focus:outline-none focus:ring-2 focus:ring-orange-100 transition"
                   />
                   <button
                     type="button"
@@ -201,13 +228,13 @@ export default function LoginPage() {
                     type="checkbox"
                     checked={rememberMe}
                     onChange={(e) => setRememberMe(e.target.checked)}
-                    className="w-4 h-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500"
+                    className="w-4 h-4 rounded border-slate-300 text-orange-600 focus:ring-orange-500"
                   />
                   <span className="text-sm text-slate-600">Remember me</span>
                 </label>
                 <Link
                   href="/forgot-password"
-                  className="text-sm font-medium text-blue-600 hover:text-blue-700"
+                  className="text-sm font-medium text-orange-600 hover:text-orange-700"
                 >
                   Forgot password?
                 </Link>
@@ -217,7 +244,12 @@ export default function LoginPage() {
               <button
                 type="submit"
                 disabled={isLoading}
-                className="w-full rounded-xl bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 px-4 py-3 text-sm font-semibold text-white shadow-lg shadow-blue-500/25 transition hover:shadow-xl hover:shadow-blue-500/30 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                onClick={(e) => {
+                  console.log("Login button clicked", { isLoading, email, activeTab });
+                  // Form onSubmit will handle the submission
+                }}
+                className="w-full rounded-xl bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 px-4 py-3 text-sm font-semibold text-white shadow-lg shadow-orange-500/25 transition hover:shadow-xl hover:shadow-orange-500/30 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 relative z-10 cursor-pointer"
+                style={{ pointerEvents: isLoading ? 'none' : 'auto' }}
               >
                 {isLoading ? (
                   <>
@@ -253,7 +285,7 @@ export default function LoginPage() {
             <div className="mt-6 text-center">
               <p className="text-sm text-slate-600">
                 Don't have an account?{" "}
-                <Link href="/signup" className="font-semibold text-blue-600 hover:text-blue-700">
+                <Link href="/signup" className="font-semibold text-orange-600 hover:text-orange-700">
                   Sign up here
                 </Link>
               </p>

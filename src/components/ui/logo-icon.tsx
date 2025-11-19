@@ -12,7 +12,7 @@ export function LogoIcon({ className = "h-16 w-16" }: { className?: string }) {
         y1="25"
         x2="30"
         y2="70"
-        stroke="#60A5FA"
+        stroke="#F97316"
         strokeWidth="3"
         strokeLinecap="round"
       />
@@ -21,7 +21,7 @@ export function LogoIcon({ className = "h-16 w-16" }: { className?: string }) {
         y1="25"
         x2="70"
         y2="70"
-        stroke="#60A5FA"
+        stroke="#F97316"
         strokeWidth="3"
         strokeLinecap="round"
       />
@@ -30,16 +30,16 @@ export function LogoIcon({ className = "h-16 w-16" }: { className?: string }) {
         y1="70"
         x2="70"
         y2="70"
-        stroke="#60A5FA"
+        stroke="#F97316"
         strokeWidth="3"
         strokeLinecap="round"
       />
       {/* Top circle */}
-      <circle cx="50" cy="25" r="12" fill="#60A5FA" />
+      <circle cx="50" cy="25" r="12" fill="#F97316" />
       {/* Bottom left circle */}
-      <circle cx="30" cy="70" r="12" fill="#60A5FA" />
+      <circle cx="30" cy="70" r="12" fill="#F97316" />
       {/* Bottom right circle */}
-      <circle cx="70" cy="70" r="12" fill="#60A5FA" />
+      <circle cx="70" cy="70" r="12" fill="#F97316" />
     </svg>
   );
 }

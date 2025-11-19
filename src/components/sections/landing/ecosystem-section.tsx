@@ -21,7 +21,7 @@ const ecosystemPillars = [
 
 export function EcosystemSection() {
   return (
-    <section className="bg-slate-50 py-20" id="ecosystem">
+    <section className="bg-gradient-to-b from-orange-50 to-white py-20" id="ecosystem">
       <div className="container-responsive space-y-10">
         <SectionHeading
           eyebrow="Influencer Agency Synergy"
@@ -33,7 +33,7 @@ export function EcosystemSection() {
           {ecosystemPillars.map((pillar) => (
             <div
               key={pillar.title}
-              className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm hover:shadow-lg"
+              className="rounded-3xl border border-orange-100 bg-white/80 p-6 shadow-sm shadow-orange-100 hover:border-orange-300 hover:bg-orange-50 hover:shadow-lg"
             >
               <p className="text-sm font-semibold uppercase tracking-[0.2em] text-slate-500">
                 {pillar.title}

@@ -20,7 +20,7 @@ export function WorkflowSection() {
   ];
 
   return (
-    <section className="bg-white py-20" id="workflow">
+    <section className="bg-orange-50 py-20" id="workflow">
       <div className="container-responsive space-y-8">
         <div className="space-y-3 text-center">
           <p className="section-title text-center">User Flow</p>
@@ -36,7 +36,7 @@ export function WorkflowSection() {
             {columns.map((column) => (
               <div
                 key={column.title}
-                className="rounded-[28px] border border-slate-100 bg-slate-50 p-6 shadow-sm"
+                className="rounded-[28px] border border-orange-100 bg-white/80 p-6 shadow-sm shadow-orange-100"
               >
                 <h4 className="mb-4 text-xl font-semibold text-slate-900">{column.title}</h4>
                 <ol className="space-y-3 text-sm text-slate-600">

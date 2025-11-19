@@ -23,7 +23,7 @@ export default function HowItWorksPage() {
       icon: FaCartShopping,
       title: "Campaign Setup",
       description: "Create your campaign, select products, set budget, and define review requirements. Our platform handles the rest.",
-      color: "blue",
+      color: "orange",
     },
     {
       icon: FaUserCheck,
@@ -41,7 +41,7 @@ export default function HowItWorksPage() {
       icon: FaChartBar,
       title: "Data Insights",
       description: "Track performance, sentiment analysis, and reputation metrics in real-time through your dashboard.",
-      color: "purple",
+      color: "red",
     },
   ];
 
@@ -50,7 +50,7 @@ export default function HowItWorksPage() {
       icon: FaCartShopping,
       title: "Browse Deals",
       description: "Explore products with 100% cashback offers. Each deal shows product details, marketplace, and cashback amount.",
-      color: "blue",
+      color: "orange",
     },
     {
       icon: FaUserCheck,
@@ -68,7 +68,7 @@ export default function HowItWorksPage() {
       icon: FaChartBar,
       title: "Get Cashback",
       description: "Once approved, receive 100% cashback directly to your wallet. Withdraw anytime via UPI or bank transfer.",
-      color: "purple",
+      color: "red",
     },
   ];
 
@@ -91,10 +91,10 @@ export default function HowItWorksPage() {
   ];
 
   const colorClasses = {
-    blue: "bg-blue-100 text-blue-600 border-blue-500",
-    green: "bg-green-100 text-green-600 border-green-500",
-    yellow: "bg-yellow-100 text-yellow-600 border-yellow-500",
-    purple: "bg-purple-100 text-purple-600 border-purple-500",
+    orange: "bg-yellow-100 text-yellow-700 border-yellow-700",
+    green: "bg-yellow-100 text-yellow-700 border-yellow-700",
+    yellow: "bg-yellow-100 text-yellow-700 border-yellow-700",
+    red: "bg-yellow-100 text-yellow-700 border-yellow-700",
   };
 
   const steps = activeTab === "brands" ? brandSteps : shopperSteps;
@@ -111,7 +111,7 @@ export default function HowItWorksPage() {
             </p>
           </div>
         </div>
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(59,130,246,0.15),_transparent_70%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(249,115,22,0.15),_transparent_70%)]" />
       </section>
 
       {/* Tabs */}
@@ -122,7 +122,7 @@ export default function HowItWorksPage() {
               onClick={() => setActiveTab("brands")}
               className={`flex-1 rounded-lg px-6 py-3 font-semibold transition ${
                 activeTab === "brands"
-                  ? "bg-gradient-to-r from-blue-600 to-cyan-600 text-white"
+                  ? "bg-gradient-to-r from-orange-500 to-red-600 text-white"
                   : "text-slate-400 hover:text-white"
               }`}
             >
@@ -132,7 +132,7 @@ export default function HowItWorksPage() {
               onClick={() => setActiveTab("shoppers")}
               className={`flex-1 rounded-lg px-6 py-3 font-semibold transition ${
                 activeTab === "shoppers"
-                  ? "bg-gradient-to-r from-blue-600 to-cyan-600 text-white"
+                  ? "bg-gradient-to-r from-orange-500 to-red-600 text-white"
                   : "text-slate-400 hover:text-white"
               }`}
             >
@@ -143,12 +143,12 @@ export default function HowItWorksPage() {
       </section>
 
       {/* Timeline */}
-      <section className="bg-gray-50 py-20">
+      <section className="bg-amber-50/30 py-20">
         <div className="container-responsive">
           <div className="mx-auto max-w-4xl">
             <div className="relative">
               {/* Vertical Line */}
-              <div className="absolute left-8 top-0 hidden h-full w-0.5 bg-gradient-to-b from-blue-500 via-green-500 via-yellow-500 to-purple-500 md:block md:left-1/2 md:-translate-x-0.5" />
+              <div className="absolute left-8 top-0 hidden h-full w-0.5 bg-gradient-to-b from-yellow-300 to-orange-300 md:block md:left-1/2 md:-translate-x-0.5" />
 
               {/* Steps */}
               <div className="space-y-16">
@@ -168,12 +168,12 @@ export default function HowItWorksPage() {
                           colorClasses[step.color as keyof typeof colorClasses]
                         } md:absolute md:left-1/2 md:-translate-x-1/2`}
                       >
-                        <Icon className="h-8 w-8" />
+                        <Icon className="h-8 w-8 text-yellow-600" />
                       </div>
 
                       {/* Content Card */}
                       <div
-                        className={`flex-1 rounded-2xl border border-gray-200 bg-white p-6 shadow-sm md:w-[45%] md:p-8 ${
+                        className={`flex-1 rounded-2xl border border-yellow-200 bg-white/80 p-6 shadow-sm shadow-yellow-100 transition hover:border-yellow-400 hover:bg-yellow-50 md:w-[45%] md:p-8 ${
                           isEven ? "md:ml-auto md:mr-0" : "md:mr-auto md:ml-0"
                         }`}
                       >

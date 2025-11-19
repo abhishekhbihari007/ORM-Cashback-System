@@ -8,7 +8,7 @@ import { CtaSection } from "@/components/sections/landing/cta-section";
 
 export default function Home() {
   return (
-    <div className="page-wrapper bg-white">
+    <div className="page-wrapper bg-orange-50">
       <HeroSection />
       <PartnersSection />
       <ImpactSection />

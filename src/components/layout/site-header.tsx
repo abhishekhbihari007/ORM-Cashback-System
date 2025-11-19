@@ -110,17 +110,25 @@ export function SiteHeader() {
 
         <div className="hidden items-center gap-3 lg:flex">
           {!user ? (
-            <Link
-              href="/login"
-              className="rounded-full bg-slate-900 px-8 py-3.5 text-base font-semibold text-white hover:bg-slate-800 transition shadow-sm"
-            >
-              Login
-            </Link>
+            <>
+              <Link
+                href="/signup"
+                className="rounded-full border border-slate-200 px-8 py-3.5 text-base font-semibold text-slate-700 hover:bg-slate-50 transition"
+              >
+                Sign Up
+              </Link>
+              <Link
+                href="/login"
+                className="rounded-full bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 px-8 py-3.5 text-base font-semibold text-white transition shadow-sm shadow-orange-500/25"
+              >
+                Login
+              </Link>
+            </>
           ) : (
             <div className="flex items-center gap-4">
               {user.role === "user" && (
                 <div className="flex items-center gap-3">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-blue-100 text-blue-600">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-orange-100 text-orange-600">
                     <FaUser size={18} />
                   </div>
                   <span className="text-base font-semibold text-slate-900">{user.name}</span>
@@ -163,18 +171,27 @@ export function SiteHeader() {
               </Link>
             ))}
             {!user ? (
-              <Link
-                href="/login"
-                onClick={closeMobileNav}
-                className="rounded-2xl border border-slate-200 px-5 py-4 text-left text-base font-semibold text-slate-600"
-              >
-                Login
-              </Link>
+              <>
+                <Link
+                  href="/signup"
+                  onClick={closeMobileNav}
+                  className="rounded-2xl border border-slate-200 px-5 py-4 text-left text-base font-semibold text-slate-600"
+                >
+                  Sign Up
+                </Link>
+                <Link
+                  href="/login"
+                  onClick={closeMobileNav}
+                  className="rounded-2xl border border-slate-200 px-5 py-4 text-left text-base font-semibold text-slate-600"
+                >
+                  Login
+                </Link>
+              </>
             ) : (
               <div className="space-y-3">
                 {user.role === "user" && (
                   <div className="flex items-center gap-3 rounded-2xl bg-slate-50 px-5 py-4">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-blue-100 text-blue-600">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-orange-100 text-orange-600">
                       <FaUser size={18} />
                     </div>
                     <span className="text-base font-semibold text-slate-900">{user.name}</span>

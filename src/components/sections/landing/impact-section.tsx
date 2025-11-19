@@ -30,7 +30,7 @@ const verticals = [
 
 export function ImpactSection() {
   return (
-    <section className="bg-white py-20" id="impact">
+    <section className="bg-orange-50 py-20" id="impact">
       <div className="container-responsive space-y-12">
         <SectionHeading
           eyebrow="Impacting the transformation of digitisation"

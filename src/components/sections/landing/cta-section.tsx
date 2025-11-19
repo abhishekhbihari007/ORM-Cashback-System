@@ -1,6 +1,6 @@
 export function CtaSection() {
   return (
-    <section className="relative bg-white py-20">
+    <section className="relative bg-orange-50 py-20">
       {/* Glow effect behind the card */}
       <div className="absolute inset-0 flex items-center justify-center">
         <div className="h-96 w-full max-w-4xl rounded-3xl bg-slate-900/20 blur-3xl" />
@@ -8,7 +8,7 @@ export function CtaSection() {
       
       {/* Floating CTA Card */}
       <div className="container-responsive relative z-10">
-        <div className="mx-auto max-w-4xl rounded-3xl border border-slate-800 bg-slate-900 p-12 text-center shadow-2xl">
+        <div className="mx-auto max-w-4xl rounded-3xl border border-indigo-700 bg-indigo-600 p-12 text-center shadow-2xl">
           <h3 className="text-4xl font-bold text-white">
             Start turning reviews into revenue.
           </h3>
