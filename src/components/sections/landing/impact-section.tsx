@@ -30,11 +30,11 @@ const verticals = [
 
 export function ImpactSection() {
   return (
-    <section className="relative min-h-[600px] bg-cover bg-center bg-no-repeat py-20 overflow-hidden" style={{ backgroundImage: 'url(https://images.unsplash.com/photo-1605810230434-7631ac76ec81?q=80&w=2070&auto=format&fit=crop)' }} id="impact">
+    <section className="relative min-h-[600px] bg-cover bg-center bg-no-repeat py-20 flex items-center overflow-hidden" style={{ backgroundImage: 'url(https://images.unsplash.com/photo-1605810230434-7631ac76ec81?q=80&w=2070&auto=format&fit=crop)' }} id="impact">
       {/* Dark overlay for text readability */}
       <div className="absolute inset-0 bg-black/60 pointer-events-none" />
       
-      <div className="container-responsive space-y-12 relative z-10">
+      <div className="max-w-7xl mx-auto px-6 space-y-12 relative z-10 w-full">
         <SectionHeading
           eyebrow="Impacting the transformation of digitisation"
           title="Unified reputation playbooks across every marketplace"

@@ -85,7 +85,7 @@ export function SiteHeader() {
       <div className="max-w-7xl mx-auto px-4 md:px-6 flex items-center justify-between py-6 relative">
         {/* Hamburger Menu - Far Left */}
         <button 
-          className="flex flex-col items-start justify-center gap-1.5 w-10 h-10 transition-all duration-300 hover:scale-110 z-50"
+          className="fixed left-1 md:left-2 top-6 flex flex-col items-start justify-center gap-1.5 w-10 h-10 transition-all duration-300 hover:scale-110 z-50"
           onClick={toggleMobileNav}
           aria-label="Toggle menu"
         >
@@ -108,7 +108,7 @@ export function SiteHeader() {
         {/* Logo - Center/Left */}
         <Link 
           href="/" 
-          className="flex items-center gap-3 ml-4 md:ml-6" 
+          className="flex items-center gap-3 ml-2 md:ml-3" 
           onClick={() => {
             closeMobileNav();
             triggerGraphAnimation();

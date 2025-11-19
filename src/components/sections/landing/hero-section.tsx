@@ -11,14 +11,14 @@ const heroMetrics = [
 
 export function HeroSection() {
   return (
-    <section className="relative overflow-hidden min-h-[85vh] bg-white flex items-center">
+    <section className="relative overflow-hidden min-h-[600px] bg-white py-20 flex items-center">
       {/* Optional subtle texture pattern - very light */}
       <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{
         backgroundImage: `radial-gradient(circle at 2px 2px, rgb(15, 23, 42) 1px, transparent 0)`,
         backgroundSize: '40px 40px'
       }} />
       
-      <div className="max-w-7xl mx-auto px-6 grid gap-8 lg:gap-12 pt-20 pb-20 grid-cols-1 lg:grid-cols-12 lg:items-center relative z-10 w-full">
+      <div className="max-w-7xl mx-auto px-4 md:px-6 grid gap-8 lg:gap-12 grid-cols-1 lg:grid-cols-12 lg:items-center relative z-10 w-full">
         <div className="space-y-4 lg:col-span-7 relative z-10 text-left">
           <p className="section-title text-slate-500 text-base mb-2">ORM - Global Marketplace - Cashback Ecosystem</p>
           <h1 className="text-6xl font-extrabold leading-[1.1] text-slate-900 md:text-7xl max-w-4xl text-left">
