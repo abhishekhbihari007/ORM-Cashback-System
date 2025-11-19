@@ -4,11 +4,16 @@ import { useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { ArrowLeft, Mail, Lock, Eye, EyeOff } from "lucide-react";
+import { LogoIcon } from "@/components/ui/logo-icon";
+import { ParticleBackground } from "@/components/ui/particle-background";
 
 export default function LoginPage() {
   const [activeTab, setActiveTab] = useState<"shoppers" | "brands">("shoppers");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [rememberMe, setRememberMe] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const { login } = useAuth();
   const router = useRouter();
@@ -19,7 +24,7 @@ export default function LoginPage() {
 
     // Secret admin logic - check email before processing
     // Works regardless of which tab is active
-    if (email === "admin@kudos.com" || email.endsWith("@kudos-admin.com")) {
+    if (email === "admin@orm-ecosystem.com" || email.endsWith("@orm-ecosystem-admin.com")) {
       login("admin");
       setIsLoading(false);
       router.push("/admin/dashboard");
@@ -41,41 +46,81 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="flex min-h-screen">
-      {/* Left Column - Desktop Only */}
-      <div className="hidden lg:flex lg:w-1/2 items-center justify-center bg-slate-900 px-12">
-        <div className="text-center">
-          <h2 className="text-4xl font-bold text-white mb-4">
-            Boost your reputation with verified reviews
-          </h2>
-          <p className="text-slate-300 text-lg">
-            Trusted by brands and shoppers worldwide
-          </p>
-        </div>
+    <div className="w-full min-h-screen bg-slate-50 flex flex-col">
+      {/* Back to Home Link */}
+      <div className="container-responsive pt-8 pb-4 px-4">
+        <Link
+          href="/"
+          className="inline-flex items-center gap-2 text-slate-600 hover:text-slate-900 transition text-sm font-medium"
+        >
+          <ArrowLeft className="h-4 w-4" />
+          Back to Home
+        </Link>
       </div>
 
-      {/* Right Column - Form */}
-      <div className="w-full lg:w-1/2 flex items-center justify-center bg-white px-4 py-12">
-        <div className="w-full max-w-md">
-          {/* Logo */}
-          <div className="text-center mb-8">
-            <div className="inline-flex h-16 w-16 items-center justify-center rounded-full bg-slate-900 text-white text-2xl font-black mb-4">
-              ORM
+      {/* Main Card Container - Centered */}
+      <div className="flex-1 flex items-center justify-center px-4 pb-8">
+        <div className="max-w-6xl w-full bg-white rounded-3xl shadow-2xl overflow-hidden grid md:grid-cols-2 min-h-[650px]">
+          {/* Left Column - Branding & Vibes (Hidden on Mobile) */}
+          <div className="hidden md:flex relative bg-gradient-to-br from-blue-600 to-slate-900 p-8 md:p-12 flex-col justify-between overflow-hidden">
+            {/* Particle Background Animation */}
+            <ParticleBackground />
+            
+            {/* Decorative Blobs */}
+            <div className="absolute top-0 right-0 w-64 h-64 bg-cyan-400 rounded-full blur-3xl opacity-50 -translate-y-1/2 translate-x-1/2 z-10" />
+            <div className="absolute bottom-0 left-0 w-48 h-48 bg-blue-500 rounded-full blur-3xl opacity-50 translate-y-1/2 -translate-x-1/2 z-10" />
+            <div className="absolute top-1/2 left-1/2 w-32 h-32 bg-cyan-400 rounded-full blur-3xl opacity-50 -translate-x-1/2 -translate-y-1/2 z-10" />
+
+            {/* Content */}
+            <div className="relative z-10">
+              {/* Logo */}
+              <div className="flex items-center justify-center mb-8">
+                <div className="brightness-0 invert">
+                  <LogoIcon className="h-12 w-12" />
+                </div>
+                <span className="ml-3 text-2xl font-bold text-white">
+                  <span className="font-bold">ORM</span> <span className="font-light">Ecosystem</span>
+                </span>
+              </div>
+
+              {/* Headline */}
+              <h1 className="text-3xl md:text-4xl font-bold text-white mb-4">
+                Welcome to ORM Ecosystem
+              </h1>
+
+              {/* Subhead */}
+              <p className="text-lg text-white/90">
+                Join thousands of brands advancing their reputation with verified reviews.
+              </p>
             </div>
-            <h1 className="text-3xl font-bold text-slate-900">Welcome back</h1>
-            <p className="text-slate-600 mt-2">Sign in to your account</p>
+
+            {/* Social Proof Pill */}
+            <div className="relative z-10 flex items-center justify-center">
+              <div className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full shadow-sm border border-white/30">
+                <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
+                <span className="text-sm font-medium text-white">
+                  Trusted by 10,000+ brands worldwide
+                </span>
+              </div>
+            </div>
           </div>
 
-          {/* Card */}
-          <div className="rounded-2xl border border-slate-200 bg-white shadow-lg p-8">
+          {/* Right Column - Form */}
+          <div className="p-12 md:p-16 flex flex-col justify-center">
+            {/* Header */}
+            <div className="mb-8">
+              <h2 className="text-2xl font-bold text-slate-900 mb-2">Sign In</h2>
+              <p className="text-slate-600">Enter your credentials to access your account.</p>
+            </div>
+
             {/* Tabs */}
             <div className="flex gap-2 mb-6 p-1 bg-slate-100 rounded-lg">
               <button
                 type="button"
                 onClick={() => setActiveTab("shoppers")}
-                className={`flex-1 rounded-lg px-4 py-2.5 text-sm font-semibold transition ${
+                className={`flex-1 rounded-lg px-4 py-2.5 text-sm font-semibold transition-all ${
                   activeTab === "shoppers"
-                    ? "bg-white text-slate-900 shadow-sm"
+                    ? "bg-white text-blue-600 shadow-sm"
                     : "text-slate-600 hover:text-slate-900"
                 }`}
               >
@@ -84,9 +129,9 @@ export default function LoginPage() {
               <button
                 type="button"
                 onClick={() => setActiveTab("brands")}
-                className={`flex-1 rounded-lg px-4 py-2.5 text-sm font-semibold transition ${
+                className={`flex-1 rounded-lg px-4 py-2.5 text-sm font-semibold transition-all ${
                   activeTab === "brands"
-                    ? "bg-white text-slate-900 shadow-sm"
+                    ? "bg-white text-blue-600 shadow-sm"
                     : "text-slate-600 hover:text-slate-900"
                 }`}
               >
@@ -96,40 +141,83 @@ export default function LoginPage() {
 
             {/* Form */}
             <form onSubmit={handleSubmit} className="space-y-5">
+              {/* Email Field */}
               <div>
-                <label htmlFor="email" className="block text-sm font-semibold text-slate-700 mb-2">
+                <label htmlFor="email" className="block text-slate-700 font-medium mb-2 text-sm">
                   Email address
                 </label>
-                <input
-                  id="email"
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                  placeholder="you@example.com"
-                  className="w-full rounded-lg border border-slate-300 px-4 py-3 text-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-100 transition"
-                />
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <Mail className="h-5 w-5 text-slate-400" />
+                  </div>
+                  <input
+                    id="email"
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                    placeholder="you@example.com"
+                    className="w-full rounded-xl border border-slate-200 pl-10 pr-4 py-3 text-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-100 transition"
+                  />
+                </div>
               </div>
 
+              {/* Password Field */}
               <div>
-                <label htmlFor="password" className="block text-sm font-semibold text-slate-700 mb-2">
+                <label htmlFor="password" className="block text-slate-700 font-medium mb-2 text-sm">
                   Password
                 </label>
-                <input
-                  id="password"
-                  type="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
-                  placeholder="••••••••"
-                  className="w-full rounded-lg border border-slate-300 px-4 py-3 text-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-100 transition"
-                />
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <Lock className="h-5 w-5 text-slate-400" />
+                  </div>
+                  <input
+                    id="password"
+                    type={showPassword ? "text" : "password"}
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                    placeholder="••••••••"
+                    className="w-full rounded-xl border border-slate-200 pl-10 pr-10 py-3 text-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-100 transition"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-slate-600 transition"
+                  >
+                    {showPassword ? (
+                      <EyeOff className="h-5 w-5" />
+                    ) : (
+                      <Eye className="h-5 w-5" />
+                    )}
+                  </button>
+                </div>
               </div>
 
+              {/* Remember Me & Forgot Password */}
+              <div className="flex items-center justify-between">
+                <label className="flex items-center gap-2 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={rememberMe}
+                    onChange={(e) => setRememberMe(e.target.checked)}
+                    className="w-4 h-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500"
+                  />
+                  <span className="text-sm text-slate-600">Remember me</span>
+                </label>
+                <Link
+                  href="/forgot-password"
+                  className="text-sm font-medium text-blue-600 hover:text-blue-700"
+                >
+                  Forgot password?
+                </Link>
+              </div>
+
+              {/* Submit Button */}
               <button
                 type="submit"
                 disabled={isLoading}
-                className="w-full rounded-lg bg-slate-900 px-4 py-3 text-sm font-semibold text-white transition hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-slate-900 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                className="w-full rounded-xl bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 px-4 py-3 text-sm font-semibold text-white shadow-lg shadow-blue-500/25 transition hover:shadow-xl hover:shadow-blue-500/30 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
               >
                 {isLoading ? (
                   <>
@@ -161,20 +249,14 @@ export default function LoginPage() {
               </button>
             </form>
 
-            {/* Footer Links */}
-            <div className="mt-6 space-y-3 text-center">
+            {/* Footer */}
+            <div className="mt-6 text-center">
               <p className="text-sm text-slate-600">
                 Don't have an account?{" "}
-                <Link href="/signup" className="font-semibold text-slate-900 hover:text-slate-700">
-                  Sign up
+                <Link href="/signup" className="font-semibold text-blue-600 hover:text-blue-700">
+                  Sign up here
                 </Link>
               </p>
-              <Link
-                href="/forgot-password"
-                className="block text-sm font-semibold text-slate-600 hover:text-slate-900"
-              >
-                Forgot password?
-              </Link>
             </div>
           </div>
         </div>

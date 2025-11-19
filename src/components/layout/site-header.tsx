@@ -7,6 +7,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useAnimation } from "@/contexts/AnimationContext";
 import { FaUser } from "react-icons/fa6";
 import { HiOutlineMenu, HiOutlineX } from "react-icons/hi";
+import { LogoIcon } from "@/components/ui/logo-icon";
 
 export function SiteHeader() {
   const pathname = usePathname();
@@ -17,6 +18,11 @@ export function SiteHeader() {
   const toggleMobileNav = () => setMobileNavOpen((prev) => !prev);
   const closeMobileNav = () => setMobileNavOpen(false);
 
+  // Hide header on auth pages
+  if (pathname === "/login" || pathname === "/signup") {
+    return null;
+  }
+
   // Define navigation links based on authentication state and role
   const getNavLinks = () => {
     if (!user) {
@@ -24,8 +30,8 @@ export function SiteHeader() {
       return [
         { label: "Home", href: "/" },
         { label: "Browse Deals", href: "/feed" },
-        { label: "For Sellers", href: "/#sellers" },
-        { label: "How it Works", href: "/#how-it-works" },
+        { label: "For Sellers", href: "/for-sellers" },
+        { label: "How it Works", href: "/how-it-works" },
       ];
     }
 
@@ -63,7 +69,7 @@ export function SiteHeader() {
 
   return (
     <header className="sticky top-0 z-40 border-b border-slate-100 bg-white/95 backdrop-blur">
-      <div className="container-responsive flex items-center justify-between py-4">
+      <div className="container-responsive flex items-center justify-between py-6">
         <Link 
           href="/" 
           className="flex items-center gap-3" 
@@ -72,15 +78,15 @@ export function SiteHeader() {
             triggerGraphAnimation();
           }}
         >
-          <div className="flex h-12 w-12 items-center justify-center rounded-full bg-slate-900 text-white font-black">
-            K
-          </div>
+          <LogoIcon className="h-16 w-16" />
           <div>
-            <p className="text-xl font-bold text-slate-900">Kudos</p>
+            <p className="text-2xl text-slate-900">
+              <span className="font-bold">ORM</span> <span className="font-light">Ecosystem</span>
+            </p>
           </div>
         </Link>
 
-        <nav className="hidden items-center gap-2 lg:flex">
+        <nav className="hidden items-center gap-3 lg:flex">
           {navLinks.map((link) => (
             <Link
               key={link.href}
@@ -91,7 +97,7 @@ export function SiteHeader() {
                   triggerGraphAnimation();
                 }
               }}
-              className={`rounded-full px-4 py-2 text-sm font-semibold transition ${
+              className={`rounded-full px-6 py-3 text-base font-semibold transition ${
                 pathname === link.href
                   ? "bg-slate-900 text-white"
                   : "text-slate-500 hover:text-slate-900"
@@ -102,27 +108,27 @@ export function SiteHeader() {
           ))}
         </nav>
 
-        <div className="hidden items-center gap-2 lg:flex">
+        <div className="hidden items-center gap-3 lg:flex">
           {!user ? (
             <Link
               href="/login"
-              className="rounded-full bg-slate-900 px-6 py-2.5 text-sm font-semibold text-white hover:bg-slate-800 transition shadow-sm"
+              className="rounded-full bg-slate-900 px-8 py-3.5 text-base font-semibold text-white hover:bg-slate-800 transition shadow-sm"
             >
               Login
             </Link>
           ) : (
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-4">
               {user.role === "user" && (
-                <div className="flex items-center gap-2">
-                  <div className="flex h-8 w-8 items-center justify-center rounded-full bg-blue-100 text-blue-600">
-                    <FaUser size={14} />
+                <div className="flex items-center gap-3">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-blue-100 text-blue-600">
+                    <FaUser size={18} />
                   </div>
-                  <span className="text-sm font-semibold text-slate-900">{user.name}</span>
+                  <span className="text-base font-semibold text-slate-900">{user.name}</span>
                 </div>
               )}
               <button
                 onClick={logout}
-                className="rounded-full border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-600 hover:text-slate-900 transition"
+                className="rounded-full border border-slate-200 px-6 py-3 text-base font-semibold text-slate-600 hover:text-slate-900 transition"
               >
                 Logout
               </button>
@@ -130,14 +136,14 @@ export function SiteHeader() {
           )}
         </div>
 
-        <button className="rounded-full border border-slate-200 p-2 lg:hidden" onClick={toggleMobileNav}>
-          {mobileNavOpen ? <HiOutlineX size={22} /> : <HiOutlineMenu size={22} />}
+        <button className="rounded-full border border-slate-200 p-3 lg:hidden" onClick={toggleMobileNav}>
+          {mobileNavOpen ? <HiOutlineX size={24} /> : <HiOutlineMenu size={24} />}
         </button>
       </div>
 
       {mobileNavOpen ? (
-        <div className="border-t border-slate-100 bg-white px-4 py-4 lg:hidden">
-          <div className="flex flex-col gap-2">
+        <div className="border-t border-slate-100 bg-white px-4 py-6 lg:hidden">
+          <div className="flex flex-col gap-3">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
@@ -149,7 +155,7 @@ export function SiteHeader() {
                     triggerGraphAnimation();
                   }
                 }}
-                className={`rounded-2xl px-4 py-3 text-sm font-semibold ${
+                className={`rounded-2xl px-5 py-4 text-base font-semibold ${
                   pathname === link.href ? "bg-slate-900 text-white" : "bg-slate-50 text-slate-600"
                 }`}
               >
@@ -160,18 +166,18 @@ export function SiteHeader() {
               <Link
                 href="/login"
                 onClick={closeMobileNav}
-                className="rounded-2xl border border-slate-200 px-4 py-3 text-left text-sm font-semibold text-slate-600"
+                className="rounded-2xl border border-slate-200 px-5 py-4 text-left text-base font-semibold text-slate-600"
               >
                 Login
               </Link>
             ) : (
-              <div className="space-y-2">
+              <div className="space-y-3">
                 {user.role === "user" && (
-                  <div className="flex items-center gap-2 rounded-2xl bg-slate-50 px-4 py-3">
-                    <div className="flex h-8 w-8 items-center justify-center rounded-full bg-blue-100 text-blue-600">
-                      <FaUser size={14} />
+                  <div className="flex items-center gap-3 rounded-2xl bg-slate-50 px-5 py-4">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-blue-100 text-blue-600">
+                      <FaUser size={18} />
                     </div>
-                    <span className="text-sm font-semibold text-slate-900">{user.name}</span>
+                    <span className="text-base font-semibold text-slate-900">{user.name}</span>
                   </div>
                 )}
                 <button
@@ -179,7 +185,7 @@ export function SiteHeader() {
                     logout();
                     closeMobileNav();
                   }}
-                  className="w-full rounded-2xl border border-slate-200 px-4 py-3 text-left text-sm font-semibold text-slate-600"
+                  className="w-full rounded-2xl border border-slate-200 px-5 py-4 text-left text-base font-semibold text-slate-600"
                 >
                   Logout
                 </button>

@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { api } from "@/lib/api";
 import { Product } from "@/lib/types";
-import { FaCheckCircle, FaCircle, FaStar } from "react-icons/fa6";
+import { FaCircleCheck, FaCircle, FaStar } from "react-icons/fa6";
 import { useRouter } from "next/navigation";
 
 export default function SelectProductsPage() {
@@ -90,7 +90,7 @@ export default function SelectProductsPage() {
                 >
                   <div className="flex items-center gap-4">
                     {isSelected ? (
-                      <FaCheckCircle className="text-blue-600" size={24} />
+                      <FaCircleCheck className="text-blue-600" size={24} />
                     ) : (
                       <FaCircle className="text-slate-300" size={24} />
                     )}

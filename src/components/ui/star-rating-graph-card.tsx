@@ -88,7 +88,10 @@ const StarRatingGraphCard: React.FC = () => {
   }, [shouldAnimate]);
 
   return (
-    <div className="relative p-6 rounded-xl bg-white/10 backdrop-blur-md shadow-lg border border-white/20 text-white w-full max-w-sm">
+    <div 
+      className="relative p-6 rounded-xl bg-white/10 backdrop-blur-md shadow-lg border border-white/20 text-white w-full max-w-sm cursor-pointer transition-all duration-300 ease-in-out hover:bg-white/20 hover:border-white/40 hover:shadow-2xl hover:-translate-y-1 hover:scale-105"
+      style={{ willChange: 'transform' }}
+    >
       {/* Header */}
       <div className="flex items-center justify-between mb-4">
         <h3 className="text-xl font-semibold flex items-center gap-2">

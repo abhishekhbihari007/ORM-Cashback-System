@@ -10,7 +10,10 @@ type Props = {
 
 export function StatCard({ label, value, helper, trend }: Props) {
   return (
-    <div className="flex flex-col gap-3 rounded-2xl bg-slate-200/90 border border-slate-300/50 p-6 shadow-sm">
+    <div 
+      className="flex flex-col gap-3 rounded-2xl bg-slate-200/90 border border-slate-300/50 p-6 shadow-sm cursor-pointer transition-all duration-300 ease-in-out hover:bg-slate-100 hover:border-slate-400 hover:shadow-lg hover:-translate-y-1 hover:scale-105"
+      style={{ willChange: 'transform' }}
+    >
       <p className="text-sm font-semibold text-slate-700 uppercase tracking-wide">{label}</p>
       <div className="flex items-end justify-between gap-3">
         <span className="text-4xl font-bold text-slate-900">{value}</span>

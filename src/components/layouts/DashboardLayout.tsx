@@ -9,14 +9,14 @@ import {
   FaBox,
   FaDollarSign,
   FaUsers,
-  FaFileCheck,
+  FaFileCircleCheck,
   FaChartBar,
-  FaCog,
-  FaSignOutAlt,
+  FaGear,
+  FaRightFromBracket,
   FaWallet,
-  FaPlusCircle,
-  FaFileAlt,
-} from "react-icons/fa";
+  FaCirclePlus,
+  FaFileLines,
+} from "react-icons/fa6";
 
 type NavItem = {
   href: string;
@@ -28,19 +28,19 @@ const brandNavItems: NavItem[] = [
   { href: "/dashboard", label: "Dashboard", icon: FaChartLine },
   { href: "/brand/storefront", label: "Storefront", icon: FaBox },
   { href: "/brand/products", label: "Products", icon: FaBox },
-  { href: "/brand/products/select", label: "Select Products", icon: FaPlusCircle },
-  { href: "/brand/campaigns/create", label: "Create Campaign", icon: FaPlusCircle },
-  { href: "/brand/orders", label: "Orders", icon: FaFileAlt },
-  { href: "/brand/reviews", label: "Reviews", icon: FaFileAlt },
+  { href: "/brand/products/select", label: "Select Products", icon: FaCirclePlus },
+  { href: "/brand/campaigns/create", label: "Create Campaign", icon: FaCirclePlus },
+  { href: "/brand/orders", label: "Orders", icon: FaFileLines },
+  { href: "/brand/reviews", label: "Reviews", icon: FaFileLines },
   { href: "/brand/budget", label: "Add Budget", icon: FaWallet },
 ];
 
 const adminNavItems: NavItem[] = [
   { href: "/admin", label: "Dashboard", icon: FaChartLine },
-  { href: "/admin/verifier", label: "Verifier", icon: FaFileCheck },
+  { href: "/admin/verifier", label: "Verifier", icon: FaFileCircleCheck },
   { href: "/admin/users", label: "User Manager", icon: FaUsers },
   { href: "/admin/payouts", label: "Payout Manager", icon: FaDollarSign },
-  { href: "/admin/review-pipeline", label: "Review Pipeline", icon: FaFileAlt },
+  { href: "/admin/review-pipeline", label: "Review Pipeline", icon: FaFileLines },
   { href: "/admin/user-activities", label: "Activities", icon: FaChartBar },
 ];
 
@@ -100,7 +100,7 @@ export function DashboardLayout({ children, role }: { children: React.ReactNode;
               onClick={logout}
               className="flex w-full items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium text-red-600 transition hover:bg-red-50"
             >
-              <FaSignOutAlt size={20} />
+              <FaRightFromBracket size={20} />
               <span>Logout</span>
             </button>
           </div>

@@ -1,6 +1,6 @@
 import { AdminActivity } from "@/lib/types";
 import { StatusBadge } from "@/components/ui/status-badge";
-import { FaUser, FaShoppingCart, FaStar, FaMoneyBill, FaBan, FaCheckCircle } from "react-icons/fa6";
+import { FaUser, FaCartShopping, FaStar, FaMoneyBill, FaBan, FaCircleCheck } from "react-icons/fa6";
 
 type Props = {
   activities: AdminActivity[];
@@ -14,7 +14,7 @@ const severityVariant: Record<string, "success" | "warning" | "danger"> = {
 
 const getActivityIcon = (activity: string) => {
   if (activity.toLowerCase().includes("purchase") || activity.toLowerCase().includes("buy")) {
-    return <FaShoppingCart className="text-blue-600" />;
+    return <FaCartShopping className="text-blue-600" />;
   }
   if (activity.toLowerCase().includes("review")) {
     return <FaStar className="text-yellow-500" />;
@@ -26,7 +26,7 @@ const getActivityIcon = (activity: string) => {
     return <FaBan className="text-red-600" />;
   }
   if (activity.toLowerCase().includes("approve") || activity.toLowerCase().includes("verified")) {
-    return <FaCheckCircle className="text-green-600" />;
+    return <FaCircleCheck className="text-green-600" />;
   }
   return <FaUser className="text-slate-600" />;
 };

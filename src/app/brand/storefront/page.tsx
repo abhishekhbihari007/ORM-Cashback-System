@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { FaLink, FaCheckCircle, FaPlus } from "react-icons/fa6";
+import { FaLink, FaCircleCheck, FaPlus } from "react-icons/fa6";
 
 interface StorefrontLink {
   id: string;
@@ -158,7 +158,7 @@ export default function BrandStorefrontPage() {
                     Added {new Date(storefront.addedAt).toLocaleDateString()}
                   </p>
                 </div>
-                <FaCheckCircle className="text-green-500" />
+                <FaCircleCheck className="text-green-500" />
               </div>
             </div>
           ))}

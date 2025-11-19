@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { FaCheckCircle, FaClock, FaShoppingBag } from "react-icons/fa6";
+import { FaCircleCheck, FaClock, FaBagShopping } from "react-icons/fa6";
 
 interface TrackedPurchase {
   productId: string;
@@ -28,7 +28,7 @@ export default function TrackPurchasesPage() {
       case "paid":
         return (
           <span className="flex items-center gap-1 rounded-full bg-green-100 px-3 py-1 text-xs font-semibold text-green-700">
-            <FaCheckCircle /> Paid
+            <FaCircleCheck /> Paid
           </span>
         );
       case "reviewed":
@@ -40,7 +40,7 @@ export default function TrackPurchasesPage() {
       default:
         return (
           <span className="flex items-center gap-1 rounded-full bg-yellow-100 px-3 py-1 text-xs font-semibold text-yellow-700">
-            <FaShoppingBag /> Tracking
+            <FaBagShopping /> Tracking
           </span>
         );
     }
@@ -59,7 +59,7 @@ export default function TrackPurchasesPage() {
 
         {trackedPurchases.length === 0 ? (
           <div className="rounded-2xl border border-slate-200 bg-white p-12 text-center">
-            <FaShoppingBag className="mx-auto mb-4 text-4xl text-slate-400" />
+            <FaBagShopping className="mx-auto mb-4 text-4xl text-slate-400" />
             <h3 className="mb-2 text-lg font-semibold text-slate-900">No Purchases Tracked</h3>
             <p className="mb-4 text-slate-600">
               Start shopping from the deals page and your purchases will be tracked here.

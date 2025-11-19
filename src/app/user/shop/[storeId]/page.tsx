@@ -5,7 +5,7 @@ import { useParams, useRouter } from "next/navigation";
 import Image from "next/image";
 import { api } from "@/lib/api";
 import { Deal, Storefront } from "@/lib/types";
-import { FaShoppingCart, FaExternalLinkAlt, FaArrowLeft } from "react-icons/fa6";
+import { FaCartShopping, FaArrowUpRightFromSquare, FaArrowLeft } from "react-icons/fa6";
 
 export default function StoreProductsPage() {
   const params = useParams();
@@ -136,8 +136,8 @@ export default function StoreProductsPage() {
                     onClick={() => handleBuyNow(product)}
                     className="flex w-full items-center justify-center gap-2 rounded-xl bg-blue-600 px-4 py-3 font-semibold text-white transition hover:bg-blue-700"
                   >
-                    <FaShoppingCart /> Buy Now
-                    <FaExternalLinkAlt className="text-xs" />
+                    <FaCartShopping /> Buy Now
+                    <FaArrowUpRightFromSquare className="text-xs" />
                   </button>
                 </div>
               </div>
