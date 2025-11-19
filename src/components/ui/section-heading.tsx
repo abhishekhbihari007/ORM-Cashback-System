@@ -6,6 +6,7 @@ type Props = {
   description?: string;
   align?: "left" | "center";
   theme?: "light" | "dark";
+  className?: string;
 };
 
 export function SectionHeading({
@@ -14,6 +15,7 @@ export function SectionHeading({
   description,
   align = "left",
   theme = "dark",
+  className = "",
 }: Props) {
   const isLight = theme === "light";
 
@@ -35,9 +37,9 @@ export function SectionHeading({
           {eyebrow}
         </p>
       ) : null}
-      <h2 className="text-3xl font-bold md:text-4xl">{title}</h2>
+      <h2 className={clsx("text-3xl font-bold md:text-4xl", className)}>{title}</h2>
       {description ? (
-        <p className={clsx("text-base md:text-lg", isLight ? "text-blue-100" : "text-slate-600")}>
+        <p className={clsx("text-base md:text-lg", isLight ? "text-blue-100" : "text-slate-600", className)}>
           {description}
         </p>
       ) : null}

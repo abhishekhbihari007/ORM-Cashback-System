@@ -81,43 +81,41 @@ export default function LoginPage() {
       <div className="flex-1 flex items-center justify-center px-4 pb-8">
         <div className="max-w-6xl w-full bg-white rounded-3xl shadow-2xl overflow-hidden grid md:grid-cols-2 min-h-[650px]">
           {/* Left Column - Branding & Vibes (Hidden on Mobile) */}
-            <div className="hidden md:flex relative bg-gradient-to-br from-orange-600 to-red-900 p-8 md:p-12 flex-col justify-between overflow-hidden">
+            <div className="hidden md:flex relative bg-gradient-to-br from-indigo-50 via-white to-cyan-50 p-8 md:p-12 flex-col justify-between overflow-hidden">
             {/* Particle Background Animation */}
             <ParticleBackground />
             
             {/* Decorative Blobs */}
-            <div className="absolute top-0 right-0 w-64 h-64 bg-yellow-400 rounded-full blur-3xl opacity-50 -translate-y-1/2 translate-x-1/2 z-10" />
-            <div className="absolute bottom-0 left-0 w-48 h-48 bg-orange-500 rounded-full blur-3xl opacity-50 translate-y-1/2 -translate-x-1/2 z-10" />
-            <div className="absolute top-1/2 left-1/2 w-32 h-32 bg-red-400 rounded-full blur-3xl opacity-50 -translate-x-1/2 -translate-y-1/2 z-10" />
+            <div className="absolute top-0 right-0 w-64 h-64 bg-indigo-300 rounded-full blur-3xl opacity-30 -translate-y-1/2 translate-x-1/2 z-10" />
+            <div className="absolute bottom-0 left-0 w-48 h-48 bg-blue-300 rounded-full blur-3xl opacity-30 translate-y-1/2 -translate-x-1/2 z-10" />
+            <div className="absolute top-1/2 left-1/2 w-32 h-32 bg-purple-300 rounded-full blur-3xl opacity-30 -translate-x-1/2 -translate-y-1/2 z-10" />
 
             {/* Content */}
             <div className="relative z-10">
               {/* Logo */}
               <div className="flex items-center justify-center mb-8">
-                <div className="brightness-0 invert">
-                  <LogoIcon className="h-12 w-12" />
-                </div>
-                <span className="ml-3 text-2xl font-bold text-white">
+                <LogoIcon className="h-12 w-12" />
+                <span className="ml-3 text-2xl font-bold text-slate-900">
                   <span className="font-bold">ORM</span> <span className="font-light">Ecosystem</span>
                 </span>
               </div>
 
               {/* Headline */}
-              <h1 className="text-3xl md:text-4xl font-bold text-white mb-4">
+              <h1 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">
                 Welcome to ORM Ecosystem
               </h1>
 
               {/* Subhead */}
-              <p className="text-lg text-white/90">
+              <p className="text-lg text-slate-600">
                 Join thousands of brands advancing their reputation with verified reviews.
               </p>
             </div>
 
             {/* Social Proof Pill */}
             <div className="relative z-10 flex items-center justify-center">
-              <div className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full shadow-sm border border-white/30">
-                <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
-                <span className="text-sm font-medium text-white">
+              <div className="inline-flex items-center gap-2 bg-white/80 backdrop-blur-sm px-4 py-2 rounded-full shadow-sm border border-indigo-200">
+                <div className="w-2 h-2 bg-indigo-500 rounded-full animate-pulse" />
+                <span className="text-sm font-medium text-slate-700">
                   Trusted by 10,000+ brands worldwide
                 </span>
               </div>
@@ -125,7 +123,7 @@ export default function LoginPage() {
           </div>
 
           {/* Right Column - Form */}
-          <div className="p-12 md:p-16 flex flex-col justify-center relative z-10 bg-gradient-to-br from-orange-50 via-white to-yellow-50">
+          <div className="p-12 md:p-16 flex flex-col justify-center relative z-10 bg-white">
             {/* Header */}
             <div className="mb-8">
               <h2 className="text-2xl font-bold text-slate-900 mb-2">Sign In</h2>
@@ -133,7 +131,7 @@ export default function LoginPage() {
             </div>
 
             {/* Tabs */}
-            <div className="flex gap-2 mb-6 p-1 bg-orange-100 rounded-lg relative z-10">
+            <div className="flex gap-2 mb-6 p-1 bg-slate-100 rounded-lg relative z-10">
               <button
                 type="button"
                 onClick={() => {
@@ -142,7 +140,7 @@ export default function LoginPage() {
                 }}
                   className={`flex-1 rounded-lg px-4 py-2.5 text-sm font-semibold transition-all cursor-pointer relative z-10 ${
                     activeTab === "shoppers"
-                      ? "bg-white text-orange-600 shadow-sm"
+                      ? "bg-white text-indigo-600 shadow-sm"
                       : "text-slate-600 hover:text-slate-900"
                   }`}
                 style={{ pointerEvents: 'auto' }}
@@ -157,7 +155,7 @@ export default function LoginPage() {
                 }}
                   className={`flex-1 rounded-lg px-4 py-2.5 text-sm font-semibold transition-all cursor-pointer relative z-10 ${
                     activeTab === "brands"
-                      ? "bg-white text-orange-600 shadow-sm"
+                      ? "bg-white text-indigo-600 shadow-sm"
                       : "text-slate-600 hover:text-slate-900"
                   }`}
                 style={{ pointerEvents: 'auto' }}
@@ -184,7 +182,7 @@ export default function LoginPage() {
                     onChange={(e) => setEmail(e.target.value)}
                     required
                     placeholder="you@example.com"
-                    className="w-full rounded-xl border border-orange-200 bg-white pl-10 pr-4 py-3 text-sm focus:border-orange-500 focus:outline-none focus:ring-2 focus:ring-orange-100 transition"
+                    className="w-full rounded-xl border border-slate-200 bg-white pl-10 pr-4 py-3 text-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-100 transition"
                   />
                 </div>
               </div>
@@ -205,7 +203,7 @@ export default function LoginPage() {
                     onChange={(e) => setPassword(e.target.value)}
                     required
                     placeholder="••••••••"
-                    className="w-full rounded-xl border border-orange-200 bg-white pl-10 pr-10 py-3 text-sm focus:border-orange-500 focus:outline-none focus:ring-2 focus:ring-orange-100 transition"
+                    className="w-full rounded-xl border border-slate-200 bg-white pl-10 pr-10 py-3 text-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-100 transition"
                   />
                   <button
                     type="button"
@@ -228,13 +226,13 @@ export default function LoginPage() {
                     type="checkbox"
                     checked={rememberMe}
                     onChange={(e) => setRememberMe(e.target.checked)}
-                    className="w-4 h-4 rounded border-slate-300 text-orange-600 focus:ring-orange-500"
+                    className="w-4 h-4 rounded border-slate-300 text-indigo-600 focus:ring-indigo-500"
                   />
                   <span className="text-sm text-slate-600">Remember me</span>
                 </label>
                 <Link
                   href="/forgot-password"
-                  className="text-sm font-medium text-orange-600 hover:text-orange-700"
+                  className="text-sm font-medium text-indigo-600 hover:text-indigo-700"
                 >
                   Forgot password?
                 </Link>
@@ -248,7 +246,7 @@ export default function LoginPage() {
                   console.log("Login button clicked", { isLoading, email, activeTab });
                   // Form onSubmit will handle the submission
                 }}
-                className="w-full rounded-xl bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 px-4 py-3 text-sm font-semibold text-white shadow-lg shadow-orange-500/25 transition hover:shadow-xl hover:shadow-orange-500/30 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 relative z-10 cursor-pointer"
+                className="w-full rounded-xl bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 hover:opacity-90 hover:shadow-lg hover:shadow-indigo-500/25 px-4 py-3 text-sm font-semibold text-white shadow-lg shadow-indigo-500/25 transition focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 relative z-10 cursor-pointer"
                 style={{ pointerEvents: isLoading ? 'none' : 'auto' }}
               >
                 {isLoading ? (

@@ -89,17 +89,17 @@ const StarRatingGraphCard: React.FC = () => {
 
   return (
     <div 
-      className="relative p-6 rounded-xl bg-white/10 backdrop-blur-md shadow-lg border border-white/20 text-white w-full max-w-sm cursor-pointer transition-all duration-300 ease-in-out hover:bg-white/20 hover:border-white/40 hover:shadow-2xl hover:-translate-y-1 hover:scale-105"
+      className="relative p-6 rounded-xl bg-white shadow-lg border border-slate-200 text-slate-900 w-full max-w-md cursor-pointer transition-all duration-300 ease-in-out hover:bg-slate-50 hover:border-slate-300 hover:shadow-2xl hover:-translate-y-1 hover:scale-105"
       style={{ willChange: 'transform' }}
     >
       {/* Header */}
       <div className="flex items-center justify-between mb-4">
-        <h3 className="text-xl font-semibold flex items-center gap-2">
-          <FaArrowUp className="h-6 w-6 text-green-400" />
+        <h3 className="text-xl font-semibold flex items-center gap-2 text-slate-900">
+          <FaArrowUp className="h-6 w-6 text-emerald-500" />
           Review Performance
         </h3>
         <span 
-          className={`text-sm text-gray-300 transition-opacity duration-500 ${
+          className={`text-sm text-slate-500 transition-opacity duration-500 ${
             showLast30Days ? "opacity-100" : "opacity-0"
           }`}
         >
@@ -109,28 +109,28 @@ const StarRatingGraphCard: React.FC = () => {
 
       {/* Current Rating */}
       <div className="flex items-center mb-6">
-        <FaStar className="h-8 w-8 text-yellow-400 fill-yellow-400 mr-2" />
-        <span className="text-5xl font-bold text-green-400">
+        <FaStar className="h-10 w-10 text-yellow-400 fill-yellow-400 mr-2" />
+        <span className="text-5xl font-bold text-emerald-500">
           {currentRating.toFixed(1)}
         </span>
-        <span className="text-xl text-gray-300">/ 5.0</span>
+        <span className="text-xl text-slate-600 ml-2">/ 5.0</span>
       </div>
 
       {/* Graph Area (Simple SVG Mockup) */}
       <div className="w-full h-24 mb-4">
         <svg viewBox="0 0 300 100" className="w-full h-full">
           {/* Grid lines (subtle horizontal guides) */}
-          <line x1="0" y1="80" x2="300" y2="80" stroke="rgba(255,255,255,0.1)" strokeDasharray="3,3" />
-          <line x1="0" y1="60" x2="300" y2="60" stroke="rgba(255,255,255,0.1)" strokeDasharray="3,3" />
-          <line x1="0" y1="40" x2="300" y2="40" stroke="rgba(255,255,255,0.1)" strokeDasharray="3,3" />
-          <line x1="0" y1="20" x2="300" y2="20" stroke="rgba(255,255,255,0.1)" strokeDasharray="3,3" />
+          <line x1="0" y1="80" x2="300" y2="80" stroke="rgba(15, 23, 42, 0.1)" strokeDasharray="3,3" />
+          <line x1="0" y1="60" x2="300" y2="60" stroke="rgba(15, 23, 42, 0.1)" strokeDasharray="3,3" />
+          <line x1="0" y1="40" x2="300" y2="40" stroke="rgba(15, 23, 42, 0.1)" strokeDasharray="3,3" />
+          <line x1="0" y1="20" x2="300" y2="20" stroke="rgba(15, 23, 42, 0.1)" strokeDasharray="3,3" />
 
           {/* Rising graph line - smooth upward curve from bottom-left to top-right */}
           <path
             d="M 20 85 Q 100 70, 180 50 Q 240 30, 280 15"
             fill="none"
-            stroke="#10B981"
-            strokeWidth="3"
+            stroke="#10b981"
+            strokeWidth="4"
             strokeLinecap="round"
             strokeLinejoin="round"
             strokeDasharray="300"
@@ -144,10 +144,10 @@ const StarRatingGraphCard: React.FC = () => {
           <circle 
             cx="280" 
             cy="15" 
-            r="6" 
-            fill="#10B981" 
+            r="8" 
+            fill="#10b981" 
             stroke="white" 
-            strokeWidth="2"
+            strokeWidth="3"
             style={{
               opacity: shouldAnimate ? 1 : 0,
               transition: shouldAnimate ? "opacity 0.5s ease-in-out 2s" : "none",
@@ -157,14 +157,14 @@ const StarRatingGraphCard: React.FC = () => {
       </div>
 
       {/* Key Metrics */}
-      <div className="grid grid-cols-2 gap-4 text-sm mt-4">
+      <div className="grid grid-cols-2 gap-4 mt-4">
         <div>
-          <p className="text-gray-300">New Reviews</p>
-          <p className="font-bold text-lg text-white">+{newReviews}</p>
+          <p className="text-sm text-slate-500 mb-1">New Reviews</p>
+          <p className="font-bold text-xl text-slate-900">+{newReviews}</p>
         </div>
         <div>
-          <p className="text-gray-300">Rating Change</p>
-          <p className="font-bold text-lg text-green-400">
+          <p className="text-sm text-slate-500 mb-1">Rating Change</p>
+          <p className="font-bold text-xl text-emerald-500">
             +{ratingChange.toFixed(1)} (from 4.6)
           </p>
         </div>

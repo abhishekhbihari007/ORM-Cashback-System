@@ -91,39 +91,43 @@ export default function HowItWorksPage() {
   ];
 
   const colorClasses = {
-    orange: "bg-yellow-100 text-yellow-700 border-yellow-700",
-    green: "bg-yellow-100 text-yellow-700 border-yellow-700",
-    yellow: "bg-yellow-100 text-yellow-700 border-yellow-700",
-    red: "bg-yellow-100 text-yellow-700 border-yellow-700",
+    orange: "bg-indigo-100 text-indigo-700 border-indigo-300",
+    green: "bg-indigo-100 text-indigo-700 border-indigo-300",
+    yellow: "bg-indigo-100 text-indigo-700 border-indigo-300",
+    red: "bg-indigo-100 text-indigo-700 border-indigo-300",
   };
 
   const steps = activeTab === "brands" ? brandSteps : shopperSteps;
 
   return (
-    <div className="min-h-screen bg-slate-900 text-white">
+    <div className="min-h-screen bg-slate-50">
       {/* Hero Section */}
-      <section className="relative overflow-hidden border-b border-slate-800">
-        <div className="container-responsive py-20 md:py-28">
+      <section className="relative overflow-hidden border-b border-slate-200 bg-white">
+        {/* Soft Blurry Blobs */}
+        <div className="absolute top-0 left-1/4 w-96 h-96 bg-indigo-300 rounded-full blur-3xl opacity-30 pointer-events-none" />
+        <div className="absolute top-0 right-1/4 w-96 h-96 bg-blue-300 rounded-full blur-3xl opacity-30 pointer-events-none" />
+        <div className="absolute bottom-0 left-1/2 w-96 h-96 bg-purple-300 rounded-full blur-3xl opacity-30 pointer-events-none -translate-x-1/2" />
+        
+        <div className="container-responsive py-20 md:py-28 relative z-10">
           <div className="mx-auto max-w-4xl text-center">
-            <h1 className="text-5xl font-black leading-tight md:text-7xl">How It Works</h1>
-            <p className="mt-6 text-xl text-slate-300 md:text-2xl">
+            <h1 className="text-5xl font-black leading-tight text-slate-900 md:text-7xl">How It Works</h1>
+            <p className="mt-6 text-xl text-slate-600 md:text-2xl">
               Simple, transparent process. From setup to results in days, not months.
             </p>
           </div>
         </div>
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(249,115,22,0.15),_transparent_70%)]" />
       </section>
 
       {/* Tabs */}
-      <section className="border-b border-slate-800 bg-slate-950/50">
+      <section className="border-b border-slate-200 bg-white">
         <div className="container-responsive py-8">
-          <div className="mx-auto flex max-w-md gap-2 rounded-xl border border-slate-800 bg-slate-900/50 p-1 backdrop-blur-sm">
+          <div className="mx-auto flex max-w-md gap-2 rounded-xl border border-slate-200 bg-slate-50 p-1">
             <button
               onClick={() => setActiveTab("brands")}
               className={`flex-1 rounded-lg px-6 py-3 font-semibold transition ${
                 activeTab === "brands"
-                  ? "bg-gradient-to-r from-orange-500 to-red-600 text-white"
-                  : "text-slate-400 hover:text-white"
+                  ? "bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white shadow-sm"
+                  : "text-slate-600 hover:text-slate-900"
               }`}
             >
               For Brands
@@ -132,8 +136,8 @@ export default function HowItWorksPage() {
               onClick={() => setActiveTab("shoppers")}
               className={`flex-1 rounded-lg px-6 py-3 font-semibold transition ${
                 activeTab === "shoppers"
-                  ? "bg-gradient-to-r from-orange-500 to-red-600 text-white"
-                  : "text-slate-400 hover:text-white"
+                  ? "bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white shadow-sm"
+                  : "text-slate-600 hover:text-slate-900"
               }`}
             >
               For Shoppers
@@ -143,12 +147,12 @@ export default function HowItWorksPage() {
       </section>
 
       {/* Timeline */}
-      <section className="bg-amber-50/30 py-20">
+      <section className="bg-slate-50 py-20">
         <div className="container-responsive">
           <div className="mx-auto max-w-4xl">
             <div className="relative">
               {/* Vertical Line */}
-              <div className="absolute left-8 top-0 hidden h-full w-0.5 bg-gradient-to-b from-yellow-300 to-orange-300 md:block md:left-1/2 md:-translate-x-0.5" />
+              <div className="absolute left-8 top-0 hidden h-full w-0.5 bg-gradient-to-b from-indigo-300 via-purple-300 to-pink-300 md:block md:left-1/2 md:-translate-x-0.5" />
 
               {/* Steps */}
               <div className="space-y-16">
@@ -168,12 +172,12 @@ export default function HowItWorksPage() {
                           colorClasses[step.color as keyof typeof colorClasses]
                         } md:absolute md:left-1/2 md:-translate-x-1/2`}
                       >
-                        <Icon className="h-8 w-8 text-yellow-600" />
+                        <Icon className="h-8 w-8 text-indigo-600" />
                       </div>
 
                       {/* Content Card */}
                       <div
-                        className={`flex-1 rounded-2xl border border-yellow-200 bg-white/80 p-6 shadow-sm shadow-yellow-100 transition hover:border-yellow-400 hover:bg-yellow-50 md:w-[45%] md:p-8 ${
+                        className={`flex-1 rounded-2xl border border-slate-100 bg-white p-6 shadow-xl shadow-slate-200/60 transition hover:shadow-2xl md:w-[45%] md:p-8 ${
                           isEven ? "md:ml-auto md:mr-0" : "md:mr-auto md:ml-0"
                         }`}
                       >
@@ -195,25 +199,25 @@ export default function HowItWorksPage() {
       </section>
 
       {/* FAQ Section */}
-      <section className="border-t border-slate-800 bg-slate-950/50">
+      <section className="border-t border-slate-200 bg-white">
         <div className="container-responsive py-20">
           <div className="mx-auto max-w-3xl">
             <div className="mb-12 text-center">
-              <h2 className="text-4xl font-bold">Frequently Asked Questions</h2>
-              <p className="mt-4 text-xl text-slate-400">Everything you need to know</p>
+              <h2 className="text-4xl font-bold text-slate-900">Frequently Asked Questions</h2>
+              <p className="mt-4 text-xl text-slate-600">Everything you need to know</p>
             </div>
 
             <div className="space-y-4">
               {faqs.map((faq, index) => (
                 <div
                   key={index}
-                  className="overflow-hidden rounded-2xl border border-slate-800 bg-gradient-to-br from-slate-800/50 to-slate-900/50 backdrop-blur-sm transition"
+                  className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-xl shadow-slate-200/60 transition hover:shadow-2xl"
                 >
                   <button
                     onClick={() => toggleFaq(index)}
                     className="flex w-full items-center justify-between p-6 text-left"
                   >
-                    <h3 className="text-xl font-semibold">{faq.question}</h3>
+                    <h3 className="text-xl font-semibold text-slate-900">{faq.question}</h3>
                     <FaChevronDown
                       className={`h-5 w-5 text-slate-400 transition-transform ${
                         openFaq === index ? "rotate-180" : ""
@@ -225,7 +229,7 @@ export default function HowItWorksPage() {
                       openFaq === index ? "max-h-96" : "max-h-0"
                     }`}
                   >
-                    <div className="border-t border-slate-800 p-6 text-slate-300">{faq.answer}</div>
+                    <div className="border-t border-slate-200 p-6 text-slate-600">{faq.answer}</div>
                   </div>
                 </div>
               ))}

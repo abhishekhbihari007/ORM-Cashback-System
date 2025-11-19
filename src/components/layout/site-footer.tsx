@@ -54,17 +54,17 @@ export function SiteFooter() {
             </h4>
             <ul className="space-y-4 text-base">
               <li>
-                <Link href="#about" className="text-slate-400 hover:text-indigo-400 transition">
+                <Link href="#about" className="text-slate-400 hover:text-indigo-300 transition">
                   About
                 </Link>
               </li>
               <li>
-                <Link href="#partners" className="text-slate-400 hover:text-indigo-400 transition">
+                <Link href="#partners" className="text-slate-400 hover:text-indigo-300 transition">
                   Partners
                 </Link>
               </li>
               <li>
-                <Link href="#contact" className="text-slate-400 hover:text-indigo-400 transition">
+                <Link href="#contact" className="text-slate-400 hover:text-indigo-300 transition">
                   Contact
                 </Link>
               </li>
@@ -78,17 +78,17 @@ export function SiteFooter() {
             </h4>
             <ul className="space-y-4 text-base">
               <li>
-                <Link href="#" className="text-slate-400 hover:text-indigo-400 transition">
+                <Link href="#" className="text-slate-400 hover:text-indigo-300 transition">
                   Real-time Intelligence
                 </Link>
               </li>
               <li>
-                <Link href="#" className="text-slate-400 hover:text-indigo-400 transition">
+                <Link href="#" className="text-slate-400 hover:text-indigo-300 transition">
                   Verified Reviews
                 </Link>
               </li>
               <li>
-                <Link href="#" className="text-slate-400 hover:text-indigo-400 transition">
+                <Link href="#" className="text-slate-400 hover:text-indigo-300 transition">
                   Sentiment Analysis
                 </Link>
               </li>
@@ -102,17 +102,17 @@ export function SiteFooter() {
             </h4>
             <ul className="space-y-4 text-base">
               <li>
-                <Link href="/privacy" className="text-slate-400 hover:text-indigo-400 transition">
+                <Link href="/privacy" className="text-slate-400 hover:text-indigo-300 transition">
                   Privacy Policy
                 </Link>
               </li>
               <li>
-                <Link href="/terms" className="text-slate-400 hover:text-indigo-400 transition">
+                <Link href="/terms" className="text-slate-400 hover:text-indigo-300 transition">
                   Terms of Service
                 </Link>
               </li>
               <li>
-                <Link href="/gdpr" className="text-slate-400 hover:text-indigo-400 transition">
+                <Link href="/gdpr" className="text-slate-400 hover:text-indigo-300 transition">
                   GDPR Compliance
                 </Link>
               </li>

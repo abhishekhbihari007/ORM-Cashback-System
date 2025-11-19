@@ -30,25 +30,31 @@ const verticals = [
 
 export function ImpactSection() {
   return (
-    <section className="bg-orange-50 py-20" id="impact">
-      <div className="container-responsive space-y-12">
+    <section className="relative min-h-[600px] bg-cover bg-center bg-no-repeat py-20 overflow-hidden" style={{ backgroundImage: 'url(https://images.unsplash.com/photo-1605810230434-7631ac76ec81?q=80&w=2070&auto=format&fit=crop)' }} id="impact">
+      {/* Dark overlay for text readability */}
+      <div className="absolute inset-0 bg-black/60 pointer-events-none" />
+      
+      <div className="container-responsive space-y-12 relative z-10">
         <SectionHeading
           eyebrow="Impacting the transformation of digitisation"
           title="Unified reputation playbooks across every marketplace"
           description="Command storefront visibility with verified reviews, sentiment alerts, and SKU-level heatmaps powered by cashback shoppers."
+          theme="light"
         />
 
         <div className="grid gap-6 md:grid-cols-3">
           {impactStats.map((stat) => (
-            <StatCard key={stat.label} {...stat} />
+            <div key={stat.label} className="backdrop-blur-sm">
+              <StatCard {...stat} />
+            </div>
           ))}
         </div>
 
         <div className="grid gap-6 md:grid-cols-2">
           {verticals.map((vertical) => (
-            <div key={vertical.title} className="glass-panel space-y-2 rounded-3xl">
+            <div key={vertical.title} className="space-y-2 rounded-3xl bg-white/95 backdrop-blur-sm border border-slate-200 shadow-lg p-6">
               <p className="text-lg font-semibold text-slate-900">{vertical.title}</p>
-              <p className="text-sm text-slate-500">{vertical.detail}</p>
+              <p className="text-sm text-slate-600">{vertical.detail}</p>
             </div>
           ))}
         </div>
