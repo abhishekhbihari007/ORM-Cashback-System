@@ -11,7 +11,11 @@ const numbers = [
 
 export function NumbersSection() {
   return (
-    <section className="relative min-h-[600px] bg-cover bg-center bg-no-repeat py-20 flex items-center overflow-hidden" style={{ backgroundImage: 'url(https://images.unsplash.com/photo-1557683316-973673baf926?q=80&w=2129&auto=format&fit=crop)' }} id="numbers">
+    <section
+      className="relative min-h-[600px] bg-cover bg-center bg-no-repeat py-20 flex items-center overflow-hidden"
+      style={{ backgroundImage: "url('/image%20bg.jpg')" }}
+      id="numbers"
+    >
       {/* Dark overlay for text readability */}
       <div className="absolute inset-0 bg-gradient-to-br from-black/75 via-slate-900/65 to-black/75 pointer-events-none" />
       

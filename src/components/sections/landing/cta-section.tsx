@@ -1,6 +1,6 @@
 export function CtaSection() {
   return (
-    <section className="relative min-h-[600px] bg-cover bg-center bg-no-repeat py-20 flex items-center overflow-hidden" style={{ backgroundImage: 'url(https://images.unsplash.com/photo-1556761175-5973dc0f32e7?q=80&w=2032&auto=format&fit=crop)' }}>
+    <section className="relative min-h-[600px] bg-cover bg-center bg-no-repeat py-20 flex items-center overflow-hidden" style={{ backgroundImage: "url('/68f7851e-a0bd-4bec-b1f0-b9e75940b806.avif')" }}>
       {/* Dark overlay with gradient */}
       <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/60 to-black/70 pointer-events-none" />
       
@@ -15,9 +15,9 @@ export function CtaSection() {
       
       {/* Floating CTA Card */}
       <div className="container-responsive relative z-10">
-        <div className="group mx-auto max-w-5xl rounded-3xl border border-white/30 bg-gradient-to-br from-orange-500/90 via-orange-600/90 to-red-600/90 backdrop-blur-xl p-12 md:p-16 text-center shadow-2xl transition-all duration-500 hover:scale-[1.02] hover:shadow-orange-500/40">
+        <div className="group mx-auto max-w-5xl rounded-3xl border border-white/40 bg-white/10 backdrop-blur-2xl p-12 md:p-16 text-center shadow-2xl transition-all duration-500 hover:scale-[1.02] hover:shadow-white/30">
           {/* Inner glow */}
-          <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-white/10 via-transparent to-transparent opacity-50" />
+          <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-white/20 via-white/5 to-white/0 opacity-50" />
           
           <div className="relative z-10">
             <h3 className="text-5xl md:text-6xl lg:text-7xl font-black text-white leading-tight mb-6">

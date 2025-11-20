@@ -9,8 +9,8 @@ import { LogoIcon } from "@/components/ui/logo-icon";
 export function SiteFooter() {
   const pathname = usePathname();
 
-  // Hide footer on auth pages
-  if (pathname === "/login" || pathname === "/signup") {
+  // Hide footer on auth pages and feed page (uses custom layout)
+  if (pathname === "/login" || pathname === "/signup" || pathname === "/feed" || pathname.startsWith("/feed/")) {
     return null;
   }
 
