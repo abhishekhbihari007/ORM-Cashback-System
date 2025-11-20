@@ -18,7 +18,7 @@ export function HeroSection() {
         backgroundSize: '40px 40px'
       }} />
       
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 grid gap-6 sm:gap-8 lg:gap-12 grid-cols-1 lg:grid-cols-12 lg:items-center relative z-10 w-full">
+      <div className="max-w-7xl mx-auto px-6 sm:px-8 md:px-10 lg:px-12 grid gap-6 sm:gap-8 lg:gap-12 grid-cols-1 lg:grid-cols-12 lg:items-center relative z-10 w-full">
         <div className="space-y-3 sm:space-y-4 lg:col-span-7 relative z-10 text-left">
           <p className="section-title text-slate-500 text-xs sm:text-sm md:text-base mb-2">ORM - Global Marketplace - Cashback Ecosystem</p>
           <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-extrabold leading-[1.1] text-slate-900 max-w-4xl text-left">

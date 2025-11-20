@@ -29,7 +29,6 @@ export function SiteHeader() {
       // Not logged in - public navigation
       return [
         { label: "Home", href: "/" },
-        { label: "Browse Deals", href: "/feed" },
         { label: "For Sellers", href: "/for-sellers" },
         { label: "How It Works", href: "/how-it-works" },
       ];
@@ -38,7 +37,7 @@ export function SiteHeader() {
     if (user.role === "user") {
       // User logged in
       return [
-        { label: "Deals Feed", href: "/feed" },
+        { label: "Browse Deals", href: "/feed" },
         { label: "My Wallet", href: "/wallet" },
         { label: "Upload Proof", href: "/upload" },
       ];
@@ -85,7 +84,7 @@ export function SiteHeader() {
       <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 flex items-center justify-between relative py-2">
         {/* Hamburger Menu - Show on all pages for smaller screens, always on home page */}
         <button 
-          className={`absolute left-2 sm:left-4 md:left-6 lg:left-8 top-1/2 -translate-y-1/2 flex flex-col items-start justify-center gap-1 w-6 h-6 sm:w-7 sm:h-7 transition-all duration-300 hover:scale-110 z-[60] ${
+          className={`absolute left-0 sm:left-1.5 md:left-3 lg:left-6 top-1/2 -translate-y-1/2 -translate-x-full flex flex-col items-start justify-center gap-1 w-6 h-6 sm:w-7 sm:h-7 transition-all duration-300 hover:scale-110 z-[60] ${
             isHomePage ? '' : 'lg:hidden'
           }`}
           onClick={toggleMobileNav}
@@ -102,7 +101,7 @@ export function SiteHeader() {
         {/* Logo - Center/Left */}
         <Link 
           href="/" 
-          className={`flex items-center gap-1.5 sm:gap-2 ${isHomePage ? 'ml-12 sm:ml-14 md:ml-16 lg:ml-20' : 'ml-10 sm:ml-12 lg:ml-0'}`}
+          className={`flex items-center gap-1.5 sm:gap-2 ${isHomePage ? 'ml-6 sm:ml-8 md:ml-10 lg:ml-12' : 'ml-4 sm:ml-6 lg:ml-0'}`}
           onClick={() => {
             closeMobileNav();
             triggerGraphAnimation();

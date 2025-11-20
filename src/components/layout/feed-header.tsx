@@ -19,7 +19,7 @@ export function FeedHeader() {
 
   const navLinks = [
     { label: "Home", href: "/" },
-    { label: "Browse Deals", href: "/feed" },
+    ...(user?.role === "user" ? [{ label: "Browse Deals", href: "/feed" }] : []),
     { label: "For Sellers", href: "/for-sellers" },
     { label: "How It Works", href: "/how-it-works" },
   ];
@@ -29,7 +29,7 @@ export function FeedHeader() {
       <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 flex items-center justify-between relative py-2">
         {/* Hamburger - mobile */}
         <button
-          className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 flex flex-col items-start justify-center gap-1 w-6 h-6 sm:w-7 sm:h-7 transition-all duration-300 hover:scale-110 z-50 lg:hidden"
+          className="absolute left-0 sm:left-1.5 top-1/2 -translate-y-1/2 -translate-x-full flex flex-col items-start justify-center gap-1 w-6 h-6 sm:w-7 sm:h-7 transition-all duration-300 hover:scale-110 z-50 lg:hidden"
           onClick={toggleMobileNav}
           aria-label="Toggle menu"
         >
@@ -38,7 +38,7 @@ export function FeedHeader() {
         </button>
 
         {/* Left Side - Logo */}
-        <Link href="/" className="flex items-center gap-1.5 sm:gap-2 ml-10 sm:ml-12 lg:ml-0" onClick={() => {
+        <Link href="/" className="flex items-center gap-1.5 sm:gap-2 ml-4 sm:ml-6 lg:ml-0" onClick={() => {
           triggerGraphAnimation();
         }}>
           <LogoIcon className="h-10 w-10 sm:h-12 sm:w-12 md:h-14 md:w-14 lg:h-16 lg:w-16" />

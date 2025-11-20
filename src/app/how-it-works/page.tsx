@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useAuth } from "@/contexts/AuthContext";
 import {
   FaChartBar,
   FaCircleCheck,
@@ -11,8 +12,16 @@ import {
 } from "react-icons/fa6";
 
 export default function HowItWorksPage() {
+  const { user } = useAuth();
+  const isShopper = user?.role === "user";
   const [activeTab, setActiveTab] = useState<"brands" | "shoppers">("brands");
   const [openFaq, setOpenFaq] = useState<number | null>(null);
+
+  useEffect(() => {
+    if (!isShopper && activeTab === "shoppers") {
+      setActiveTab("brands");
+    }
+  }, [isShopper, activeTab]);
 
   const toggleFaq = (index: number) => {
     setOpenFaq(openFaq === index ? null : index);
@@ -132,16 +141,18 @@ export default function HowItWorksPage() {
             >
               For Brands
             </button>
-            <button
-              onClick={() => setActiveTab("shoppers")}
-              className={`flex-1 rounded-lg px-6 py-3 font-semibold transition ${
-                activeTab === "shoppers"
-                  ? "bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white shadow-sm"
-                  : "text-slate-600 hover:text-slate-900"
-              }`}
-            >
-              For Shoppers
-            </button>
+            {isShopper && (
+              <button
+                onClick={() => setActiveTab("shoppers")}
+                className={`flex-1 rounded-lg px-6 py-3 font-semibold transition ${
+                  activeTab === "shoppers"
+                    ? "bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white shadow-sm"
+                    : "text-slate-600 hover:text-slate-900"
+                }`}
+              >
+                For Shoppers
+              </button>
+            )}
           </div>
         </div>
       </section>
