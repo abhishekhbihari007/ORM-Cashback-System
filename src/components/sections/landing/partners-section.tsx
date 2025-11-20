@@ -71,18 +71,14 @@ function BrandLogo({ brand }: { brand: typeof brands[0] }) {
 export function PartnersSection() {
   return (
     <section 
-      className="relative overflow-hidden py-20 sm:py-24 md:py-28 min-h-[450px] sm:min-h-[550px]" 
+      className="relative overflow-hidden py-20 sm:py-24 md:py-28 min-h-[450px] sm:min-h-[550px] bg-white" 
       id="partners"
-      style={{
-        backgroundImage: `url("/45d79077-16ac-4333-9283-68f61d89910e%20(1).jpg")`,
-        backgroundSize: "cover",
-        backgroundPosition: "center"
-      }}
+      style={{ backgroundImage: "none" }}
     >
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6">
         {/* Header */}
         <div className="flex justify-center mb-10 sm:mb-12 md:mb-14">
-          <p className="text-base sm:text-lg md:text-xl font-semibold tracking-[0.7em] uppercase text-white drop-shadow-[0_4px_12px_rgba(0,0,0,0.35)] text-center px-8 sm:px-10 md:px-12">
+          <p className="text-base sm:text-lg md:text-xl font-semibold tracking-[0.7em] uppercase text-slate-800 text-center px-8 sm:px-10 md:px-12">
             Trusted by omnichannel D2C brands
           </p>
         </div>
