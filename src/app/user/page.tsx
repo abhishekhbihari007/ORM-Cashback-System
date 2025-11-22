@@ -19,7 +19,7 @@ export default async function UserPage() {
             <p className="mt-2 text-slate-600">Manage your purchases, reviews, and cashback</p>
           </div>
           <Link
-            href="/user/deals"
+            href="/feed"
             className="rounded-full bg-gradient-to-r from-blue-600 to-indigo-600 px-6 py-3 font-semibold text-white shadow-lg shadow-blue-200 transition hover:from-blue-700 hover:to-indigo-700"
           >
             Browse Deals →

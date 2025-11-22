@@ -54,8 +54,8 @@ export function NumbersSection() {
               
               <div className="relative z-10">
                 <p className="text-xs font-bold uppercase tracking-[0.5em] text-blue-200/80 mb-4">
-                  {item.label}
-                </p>
+                {item.label}
+              </p>
                 <p className="text-5xl md:text-6xl font-black bg-gradient-to-r from-blue-300 via-white to-blue-300 bg-clip-text text-transparent leading-none">
                   {item.value}
                 </p>

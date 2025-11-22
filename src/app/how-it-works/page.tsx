@@ -142,16 +142,16 @@ export default function HowItWorksPage() {
               For Brands
             </button>
             {isShopper && (
-              <button
-                onClick={() => setActiveTab("shoppers")}
-                className={`flex-1 rounded-lg px-6 py-3 font-semibold transition ${
-                  activeTab === "shoppers"
-                    ? "bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white shadow-sm"
-                    : "text-slate-600 hover:text-slate-900"
-                }`}
-              >
-                For Shoppers
-              </button>
+            <button
+              onClick={() => setActiveTab("shoppers")}
+              className={`flex-1 rounded-lg px-6 py-3 font-semibold transition ${
+                activeTab === "shoppers"
+                  ? "bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white shadow-sm"
+                  : "text-slate-600 hover:text-slate-900"
+              }`}
+            >
+              For Shoppers
+            </button>
             )}
           </div>
         </div>

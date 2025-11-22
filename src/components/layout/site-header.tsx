@@ -76,7 +76,7 @@ export function SiteHeader() {
                       pathname === "/how-it-works" ||
                       pathname.startsWith("/dashboard") ||
                       pathname.startsWith("/admin");
-  
+
   return (
     <header className={`${isHomePage ? 'absolute' : 'sticky'} top-0 left-0 right-0 z-40 w-full ${
       isHomePage ? 'bg-transparent' : isLightPage ? 'bg-white border-b border-slate-200' : 'bg-slate-900/95 backdrop-blur-sm'
@@ -118,41 +118,41 @@ export function SiteHeader() {
         {/* Navigation Links - Show directly in navbar on non-home pages (hidden on mobile, show on tablet+) */}
         {!isHomePage && (
           <nav className="hidden lg:flex items-center gap-3 md:gap-4 lg:gap-6 ml-4 md:ml-8">
-            {navLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                prefetch={false}
-                onClick={() => {
-                  if (link.label === "Home" || link.href === "/") {
-                    triggerGraphAnimation();
-                  }
-                }}
+          {navLinks.map((link) => (
+            <Link
+              key={link.href}
+              href={link.href}
+              prefetch={false}
+              onClick={() => {
+                if (link.label === "Home" || link.href === "/") {
+                  triggerGraphAnimation();
+                }
+              }}
                 className={`text-xs sm:text-sm md:text-base font-semibold transition ${
-                  pathname === link.href
+                pathname === link.href
                     ? isLightPage ? "text-slate-900" : "text-white"
                     : isLightPage ? "text-slate-600 hover:text-slate-900" : "text-white/80 hover:text-white"
-                }`}
-              >
-                {link.label}
-              </Link>
-            ))}
-          </nav>
+              }`}
+            >
+              {link.label}
+            </Link>
+          ))}
+        </nav>
         )}
 
         {/* Right Side - Only show user info if logged in */}
         {user && (
           <div className="flex items-center gap-2 sm:gap-4">
-            {user.role === "user" && (
+              {user.role === "user" && (
               <div className="flex items-center gap-2 sm:gap-3">
                 <div className="flex h-8 w-8 sm:h-10 sm:w-10 items-center justify-center rounded-full bg-indigo-100 text-indigo-600">
                   <FaUser size={16} className="sm:w-[18px] sm:h-[18px]" />
-                </div>
+                  </div>
                 <span className={`hidden sm:inline text-sm sm:text-base font-semibold ${isHomePage || isLightPage ? 'text-slate-900' : 'text-white'}`}>{user.name}</span>
-              </div>
-            )}
-            <button
-              onClick={logout}
+                </div>
+              )}
+              <button
+                onClick={logout}
               className={`rounded-full border px-3 py-1.5 sm:px-6 sm:py-3 text-xs sm:text-sm md:text-base font-semibold transition ${
                 isHomePage || isLightPage
                   ? 'border-slate-300 text-slate-700 hover:bg-slate-50' 
@@ -161,10 +161,10 @@ export function SiteHeader() {
             >
               <span className="hidden sm:inline">Logout</span>
               <span className="sm:hidden">Out</span>
-            </button>
-          </div>
-        )}
-      </div>
+              </button>
+            </div>
+          )}
+        </div>
 
       {/* Mobile Menu - Slides in from left covering full screen - Show on all pages for smaller screens */}
       <div

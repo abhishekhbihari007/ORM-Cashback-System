@@ -79,9 +79,9 @@ export function PartnersSection() {
         {/* Header */}
         <div className="flex justify-center mb-10 sm:mb-12 md:mb-14">
           <p className="text-base sm:text-lg md:text-xl font-semibold tracking-[0.7em] uppercase text-slate-800 text-center px-8 sm:px-10 md:px-12">
-            Trusted by omnichannel D2C brands
-          </p>
-        </div>
+          Trusted by omnichannel D2C brands
+        </p>
+            </div>
         
         {/* Logos Grid - Clean and minimal */}
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-12 sm:gap-16 md:gap-20 lg:gap-24 items-center justify-items-center">

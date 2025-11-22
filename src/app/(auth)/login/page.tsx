@@ -28,28 +28,20 @@ export default function LoginPage() {
     try {
       setIsLoading(true);
 
-      // Validate email and password
-      if (!email || !password) {
-        alert("Please enter both email and password");
-        setIsLoading(false);
-        return;
-      }
-
-      // Secret admin logic - check email before processing
-      // Works regardless of which tab is active
-      if (email === "admin@orm-ecosystem.com" || email.endsWith("@orm-ecosystem-admin.com")) {
-        login("admin");
-        setIsLoading(false);
-        router.push("/admin/dashboard");
-        return;
-      }
-
+      // TODO: TEMPORARY - Replace with real authentication API call
+      // For now, allowing direct login without credentials for development/testing
+      // When real auth is implemented, validate email/password here and call API
+      
       // Simulate API call delay
-      await new Promise((resolve) => setTimeout(resolve, 800));
+      await new Promise((resolve) => setTimeout(resolve, 500));
+
+      // TODO: Replace this with actual authentication logic
+      // Example: const response = await api.login(email, password, activeTab);
+      // if (response.success) { login(response.role); }
 
       if (activeTab === "shoppers") {
         login("user");
-        // Auth context will handle redirect to /feed
+        // Auth context will handle redirect to /user
       } else {
         login("brand");
         // Auth context will handle redirect to /dashboard
@@ -180,7 +172,6 @@ export default function LoginPage() {
                     type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    required
                     placeholder="you@example.com"
                     className="w-full rounded-xl border border-slate-200 bg-white pl-10 pr-4 py-3 text-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-100 transition"
                   />
@@ -201,7 +192,6 @@ export default function LoginPage() {
                     type={showPassword ? "text" : "password"}
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    required
                     placeholder="••••••••"
                     className="w-full rounded-xl border border-slate-200 bg-white pl-10 pr-10 py-3 text-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-100 transition"
                   />
@@ -243,7 +233,7 @@ export default function LoginPage() {
                 type="submit"
                 disabled={isLoading}
                 onClick={(e) => {
-                  console.log("Login button clicked", { isLoading, email, activeTab });
+                  console.log("Login button clicked", { isLoading, activeTab });
                   // Form onSubmit will handle the submission
                 }}
                 className="w-full rounded-xl bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 hover:opacity-90 hover:shadow-lg hover:shadow-indigo-500/25 px-4 py-3 text-sm font-semibold text-white shadow-lg shadow-indigo-500/25 transition focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 relative z-10 cursor-pointer"
