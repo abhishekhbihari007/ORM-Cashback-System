@@ -5,8 +5,6 @@ import {
   FaChartBar,
   FaChevronDown,
   FaCartShopping,
-  FaStar,
-  FaUserCheck,
   FaShield,
   FaRocket,
   FaCircleCheck,

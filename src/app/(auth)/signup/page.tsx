@@ -65,7 +65,7 @@ export default function SignUpPage() {
       } else {
         login("brand");
       }
-    } catch (error) {
+    } catch {
       alert("An error occurred. Please try again.");
     } finally {
       setIsLoading(false);

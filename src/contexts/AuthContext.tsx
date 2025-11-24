@@ -104,8 +104,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   // Load user from localStorage on mount and sync with cookie
+  // This is necessary for persistence - disabling eslint rule
   useEffect(() => {
-    if (typeof window !== "undefined") {
+    if (typeof window !== "undefined" && !user) {
       const stored = localStorage.getItem("auth_user");
       if (stored) {
         try {
@@ -113,11 +114,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           setUser(userData);
           // Sync with cookie for middleware
           document.cookie = `auth_user=${stored}; path=/; max-age=86400`;
-        } catch (e) {
-          // Invalid stored data
+        } catch {
+          // Invalid stored data - clear it
+          localStorage.removeItem("auth_user");
         }
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

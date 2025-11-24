@@ -1,5 +1,3 @@
-import { SectionHeading } from "@/components/ui/section-heading";
-
 const numbers = [
   { label: "Experience", value: "12+ yrs" },
   { label: "Team Size", value: "80+" },

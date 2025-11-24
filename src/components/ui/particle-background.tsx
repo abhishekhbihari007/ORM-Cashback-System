@@ -4,8 +4,11 @@ import { useCallback } from "react";
 import Particles from "react-tsparticles";
 import { loadSlim } from "tsparticles-slim";
 
+// Type for the engine parameter
+type Engine = Parameters<typeof loadSlim>[0];
+
 export function ParticleBackground() {
-  const particlesInit = useCallback(async (engine: any) => {
+  const particlesInit = useCallback(async (engine: Engine) => {
     await loadSlim(engine);
   }, []);
 

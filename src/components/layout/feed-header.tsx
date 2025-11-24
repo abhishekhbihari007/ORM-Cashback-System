@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { useAuth } from "@/contexts/AuthContext";
 import { useAnimation } from "@/contexts/AnimationContext";
 import { LogoIcon } from "@/components/ui/logo-icon";
@@ -12,7 +12,6 @@ export function FeedHeader() {
   const { user, logout } = useAuth();
   const { triggerGraphAnimation } = useAnimation();
   const pathname = usePathname();
-  const router = useRouter();
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const [accountDropdownOpen, setAccountDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);

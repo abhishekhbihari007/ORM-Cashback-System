@@ -11,7 +11,6 @@ const AnimationContext = createContext<AnimationContextType | undefined>(undefin
 
 export function AnimationProvider({ children }: { children: ReactNode }) {
   const [shouldAnimate, setShouldAnimate] = useState(false);
-  const [hasAnimated, setHasAnimated] = useState(false);
 
   const triggerGraphAnimation = () => {
     // Only allow animation if it hasn't been triggered yet, or reset for new trigger
@@ -19,7 +18,6 @@ export function AnimationProvider({ children }: { children: ReactNode }) {
     // Small delay to ensure state reset before starting new animation
     setTimeout(() => {
       setShouldAnimate(true);
-      setHasAnimated(true);
     }, 100);
   };
 

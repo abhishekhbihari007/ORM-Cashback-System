@@ -10,21 +10,31 @@ export default function ProfilePage() {
   const { user, logout, updateUser } = useAuth();
   const router = useRouter();
   const [isSaving, setIsSaving] = useState(false);
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    phone: "",
-  });
+  const [formData, setFormData] = useState(() => ({
+    name: user?.name || "",
+    email: user?.email || "",
+    phone: "", // Phone not in AuthUser, so empty by default
+  }));
 
+  // Sync form data when user changes - necessary for profile updates
   useEffect(() => {
     if (user) {
-      setFormData({
-        name: user.name || "",
-        email: user.email || "",
-        phone: "", // Phone not in AuthUser, so empty by default
+      const newName = user.name || "";
+      const newEmail = user.email || "";
+      setFormData((prev) => {
+        // Only update if values actually changed
+        if (prev.name === newName && prev.email === newEmail) {
+          return prev;
+        }
+        return {
+          name: newName,
+          email: newEmail,
+          phone: prev.phone, // Preserve phone if user doesn't have it
+        };
       });
     }
-  }, [user]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user?.id, user?.name, user?.email]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -56,7 +66,7 @@ export default function ProfilePage() {
 
       alert("Profile updated successfully!");
       setIsSaving(false);
-    } catch (error) {
+    } catch {
       alert("Failed to save profile. Please try again.");
       setIsSaving(false);
     }

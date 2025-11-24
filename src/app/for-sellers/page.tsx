@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import { FaCircleCheck, FaComments, FaGlobe, FaShield, FaStar } from "react-icons/fa6";
 
 export default function ForSellersPage() {
@@ -254,9 +255,11 @@ export default function ForSellersPage() {
         
         {/* Arrow Bottom Decoration */}
         <div className="absolute bottom-0 left-0 right-0 z-20 pointer-events-none">
-          <img 
+          <Image 
             src="/arrow-bottom1.png" 
             alt="" 
+            width={1200}
+            height={600}
             className="w-full h-auto object-cover"
             style={{ maxHeight: '250px' }}
           />

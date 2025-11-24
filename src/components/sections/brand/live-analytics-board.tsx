@@ -9,7 +9,6 @@ type Props = {
 
 export function LiveAnalyticsBoard({ campaigns }: Props) {
   const activeCampaigns = campaigns.filter((c) => c.status === "active");
-  const totalReviewsReceived = campaigns.reduce((sum, c) => sum + c.reviewsReceived, 0);
   const totalToday = campaigns.reduce((sum, c) => {
     // Simulate today's reviews (in real app, this would come from API)
     return sum + Math.floor(c.reviewsReceived * 0.1);

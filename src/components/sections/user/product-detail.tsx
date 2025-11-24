@@ -50,7 +50,7 @@ export function ProductDetail({ deal }: Props) {
                 </span>
               </div>
               <p className="text-sm text-slate-500">
-                You'll get 100% of your money back after review approval!
+                You&apos;ll get 100% of your money back after review approval!
               </p>
             </div>
           </div>

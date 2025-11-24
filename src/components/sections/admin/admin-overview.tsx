@@ -6,7 +6,9 @@ type Props = {
   alerts: ComplianceAlert[];
 };
 
-export function AdminOverview({ activities, alerts }: Props) {
+// Props are passed but not used in this component (for future use)
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export function AdminOverview(_props: Props) {
   // Calculate stats (in real app, these would come from API)
   const totalRevenue = 125000; // Total revenue in currency
   const pendingApprovals = 8; // Pending reviews to approve

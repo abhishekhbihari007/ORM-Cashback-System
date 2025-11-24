@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
 
 type Step = 1 | 2 | 3;
 
@@ -166,7 +165,7 @@ export function CreateCampaignWizard() {
             <div>
               <h2 className="text-2xl font-bold text-slate-900">Step 3: Budget</h2>
               <p className="mt-2 text-slate-600">
-                Set the cost per review. This is the amount you'll pay for each approved review.
+                Set the cost per review. This is the amount you&apos;ll pay for each approved review.
               </p>
             </div>
             <div>

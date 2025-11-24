@@ -11,9 +11,10 @@ import { ParticleBackground } from "@/components/ui/particle-background";
 function LoginForm() {
   // Enterprise feature hidden for now - will be enabled after launch
   const searchParams = useSearchParams();
-  const tabParam = searchParams.get("tab");
-  const defaultTab = tabParam === "brands" ? "brands" : "shoppers";
-  const [activeTab, setActiveTab] = useState<"shoppers" | "brands">(defaultTab);
+  const [activeTab, setActiveTab] = useState<"shoppers" | "brands">(() => {
+    const tab = searchParams.get("tab");
+    return tab === "brands" ? "brands" : "shoppers";
+  });
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -24,11 +25,11 @@ function LoginForm() {
   // Update active tab when query parameter changes
   useEffect(() => {
     const tab = searchParams.get("tab");
-    if (tab === "brands") {
-      setActiveTab("brands");
-    } else if (tab === "shoppers") {
-      setActiveTab("shoppers");
+    const newTab = tab === "brands" ? "brands" : "shoppers";
+    if (newTab !== activeTab) {
+      setActiveTab(newTab);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchParams]);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -59,7 +60,7 @@ function LoginForm() {
       }
 
       setIsLoading(false);
-    } catch (error) {
+    } catch {
       alert("An error occurred. Please try again.");
       setIsLoading(false);
     }
@@ -279,7 +280,7 @@ function LoginForm() {
             {/* Footer */}
             <div className="mt-6 text-center">
               <p className="text-sm text-slate-600">
-                Don't have an account?{" "}
+                Don&apos;t have an account?{" "}
                 <Link href="/signup" className="font-semibold text-orange-600 hover:text-orange-700">
                   Sign up here
                 </Link>

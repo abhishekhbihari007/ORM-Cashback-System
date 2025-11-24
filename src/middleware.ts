@@ -26,7 +26,7 @@ export function middleware(request: NextRequest) {
   if (authCookie) {
     try {
       user = JSON.parse(authCookie.value);
-    } catch (e) {
+    } catch {
       // Invalid cookie
     }
   }

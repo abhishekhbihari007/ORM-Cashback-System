@@ -11,7 +11,6 @@ import {
   FaUsers,
   FaFileCircleCheck,
   FaChartBar,
-  FaGear,
   FaRightFromBracket,
   FaWallet,
   FaCirclePlus,

@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import Link from "next/link";
 import { FaCircleCheck, FaClock, FaBagShopping } from "react-icons/fa6";
 
 interface TrackedPurchase {
@@ -13,15 +14,20 @@ interface TrackedPurchase {
 }
 
 export default function TrackPurchasesPage() {
-  const [trackedPurchases, setTrackedPurchases] = useState<TrackedPurchase[]>([]);
-
-  useEffect(() => {
-    // Load tracked purchases from localStorage
-    const stored = localStorage.getItem("trackedPurchases");
-    if (stored) {
-      setTrackedPurchases(JSON.parse(stored));
+  const [trackedPurchases] = useState<TrackedPurchase[]>(() => {
+    // Lazy initialization - load from localStorage only once
+    if (typeof window !== "undefined") {
+      const stored = localStorage.getItem("trackedPurchases");
+      if (stored) {
+        try {
+          return JSON.parse(stored);
+        } catch {
+          return [];
+        }
+      }
     }
-  }, []);
+    return [];
+  });
 
   const getStatusBadge = (status?: string) => {
     switch (status) {
@@ -64,12 +70,12 @@ export default function TrackPurchasesPage() {
             <p className="mb-4 text-slate-600">
               Start shopping from the deals page and your purchases will be tracked here.
             </p>
-            <a
+            <Link
               href="/user/shop"
               className="inline-block rounded-full bg-blue-600 px-6 py-3 font-semibold text-white transition hover:bg-blue-700"
             >
               Browse Deals
-            </a>
+            </Link>
           </div>
         ) : (
           <div className="space-y-4">
