@@ -1,5 +1,6 @@
 "use client";
 
+import React from "react";
 import { FaCrown, FaUserShield, FaUserTie } from "react-icons/fa6";
 
 type Member = {
@@ -34,7 +35,7 @@ const members: Member[] = [
   },
 ];
 
-const roleIcon: Record<Member["role"], JSX.Element> = {
+const roleIcon: Record<Member["role"], React.ReactElement> = {
   Owner: <FaCrown className="h-4 w-4 text-amber-500" />,
   Manager: <FaUserTie className="h-4 w-4 text-blue-500" />,
   Analyst: <FaUserShield className="h-4 w-4 text-emerald-500" />,

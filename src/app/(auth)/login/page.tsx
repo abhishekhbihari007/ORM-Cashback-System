@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
@@ -8,7 +8,7 @@ import { ArrowLeft, Mail, Lock, Eye, EyeOff } from "lucide-react";
 import { LogoIcon } from "@/components/ui/logo-icon";
 import { ParticleBackground } from "@/components/ui/particle-background";
 
-export default function LoginPage() {
+function LoginForm() {
   // Enterprise feature hidden for now - will be enabled after launch
   const searchParams = useSearchParams();
   const tabParam = searchParams.get("tab");
@@ -297,6 +297,18 @@ export default function LoginPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={
+      <div className="w-full min-h-screen bg-slate-50 flex items-center justify-center">
+        <div className="text-slate-600">Loading...</div>
+      </div>
+    }>
+      <LoginForm />
+    </Suspense>
   );
 }
 
