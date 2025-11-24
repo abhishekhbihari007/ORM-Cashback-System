@@ -8,6 +8,7 @@ interface AuthContextType {
   user: AuthUser | null;
   login: (role: UserRole) => void;
   logout: () => void;
+  updateUser: (updates: Partial<AuthUser>) => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -71,6 +72,20 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     router.push("/login");
   };
 
+  const updateUser = (updates: Partial<AuthUser>) => {
+    if (!user) return;
+    
+    const updatedUser = { ...user, ...updates };
+    setUser(updatedUser);
+    
+    // Update localStorage and cookie
+    if (typeof window !== "undefined") {
+      const userJson = JSON.stringify(updatedUser);
+      localStorage.setItem("auth_user", userJson);
+      document.cookie = `auth_user=${userJson}; path=/; max-age=86400`;
+    }
+  };
+
   // Load user from localStorage on mount and sync with cookie
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -89,7 +104,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user, login, logout }}>
+    <AuthContext.Provider value={{ user, login, logout, updateUser }}>
       {children}
     </AuthContext.Provider>
   );

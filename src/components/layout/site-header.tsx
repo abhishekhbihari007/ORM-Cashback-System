@@ -1,25 +1,64 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useAuth } from "@/contexts/AuthContext";
 import { useAnimation } from "@/contexts/AnimationContext";
-import { FaUser } from "react-icons/fa6";
+import { FaUser, FaRightFromBracket } from "react-icons/fa6";
 import { LogoIcon } from "@/components/ui/logo-icon";
 
 export function SiteHeader() {
   const pathname = usePathname();
   const { user, logout } = useAuth();
   const { triggerGraphAnimation } = useAnimation();
+  const router = useRouter();
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
+  const [accountDropdownOpen, setAccountDropdownOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
   const toggleMobileNav = () => setMobileNavOpen((prev) => !prev);
   const closeMobileNav = () => setMobileNavOpen(false);
+  const toggleAccountDropdown = () => setAccountDropdownOpen((prev) => !prev);
+  const closeAccountDropdown = () => setAccountDropdownOpen(false);
 
-  // Hide header on auth pages and feed page (uses custom header)
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setAccountDropdownOpen(false);
+      }
+    };
+
+    if (accountDropdownOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [accountDropdownOpen]);
+
+  const handleLogout = () => {
+    if (confirm("Are you sure you want to logout?")) {
+      logout();
+      closeAccountDropdown();
+    }
+  };
+
+  // Hide header on auth pages and pages that use FeedHeader
   // Keep header visible on for-sellers and how-it-works pages
-  if (pathname === "/login" || pathname === "/signup" || pathname === "/feed" || pathname.startsWith("/feed/")) {
+  if (
+    pathname === "/login" ||
+    pathname === "/signup" ||
+    pathname === "/feed" ||
+    pathname.startsWith("/feed/") ||
+    pathname === "/profile" ||
+    pathname === "/upload" ||
+    pathname === "/wallet" ||
+    pathname === "/user" ||
+    pathname.startsWith("/user/")
+  ) {
     return null;
   }
 
@@ -35,29 +74,32 @@ export function SiteHeader() {
     }
 
     if (user.role === "user") {
-      // User logged in
+      // User logged in - no Home button
       return [
         { label: "Browse Deals", href: "/feed" },
         { label: "My Wallet", href: "/wallet" },
         { label: "Upload Proof", href: "/upload" },
+        { label: "How It Works", href: "/how-it-works" },
       ];
     }
 
     if (user.role === "brand") {
-      // Brand logged in
+      // Brand logged in - no Home button
       return [
         { label: "Dashboard", href: "/dashboard" },
         { label: "Create Campaign", href: "/dashboard/create-campaign" },
         { label: "Reports", href: "/dashboard/reports" },
+        { label: "How It Works", href: "/how-it-works" },
       ];
     }
 
     if (user.role === "admin") {
-      // Admin logged in
+      // Admin logged in - no Home button
       return [
         { label: "Master View", href: "/admin" },
         { label: "Verifier Tool", href: "/admin/verifier" },
         { label: "Payouts", href: "/admin/payouts" },
+        { label: "How It Works", href: "/how-it-works" },
       ];
     }
 
@@ -140,30 +182,61 @@ export function SiteHeader() {
         </nav>
         )}
 
-        {/* Right Side - Only show user info if logged in */}
+        {/* Right Side - Account Button with Dropdown */}
         {user && (
-          <div className="flex items-center gap-2 sm:gap-4">
-              {user.role === "user" && (
-              <div className="flex items-center gap-2 sm:gap-3">
-                <div className="flex h-8 w-8 sm:h-10 sm:w-10 items-center justify-center rounded-full bg-indigo-100 text-indigo-600">
+          <div className="flex items-center gap-2 sm:gap-4 relative" ref={dropdownRef}>
+            <div className="relative">
+              <button
+                onClick={toggleAccountDropdown}
+                className="flex items-center gap-2 sm:gap-3 hover:opacity-80 transition-opacity cursor-pointer"
+              >
+                <div className={`flex h-8 w-8 sm:h-10 sm:w-10 items-center justify-center rounded-full ${
+                  isHomePage || isLightPage ? 'bg-indigo-100 text-indigo-600' : 'bg-indigo-500/20 text-indigo-300'
+                }`}>
                   <FaUser size={16} className="sm:w-[18px] sm:h-[18px]" />
-                  </div>
-                <span className={`hidden sm:inline text-sm sm:text-base font-semibold ${isHomePage || isLightPage ? 'text-slate-900' : 'text-white'}`}>{user.name}</span>
+                </div>
+                <span className={`hidden sm:inline md:block text-xs sm:text-sm font-semibold ${
+                  isHomePage || isLightPage ? 'text-slate-900' : 'text-white'
+                }`}>{user.name}</span>
+              </button>
+
+              {/* Dropdown Menu */}
+              {accountDropdownOpen && (
+                <div className={`absolute right-0 mt-2 w-48 rounded-lg shadow-lg border py-2 z-50 ${
+                  isHomePage || isLightPage 
+                    ? 'bg-white border-slate-200' 
+                    : 'bg-slate-800 border-slate-700'
+                }`}>
+                  <Link
+                    href="/profile"
+                    onClick={() => {
+                      closeAccountDropdown();
+                    }}
+                    className={`flex items-center gap-3 px-4 py-2 text-sm transition ${
+                      isHomePage || isLightPage
+                        ? 'text-slate-700 hover:bg-slate-50'
+                        : 'text-slate-200 hover:bg-slate-700'
+                    }`}
+                  >
+                    <FaUser size={16} />
+                    <span>Profile</span>
+                  </Link>
+                  <button
+                    onClick={handleLogout}
+                    className={`w-full flex items-center gap-3 px-4 py-2 text-sm transition text-left ${
+                      isHomePage || isLightPage
+                        ? 'text-red-600 hover:bg-red-50'
+                        : 'text-red-400 hover:bg-red-900/20'
+                    }`}
+                  >
+                    <FaRightFromBracket size={16} />
+                    <span>Logout</span>
+                  </button>
                 </div>
               )}
-              <button
-                onClick={logout}
-              className={`rounded-full border px-3 py-1.5 sm:px-6 sm:py-3 text-xs sm:text-sm md:text-base font-semibold transition ${
-                isHomePage || isLightPage
-                  ? 'border-slate-300 text-slate-700 hover:bg-slate-50' 
-                  : 'border-slate-700/50 text-white hover:bg-slate-700/50'
-              }`}
-            >
-              <span className="hidden sm:inline">Logout</span>
-              <span className="sm:hidden">Out</span>
-              </button>
             </div>
-          )}
+          </div>
+        )}
         </div>
 
       {/* Mobile Menu - Slides in from left covering full screen - Show on all pages for smaller screens */}
@@ -221,27 +294,22 @@ export function SiteHeader() {
                 </Link>
               </>
             ) : (
-              <div className="space-y-8 sm:space-y-10 md:space-y-12 lg:space-y-14">
-                {user.role === "user" && (
-                  <div className="flex items-center gap-3 text-gray-900">
-                    <div className="flex h-8 w-8 sm:h-10 sm:w-10 items-center justify-center rounded-full bg-indigo-500/20 border border-indigo-500/50 text-indigo-400">
-                      <FaUser size={16} className="sm:w-[18px] sm:h-[18px]" />
-                    </div>
-                    <span
-                      className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black leading-tight text-gray-900"
-                      style={{
-                        fontFamily: "system-ui, -apple-system, sans-serif",
-                        letterSpacing: "-0.02em",
-                      }}
-                    >
-                      {user.name}
-                    </span>
-                  </div>
-                )}
+              <>
+                <Link
+                  href="/profile"
+                  onClick={closeMobileNav}
+                  className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black transition leading-tight text-gray-800 hover:text-gray-900"
+                  style={{
+                    fontFamily: "system-ui, -apple-system, sans-serif",
+                    letterSpacing: "-0.02em",
+                  }}
+                >
+                  Profile
+                </Link>
                 <button
                   onClick={() => {
-                    logout();
                     closeMobileNav();
+                    handleLogout();
                   }}
                   className="w-full text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black transition text-left leading-tight text-gray-800 hover:text-gray-900"
                   style={{
@@ -251,7 +319,7 @@ export function SiteHeader() {
                 >
                   Logout
                 </button>
-              </div>
+              </>
             )}
           </div>
         </div>

@@ -1,26 +1,61 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useAuth } from "@/contexts/AuthContext";
 import { useAnimation } from "@/contexts/AnimationContext";
 import { LogoIcon } from "@/components/ui/logo-icon";
-import { FaBell, FaUser } from "react-icons/fa6";
+import { FaUser, FaRightFromBracket } from "react-icons/fa6";
 
 export function FeedHeader() {
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
   const { triggerGraphAnimation } = useAnimation();
   const pathname = usePathname();
+  const router = useRouter();
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
+  const [accountDropdownOpen, setAccountDropdownOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
   const toggleMobileNav = () => setMobileNavOpen((prev) => !prev);
   const closeMobileNav = () => setMobileNavOpen(false);
+  const toggleAccountDropdown = () => setAccountDropdownOpen((prev) => !prev);
+  const closeAccountDropdown = () => setAccountDropdownOpen(false);
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setAccountDropdownOpen(false);
+      }
+    };
+
+    if (accountDropdownOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [accountDropdownOpen]);
+
+  const handleLogout = () => {
+    if (confirm("Are you sure you want to logout?")) {
+      logout();
+      closeAccountDropdown();
+    }
+  };
 
   const navLinks = [
-    { label: "Home", href: "/" },
-    ...(user?.role === "user" ? [{ label: "Browse Deals", href: "/feed" }] : []),
-    { label: "For Sellers", href: "/for-sellers" },
+    // Only show Home if not logged in
+    ...(!user ? [{ label: "Home", href: "/" }] : []),
+    ...(user?.role === "user" ? [
+      { label: "User Dashboard", href: "/user" },
+      { label: "Browse Deals", href: "/feed" },
+      { label: "My Wallet", href: "/wallet" },
+      { label: "Upload Proof", href: "/upload" },
+    ] : []),
+    ...(user?.role !== "user" ? [{ label: "For Sellers", href: "/for-sellers" }] : []),
     { label: "How It Works", href: "/how-it-works" },
   ];
 
@@ -38,9 +73,13 @@ export function FeedHeader() {
         </button>
 
         {/* Left Side - Logo */}
-        <Link href="/" className="flex items-center gap-1.5 sm:gap-2 ml-4 sm:ml-6 lg:ml-0" onClick={() => {
-          triggerGraphAnimation();
-        }}>
+        <Link 
+          href={user?.role === "user" ? "/user" : "/"} 
+          className="flex items-center gap-1.5 sm:gap-2 ml-4 sm:ml-6 lg:ml-0" 
+          onClick={() => {
+            triggerGraphAnimation();
+          }}
+        >
           <LogoIcon className="h-10 w-10 sm:h-12 sm:w-12 md:h-14 md:w-14 lg:h-16 lg:w-16" />
           <p className="text-lg sm:text-xl md:text-2xl text-slate-900">
             <span className="font-bold">ORM</span> <span className="font-light">Ecosystem</span>
@@ -70,21 +109,43 @@ export function FeedHeader() {
           ))}
         </nav>
 
-        {/* Right Side - User Avatar & Notification */}
-        <div className="flex items-center gap-2 sm:gap-4">
-          {/* Notification Bell */}
-          <button className="relative p-1.5 sm:p-2 rounded-full hover:bg-slate-100 transition-colors">
-            <FaBell className="h-4 w-4 sm:h-5 sm:w-5 text-slate-600" />
-            <span className="absolute top-0.5 right-0.5 sm:top-1 sm:right-1 h-1.5 w-1.5 sm:h-2 sm:w-2 bg-red-500 rounded-full"></span>
-          </button>
-
-          {/* User Avatar */}
+        {/* Right Side - User Avatar with Dropdown */}
+        <div className="flex items-center gap-2 sm:gap-4 relative" ref={dropdownRef}>
+          {/* User Avatar - Clickable Button */}
           {user ? (
-            <div className="flex items-center gap-2 sm:gap-3">
-              <div className="flex h-8 w-8 sm:h-10 sm:w-10 items-center justify-center rounded-full bg-indigo-100 text-indigo-600">
-                <FaUser size={16} className="sm:w-[18px] sm:h-[18px]" />
-              </div>
-              <span className="hidden sm:inline md:block text-xs sm:text-sm font-semibold text-slate-900">{user.name}</span>
+            <div className="relative">
+              <button
+                onClick={toggleAccountDropdown}
+                className="flex items-center gap-2 sm:gap-3 hover:opacity-80 transition-opacity cursor-pointer"
+              >
+                <div className="flex h-8 w-8 sm:h-10 sm:w-10 items-center justify-center rounded-full bg-indigo-100 text-indigo-600">
+                  <FaUser size={16} className="sm:w-[18px] sm:h-[18px]" />
+                </div>
+                <span className="hidden sm:inline md:block text-xs sm:text-sm font-semibold text-slate-900">{user.name}</span>
+              </button>
+
+              {/* Dropdown Menu */}
+              {accountDropdownOpen && (
+                <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-slate-200 py-2 z-50">
+                  <Link
+                    href="/profile"
+                    onClick={() => {
+                      closeAccountDropdown();
+                    }}
+                    className="flex items-center gap-3 px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 transition"
+                  >
+                    <FaUser size={16} />
+                    <span>Profile</span>
+                  </Link>
+                  <button
+                    onClick={handleLogout}
+                    className="w-full flex items-center gap-3 px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition text-left"
+                  >
+                    <FaRightFromBracket size={16} />
+                    <span>Logout</span>
+                  </button>
+                </div>
+              )}
             </div>
           ) : (
             <div className="flex h-8 w-8 sm:h-10 sm:w-10 items-center justify-center rounded-full bg-slate-100 text-slate-600">
@@ -133,14 +194,24 @@ export function FeedHeader() {
                 </Link>
               </>
             ) : (
-              <button
-                onClick={() => {
-                  closeMobileNav();
-                }}
-                className="text-3xl sm:text-4xl font-black text-left text-slate-800"
-              >
-                Logout
-              </button>
+              <>
+                <Link
+                  href="/profile"
+                  onClick={closeMobileNav}
+                  className="text-3xl sm:text-4xl font-black text-slate-800"
+                >
+                  Profile
+                </Link>
+                <button
+                  onClick={() => {
+                    closeMobileNav();
+                    handleLogout();
+                  }}
+                  className="text-3xl sm:text-4xl font-black text-left text-slate-800"
+                >
+                  Logout
+                </button>
+              </>
             )}
           </div>
         </div>

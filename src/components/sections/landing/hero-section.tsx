@@ -1,5 +1,8 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
+import { useAuth } from "@/contexts/AuthContext";
 import { StatCard } from "@/components/ui/stat-card";
 import StarRatingGraphCard from "@/components/ui/star-rating-graph-card";
 
@@ -10,6 +13,8 @@ const heroMetrics = [
 ];
 
 export function HeroSection() {
+  const { user } = useAuth();
+  
   return (
     <section className="relative overflow-hidden min-h-[500px] sm:min-h-[600px] bg-white py-12 sm:py-16 md:py-20 flex items-center">
       {/* Optional subtle texture pattern - very light */}
@@ -28,18 +33,29 @@ export function HeroSection() {
             Get authentic reviews on Amazon & Flipkart using our network of verified shoppers.
           </p>
           <div className="flex flex-wrap gap-2 sm:gap-3 relative z-10 mb-6 sm:mb-8">
-            <Link
-              href="/signup"
-              className="rounded-full bg-gradient-to-r from-orange-500 to-red-600 px-5 py-2.5 sm:px-6 sm:py-3 md:px-8 md:py-4 text-sm sm:text-base md:text-lg text-white shadow-lg shadow-orange-500/25 font-semibold hover:from-orange-600 hover:to-red-700 transition"
-            >
-              Sign Up
-            </Link>
-            <Link 
-              href="/login" 
-              className="rounded-full bg-white border border-slate-300 text-slate-700 px-5 py-2.5 sm:px-6 sm:py-3 md:px-8 md:py-4 text-sm sm:text-base md:text-lg font-semibold hover:bg-slate-50 transition relative z-10 cursor-pointer inline-block"
-            >
-              Login
-            </Link>
+            {user ? (
+              <Link
+                href={user.role === "user" ? "/user" : user.role === "brand" ? "/dashboard" : "/admin"}
+                className="rounded-full bg-gradient-to-r from-orange-500 to-red-600 px-5 py-2.5 sm:px-6 sm:py-3 md:px-8 md:py-4 text-sm sm:text-base md:text-lg text-white shadow-lg shadow-orange-500/25 font-semibold hover:from-orange-600 hover:to-red-700 transition"
+              >
+                Go to Dashboard
+              </Link>
+            ) : (
+              <>
+                <Link
+                  href="/signup"
+                  className="rounded-full bg-gradient-to-r from-orange-500 to-red-600 px-5 py-2.5 sm:px-6 sm:py-3 md:px-8 md:py-4 text-sm sm:text-base md:text-lg text-white shadow-lg shadow-orange-500/25 font-semibold hover:from-orange-600 hover:to-red-700 transition"
+                >
+                  Sign Up
+                </Link>
+                <Link 
+                  href="/login" 
+                  className="rounded-full bg-white border border-slate-300 text-slate-700 px-5 py-2.5 sm:px-6 sm:py-3 md:px-8 md:py-4 text-sm sm:text-base md:text-lg font-semibold hover:bg-slate-50 transition relative z-10 cursor-pointer inline-block"
+                >
+                  Login
+                </Link>
+              </>
+            )}
           </div>
           <div className="flex flex-wrap gap-3 sm:gap-4">
             {heroMetrics.map((metric) => (

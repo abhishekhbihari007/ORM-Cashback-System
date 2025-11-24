@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft, Mail, Lock, Eye, EyeOff } from "lucide-react";
 import { LogoIcon } from "@/components/ui/logo-icon";
@@ -16,7 +15,6 @@ export default function LoginPage() {
   const [rememberMe, setRememberMe] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const { login } = useAuth();
-  const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -25,8 +23,16 @@ export default function LoginPage() {
       return;
     }
     
+    const isBrandLogin = activeTab === "brands";
+
     try {
       setIsLoading(true);
+
+      if (isBrandLogin && !password) {
+        alert("Please enter your password to access the brand dashboard.");
+        setIsLoading(false);
+        return;
+      }
 
       // TODO: TEMPORARY - Replace with real authentication API call
       // For now, allowing direct login without credentials for development/testing
@@ -49,7 +55,6 @@ export default function LoginPage() {
 
       setIsLoading(false);
     } catch (error) {
-      console.error("Login error:", error);
       alert("An error occurred. Please try again.");
       setIsLoading(false);
     }
@@ -127,7 +132,6 @@ export default function LoginPage() {
               <button
                 type="button"
                 onClick={() => {
-                  console.log("Shoppers tab clicked");
                   setActiveTab("shoppers");
                 }}
                   className={`flex-1 rounded-lg px-4 py-2.5 text-sm font-semibold transition-all cursor-pointer relative z-10 ${
@@ -142,7 +146,6 @@ export default function LoginPage() {
               <button
                 type="button"
                 onClick={() => {
-                  console.log("Brands tab clicked");
                   setActiveTab("brands");
                 }}
                   className={`flex-1 rounded-lg px-4 py-2.5 text-sm font-semibold transition-all cursor-pointer relative z-10 ${
@@ -179,35 +182,37 @@ export default function LoginPage() {
               </div>
 
               {/* Password Field */}
-              <div>
-                <label htmlFor="password" className="block text-slate-700 font-medium mb-2 text-sm">
-                  Password
-                </label>
-                <div className="relative">
-                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <Lock className="h-5 w-5 text-slate-400" />
+              {activeTab === "brands" && (
+                <div>
+                  <label htmlFor="password" className="block text-slate-700 font-medium mb-2 text-sm">
+                    Password
+                  </label>
+                  <div className="relative">
+                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                      <Lock className="h-5 w-5 text-slate-400" />
+                    </div>
+                    <input
+                      id="password"
+                      type={showPassword ? "text" : "password"}
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      placeholder="••••••••"
+                      className="w-full rounded-xl border border-slate-200 bg-white pl-10 pr-10 py-3 text-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-100 transition"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-slate-600 transition"
+                    >
+                      {showPassword ? (
+                        <EyeOff className="h-5 w-5" />
+                      ) : (
+                        <Eye className="h-5 w-5" />
+                      )}
+                    </button>
                   </div>
-                  <input
-                    id="password"
-                    type={showPassword ? "text" : "password"}
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    placeholder="••••••••"
-                    className="w-full rounded-xl border border-slate-200 bg-white pl-10 pr-10 py-3 text-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-100 transition"
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-slate-600 transition"
-                  >
-                    {showPassword ? (
-                      <EyeOff className="h-5 w-5" />
-                    ) : (
-                      <Eye className="h-5 w-5" />
-                    )}
-                  </button>
                 </div>
-              </div>
+              )}
 
               {/* Remember Me & Forgot Password */}
               <div className="flex items-center justify-between">
@@ -232,10 +237,6 @@ export default function LoginPage() {
               <button
                 type="submit"
                 disabled={isLoading}
-                onClick={(e) => {
-                  console.log("Login button clicked", { isLoading, activeTab });
-                  // Form onSubmit will handle the submission
-                }}
                 className="w-full rounded-xl bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 hover:opacity-90 hover:shadow-lg hover:shadow-indigo-500/25 px-4 py-3 text-sm font-semibold text-white shadow-lg shadow-indigo-500/25 transition focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 relative z-10 cursor-pointer"
                 style={{ pointerEvents: isLoading ? 'none' : 'auto' }}
               >

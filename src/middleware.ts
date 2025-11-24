@@ -6,9 +6,9 @@ const publicRoutes = ["/", "/login", "/signup", "/#"];
 
 // Role-based route mappings
 const roleRoutes: Record<string, string[]> = {
-  user: ["/feed", "/upload", "/wallet", "/user"],
-  brand: ["/dashboard", "/brand"],
-  admin: ["/admin"],
+  user: ["/feed", "/upload", "/wallet", "/user", "/profile"],
+  brand: ["/dashboard", "/brand", "/profile"],
+  admin: ["/admin", "/profile"],
 };
 
 export function middleware(request: NextRequest) {

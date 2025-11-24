@@ -24,7 +24,7 @@ export function SiteFooter() {
       
       {/* Arrow Bottom Decoration - PNG Image on Right Side */}
       <div className="absolute bottom-0 right-0 z-20 pointer-events-none overflow-hidden">
-        <div className="relative" style={{ width: '800px', height: '400px' }}>
+        <div className="relative" style={{ width: '1000px', height: '500px', maxWidth: '100%' }}>
           <Image 
             src="/arrow-bottom1.png" 
             alt="" 
@@ -32,7 +32,7 @@ export function SiteFooter() {
             className="object-contain object-bottom-right"
             priority={false}
             unoptimized
-            sizes="800px"
+            sizes="(max-width: 768px) 400px, (max-width: 1024px) 700px, 1000px"
           />
         </div>
       </div>

@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import { useAuth } from "@/contexts/AuthContext";
 import Link from "next/link";
 import { ArrowLeft, Mail, Lock, Eye, EyeOff, User, Phone } from "lucide-react";
@@ -11,7 +10,6 @@ import { ParticleBackground } from "@/components/ui/particle-background";
 export default function SignUpPage() {
   const [activeTab, setActiveTab] = useState<"shoppers" | "brands">("shoppers");
   const [isLoading, setIsLoading] = useState(false);
-  const router = useRouter();
   const { login } = useAuth();
 
   // Shopper form fields
@@ -32,39 +30,30 @@ export default function SignUpPage() {
       e.preventDefault();
     }
     
-    console.log("handleSubmit called", { activeTab, isLoading });
-    
     if (isLoading) {
-      console.log("Already loading, returning");
       return;
     }
     
     try {
       setIsLoading(true);
-      console.log("Loading state set to true");
 
       // Validate form fields based on active tab
       if (activeTab === "shoppers") {
         if (!shopperName || !shopperEmail || !shopperPassword) {
-          console.log("Validation failed for shoppers", { shopperName, shopperEmail, shopperPassword: !!shopperPassword });
           alert("Please fill in all fields");
           setIsLoading(false);
           return;
         }
       } else {
         if (!brandName || !brandEmail || !brandPhone || !brandPassword) {
-          console.log("Validation failed for brands", { brandName, brandEmail, brandPhone, brandPassword: !!brandPassword });
           alert("Please fill in all fields");
           setIsLoading(false);
           return;
         }
       }
 
-      console.log("Validation passed, simulating API call");
       // Simulate API call delay
       await new Promise((resolve) => setTimeout(resolve, 1000));
-
-      console.log("API call completed, logging in user");
       
       // Show success message before redirect
       alert("Account Created Successfully!");
@@ -73,17 +62,13 @@ export default function SignUpPage() {
       // The login function will handle the redirect automatically
       if (activeTab === "shoppers") {
         login("user");
-        console.log("Logged in as user, redirecting to feed");
       } else {
         login("brand");
-        console.log("Logged in as brand, redirecting to dashboard");
       }
     } catch (error) {
-      console.error("Signup error:", error);
       alert("An error occurred. Please try again.");
     } finally {
       setIsLoading(false);
-      console.log("Loading state set to false");
     }
   };
 
@@ -161,7 +146,6 @@ export default function SignUpPage() {
                 <button
                   type="button"
                   onClick={() => {
-                    console.log("Shoppers tab clicked");
                     setActiveTab("shoppers");
                   }}
                   className={`flex-1 rounded-lg px-4 py-2.5 text-sm font-semibold transition-all cursor-pointer relative z-10 ${
@@ -176,7 +160,6 @@ export default function SignUpPage() {
                 <button
                   type="button"
                   onClick={() => {
-                    console.log("Brands tab clicked");
                     setActiveTab("brands");
                   }}
                   className={`flex-1 rounded-lg px-4 py-2.5 text-sm font-semibold transition-all cursor-pointer relative z-10 ${
@@ -364,7 +347,6 @@ export default function SignUpPage() {
                   type="submit"
                   disabled={isLoading}
                   onClick={(e) => {
-                    console.log("Button clicked", { isLoading });
                     e.preventDefault();
                     handleSubmit();
                   }}
