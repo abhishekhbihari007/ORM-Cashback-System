@@ -191,7 +191,7 @@ export default function SignUpPage() {
                           value={shopperName}
                           onChange={(e) => setShopperName(e.target.value)}
                           required
-                          placeholder="John Doe"
+                          placeholder="Rahul Sharma"
                           className="w-full rounded-xl border border-slate-200 bg-white pl-10 pr-4 py-3 text-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-100 transition"
                         />
                       </div>

@@ -6,7 +6,7 @@ const numbers = [
   { label: "Affiliates", value: "100K+" },
   { label: "Monthly Global Traffic", value: "18M" },
   { label: "Monthly Conversions", value: "450K" },
-  { label: "Monthly GMV Influenced", value: "$34M" },
+  { label: "Monthly GMV Influenced", value: "₹280Cr" },
 ];
 
 export function NumbersSection() {

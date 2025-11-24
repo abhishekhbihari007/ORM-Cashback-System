@@ -86,7 +86,7 @@ export const budgetSnapshot: BudgetSnapshot = {
   allocated: 12000,
   utilized: 8900,
   available: 3100,
-  currency: "USD",
+  currency: "INR",
 };
 
 export const purchaseHistory: PurchaseHistory[] = Array.from({ length: 4 }, () => ({
@@ -136,15 +136,15 @@ export const storefronts: Storefront[] = [
     id: "store-3",
     name: "Pulse Mobility",
     category: "Electronics",
-    reward: "$10 Cashback",
-    link: "https://amazon.com",
+    reward: "₹800 Cashback",
+    link: "https://amazon.in",
     image: "https://images.unsplash.com/photo-1518444028785-8fbcd101ebb9",
   },
   {
     id: "store-4",
     name: "Verve Active",
     category: "Athleisure",
-    reward: "$12 Cashback",
+    reward: "₹1000 Cashback",
     link: "https://meesho.com",
     image: "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f",
   },
