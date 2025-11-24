@@ -37,17 +37,9 @@ function LoginForm() {
     if (isLoading) {
       return;
     }
-    
-    const requiresPassword = activeTab === "brands";
 
     try {
       setIsLoading(true);
-
-      if (requiresPassword && !password) {
-        alert("Please enter your password to continue.");
-        setIsLoading(false);
-        return;
-      }
 
       // TODO: TEMPORARY - Replace with real authentication API call
       // For now, allowing direct login without credentials for development/testing
