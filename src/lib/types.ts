@@ -106,7 +106,7 @@ export interface PendingReview {
   status: "pending" | "approved" | "rejected";
 }
 
-export type UserRole = "user" | "brand" | "admin";
+export type UserRole = "user" | "brand" | "admin" | "enterprise";
 
 export interface AuthUser {
   id: string;

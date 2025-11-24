@@ -47,6 +47,13 @@ export function middleware(request: NextRequest) {
     }
   }
 
+  // Enterprise feature hidden for now - block access to enterprise routes
+  if (pathname.startsWith("/enterprise")) {
+    const url = request.nextUrl.clone();
+    url.pathname = "/login";
+    return NextResponse.redirect(url);
+  }
+
   // Check role-based access
   if (user) {
     const userRole = user.role;

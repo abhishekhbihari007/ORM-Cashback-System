@@ -36,6 +36,13 @@ const mockUsers: Record<UserRole, AuthUser> = {
     role: "admin",
     balance: 0,
   },
+  enterprise: {
+    id: "enterprise-1",
+    name: "Enterprise Ops",
+    email: "enterprise@example.com",
+    role: "enterprise",
+    balance: 250000,
+  },
 };
 
 export function AuthProvider({ children }: { children: ReactNode }) {
@@ -55,12 +62,22 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
 
     // Redirect based on role
-    if (role === "user") {
-      router.push("/user");
-    } else if (role === "brand") {
-      router.push("/dashboard");
-    } else if (role === "admin") {
-      router.push("/admin");
+    // Enterprise feature hidden for now - will be enabled after launch
+    switch (role) {
+      case "user":
+        router.push("/user");
+        break;
+      case "brand":
+        router.push("/dashboard");
+        break;
+      case "admin":
+        router.push("/admin");
+        break;
+      // case "enterprise":
+      //   router.push("/enterprise");
+      //   break;
+      default:
+        break;
     }
   };
 

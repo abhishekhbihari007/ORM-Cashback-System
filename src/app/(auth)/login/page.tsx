@@ -1,20 +1,35 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useAuth } from "@/contexts/AuthContext";
+import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft, Mail, Lock, Eye, EyeOff } from "lucide-react";
 import { LogoIcon } from "@/components/ui/logo-icon";
 import { ParticleBackground } from "@/components/ui/particle-background";
 
 export default function LoginPage() {
-  const [activeTab, setActiveTab] = useState<"shoppers" | "brands">("shoppers");
+  // Enterprise feature hidden for now - will be enabled after launch
+  const searchParams = useSearchParams();
+  const tabParam = searchParams.get("tab");
+  const defaultTab = tabParam === "brands" ? "brands" : "shoppers";
+  const [activeTab, setActiveTab] = useState<"shoppers" | "brands">(defaultTab);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const { login } = useAuth();
+
+  // Update active tab when query parameter changes
+  useEffect(() => {
+    const tab = searchParams.get("tab");
+    if (tab === "brands") {
+      setActiveTab("brands");
+    } else if (tab === "shoppers") {
+      setActiveTab("shoppers");
+    }
+  }, [searchParams]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -23,13 +38,13 @@ export default function LoginPage() {
       return;
     }
     
-    const isBrandLogin = activeTab === "brands";
+    const requiresPassword = activeTab === "brands";
 
     try {
       setIsLoading(true);
 
-      if (isBrandLogin && !password) {
-        alert("Please enter your password to access the brand dashboard.");
+      if (requiresPassword && !password) {
+        alert("Please enter your password to continue.");
         setIsLoading(false);
         return;
       }
@@ -47,10 +62,8 @@ export default function LoginPage() {
 
       if (activeTab === "shoppers") {
         login("user");
-        // Auth context will handle redirect to /user
-      } else {
+      } else if (activeTab === "brands") {
         login("brand");
-        // Auth context will handle redirect to /dashboard
       }
 
       setIsLoading(false);
@@ -128,17 +141,18 @@ export default function LoginPage() {
             </div>
 
             {/* Tabs */}
+            {/* Enterprise feature hidden for now - will be enabled after launch */}
             <div className="flex gap-2 mb-6 p-1 bg-slate-100 rounded-lg relative z-10">
               <button
                 type="button"
                 onClick={() => {
                   setActiveTab("shoppers");
                 }}
-                  className={`flex-1 rounded-lg px-4 py-2.5 text-sm font-semibold transition-all cursor-pointer relative z-10 ${
-                    activeTab === "shoppers"
-                      ? "bg-white text-indigo-600 shadow-sm"
-                      : "text-slate-600 hover:text-slate-900"
-                  }`}
+                className={`flex-1 rounded-lg px-4 py-2.5 text-sm font-semibold transition-all cursor-pointer relative z-10 ${
+                  activeTab === "shoppers"
+                    ? "bg-white text-indigo-600 shadow-sm"
+                    : "text-slate-600 hover:text-slate-900"
+                }`}
                 style={{ pointerEvents: 'auto' }}
               >
                 For Shoppers
@@ -148,11 +162,11 @@ export default function LoginPage() {
                 onClick={() => {
                   setActiveTab("brands");
                 }}
-                  className={`flex-1 rounded-lg px-4 py-2.5 text-sm font-semibold transition-all cursor-pointer relative z-10 ${
-                    activeTab === "brands"
-                      ? "bg-white text-indigo-600 shadow-sm"
-                      : "text-slate-600 hover:text-slate-900"
-                  }`}
+                className={`flex-1 rounded-lg px-4 py-2.5 text-sm font-semibold transition-all cursor-pointer relative z-10 ${
+                  activeTab === "brands"
+                    ? "bg-white text-indigo-600 shadow-sm"
+                    : "text-slate-600 hover:text-slate-900"
+                }`}
                 style={{ pointerEvents: 'auto' }}
               >
                 For Brands
@@ -182,7 +196,7 @@ export default function LoginPage() {
               </div>
 
               {/* Password Field */}
-              {activeTab === "brands" && (
+              {activeTab === "brands" ? (
                 <div>
                   <label htmlFor="password" className="block text-slate-700 font-medium mb-2 text-sm">
                     Password
@@ -212,7 +226,7 @@ export default function LoginPage() {
                     </button>
                   </div>
                 </div>
-              )}
+              ) : null}
 
               {/* Remember Me & Forgot Password */}
               <div className="flex items-center justify-between">

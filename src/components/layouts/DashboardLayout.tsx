@@ -16,6 +16,7 @@ import {
   FaWallet,
   FaCirclePlus,
   FaFileLines,
+  FaBuilding,
 } from "react-icons/fa6";
 
 type NavItem = {
@@ -44,10 +45,24 @@ const adminNavItems: NavItem[] = [
   { href: "/admin/user-activities", label: "Activities", icon: FaChartBar },
 ];
 
+const enterpriseNavItems: NavItem[] = [
+  { href: "/enterprise", label: "Enterprise Home", icon: FaChartLine },
+  { href: "/enterprise/brands", label: "Brands", icon: FaBuilding },
+  { href: "/enterprise/analytics", label: "Analytics", icon: FaChartBar },
+  { href: "/enterprise/team", label: "Team & Access", icon: FaUsers },
+];
+
 export function DashboardLayout({ children, role }: { children: React.ReactNode; role: UserRole }) {
   const pathname = usePathname();
   const { user, logout } = useAuth();
-  const navItems = role === "brand" ? brandNavItems : adminNavItems;
+  const navItems =
+    role === "brand" ? brandNavItems : role === "admin" ? adminNavItems : enterpriseNavItems;
+  const panelTitle =
+    role === "brand"
+      ? "Brand Portal"
+      : role === "admin"
+      ? "Admin Panel"
+      : "Enterprise Hub";
 
   return (
     <div className="flex min-h-screen">
@@ -56,19 +71,15 @@ export function DashboardLayout({ children, role }: { children: React.ReactNode;
         <div className="sticky top-0 flex h-screen flex-col">
           {/* Logo/Header */}
           <div className="border-b border-slate-200 p-6">
-            <div className="flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-slate-900 text-white font-black">
-                K
+              <div className="flex items-center gap-3">
+                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-slate-900 text-white font-bold">
+                  {user?.name?.charAt(0) || "O"}
+                </div>
+                <div>
+                  <p className="text-xs font-semibold text-slate-500 uppercase">{panelTitle}</p>
+                  <p className="text-sm font-bold text-slate-900">{user?.name || "Dashboard"}</p>
+                </div>
               </div>
-              <div>
-                <p className="text-xs font-semibold text-slate-500 uppercase">
-                  {role === "brand" ? "Brand Portal" : "Admin Panel"}
-                </p>
-                <p className="text-sm font-bold text-slate-900">
-                  {user?.name || "Dashboard"}
-                </p>
-              </div>
-            </div>
           </div>
 
           {/* Navigation */}
@@ -113,12 +124,10 @@ export function DashboardLayout({ children, role }: { children: React.ReactNode;
         <div className="sticky top-0 z-40 border-b border-slate-200 bg-white lg:hidden">
           <div className="flex items-center justify-between p-4">
             <div className="flex items-center gap-3">
-              <div className="flex h-8 w-8 items-center justify-center rounded-full bg-slate-900 text-white text-xs font-black">
-                K
+              <div className="flex h-8 w-8 items-center justify-center rounded-full bg-slate-900 text-white text-xs font-bold">
+                {user?.name?.charAt(0) || "O"}
               </div>
-              <p className="text-sm font-bold text-slate-900">
-                {role === "brand" ? "Brand Portal" : "Admin Panel"}
-              </p>
+              <p className="text-sm font-bold text-slate-900">{panelTitle}</p>
             </div>
             <button
               onClick={logout}

@@ -49,7 +49,7 @@ export function HeroSection() {
                   Sign Up
                 </Link>
                 <Link 
-                  href="/login" 
+                  href="/login?tab=brands" 
                   className="rounded-full bg-white border border-slate-300 text-slate-700 px-5 py-2.5 sm:px-6 sm:py-3 md:px-8 md:py-4 text-sm sm:text-base md:text-lg font-semibold hover:bg-slate-50 transition relative z-10 cursor-pointer inline-block"
                 >
                   Login

@@ -186,7 +186,7 @@ export function FeedHeader() {
                   Sign Up
                 </Link>
                 <Link
-                  href="/login"
+                  href="/login?tab=brands"
                   onClick={closeMobileNav}
                   className="text-3xl sm:text-4xl font-black text-slate-800"
                 >

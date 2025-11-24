@@ -93,6 +93,16 @@ export function SiteHeader() {
       ];
     }
 
+    // Enterprise feature hidden for now - will be enabled after launch
+    // if (user.role === "enterprise") {
+    //   return [
+    //     { label: "Enterprise Home", href: "/enterprise" },
+    //     { label: "Brands", href: "/enterprise/brands" },
+    //     { label: "Analytics", href: "/enterprise/analytics" },
+    //     { label: "Team", href: "/enterprise/team" },
+    //   ];
+    // }
+
     if (user.role === "admin") {
       // Admin logged in - no Home button
       return [
@@ -117,7 +127,8 @@ export function SiteHeader() {
                       pathname === "/for-sellers" ||
                       pathname === "/how-it-works" ||
                       pathname.startsWith("/dashboard") ||
-                      pathname.startsWith("/admin");
+                      pathname.startsWith("/admin") ||
+                      pathname.startsWith("/enterprise");
 
   return (
     <header className={`${isHomePage ? 'absolute' : 'sticky'} top-0 left-0 right-0 z-40 w-full ${
@@ -282,7 +293,7 @@ export function SiteHeader() {
                   Sign Up
                 </Link>
                 <Link
-                  href="/login"
+                  href="/login?tab=brands"
                   onClick={closeMobileNav}
                   className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black transition leading-tight text-gray-800 hover:text-gray-900"
                   style={{
