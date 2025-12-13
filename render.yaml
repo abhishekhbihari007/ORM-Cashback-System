@@ -1,0 +1,55 @@
+services:
+  # Backend Django API
+  - type: web
+    name: orm-cashback-backend
+    env: python
+    region: oregon
+    plan: free
+    buildCommand: pip install -r orm-cashback-backend/requirements.txt && cd orm-cashback-backend && python manage.py collectstatic --noinput && python manage.py migrate
+    startCommand: cd orm-cashback-backend && gunicorn orm_cashback.wsgi:application
+    envVars:
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DEBUG
+        value: "False"
+      - key: ALLOWED_HOSTS
+        value: "orm-cashback-backend.onrender.com,localhost,127.0.0.1"
+      - key: DATABASE_URL
+        fromDatabase:
+          name: orm-cashback-db
+          property: connectionString
+      - key: CORS_ALLOWED_ORIGINS
+        sync: false  # Will be set manually to include frontend URL
+      - key: RAZORPAY_KEY_ID
+        sync: false
+      - key: RAZORPAY_KEY_SECRET
+        sync: false
+      - key: EMAIL_HOST
+        sync: false
+      - key: EMAIL_HOST_USER
+        sync: false
+      - key: EMAIL_HOST_PASSWORD
+        sync: false
+
+  # Frontend Next.js App
+  - type: web
+    name: orm-cashback-frontend
+    env: node
+    region: oregon
+    plan: free
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    envVars:
+      - key: NEXT_PUBLIC_API_URL
+        sync: false  # Will be set to backend URL: https://orm-cashback-backend.onrender.com/api
+      - key: NODE_ENV
+        value: production
+
+  # PostgreSQL Database
+  - type: pspg
+    name: orm-cashback-db
+    region: oregon
+    plan: free
+    databaseName: orm_db
+    user: orm_user
+
