@@ -23,6 +23,12 @@ function mapToPendingReview(review: BrandReview, order?: BrandOrder): PendingRev
       mustNotInclude: [], // Not available in backend
     },
     submittedAt: review.created_at,
+    status:
+      review.status?.toLowerCase() === "approved"
+        ? "approved"
+        : review.status?.toLowerCase() === "rejected"
+        ? "rejected"
+        : "pending",
   };
 }
 
@@ -403,7 +409,7 @@ export default function BrandReviewModerationPage() {
                 >
                   {isProcessing ? (
                     <>
-                      <FaSpinner className="h-4 w-4 animate-spin" />
+                      <Icons.Spinner className="h-4 w-4" />
                       Rejecting...
                     </>
                   ) : (

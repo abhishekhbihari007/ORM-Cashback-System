@@ -16,7 +16,6 @@ const mapReview = (review: BrandReview): ReviewRequest => {
   return {
     id: String(review.id),
     productId: String(review.product),
-    productName: review.product_name,
     reviewerName: review.user_name || "You",
     dueDate: review.created_at,
     sentiment: review.rating >= 4 ? "positive" : "neutral",

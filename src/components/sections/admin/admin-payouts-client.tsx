@@ -8,6 +8,7 @@ import { PayoutRequest } from "@/lib/types";
 function mapAdminPayoutToPayoutRequest(adminPayout: AdminPayout): PayoutRequest {
   return {
     id: adminPayout.id.toString(),
+    userId: adminPayout.user_email || adminPayout.user_name || "",
     userName: adminPayout.user_name,
     amount: parseFloat(adminPayout.amount),
     paymentMethod: "upi", // Not available in backend, defaulting

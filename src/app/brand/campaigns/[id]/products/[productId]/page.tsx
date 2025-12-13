@@ -162,10 +162,10 @@ export default function CampaignProductOrdersPage() {
                 <span>{error}</span>
               </div>
               <div className="flex items-center gap-2">
-                <button
-                  onClick={loadOrders}
-                  className="rounded-lg bg-red-600 px-3 py-1 text-sm text-white hover:bg-red-700"
-                >
+                  <button
+                    onClick={() => loadOrders(currentPage)}
+                    className="rounded-lg bg-red-600 px-3 py-1 text-sm text-white hover:bg-red-700"
+                  >
                   Retry
                 </button>
                 <button

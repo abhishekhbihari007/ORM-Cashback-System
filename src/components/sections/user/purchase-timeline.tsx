@@ -27,7 +27,7 @@ const statusStyles: Record<
   },
   paid: {
     badge: "bg-emerald-50 text-emerald-700 border border-emerald-100",
-    icon: <FaCircleCheck className="h-3.5 w-3.5" />,
+    icon: <Icons.CircleCheck className="h-3.5 w-3.5" />,
   },
   rejected: {
     badge: "bg-red-50 text-red-700 border border-red-100",

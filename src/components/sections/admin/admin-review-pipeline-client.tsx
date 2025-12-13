@@ -8,9 +8,9 @@ import { ReviewRequest } from "@/lib/types";
 function mapAdminReviewToReviewRequest(adminReview: AdminReview): ReviewRequest {
   return {
     id: adminReview.id.toString(),
-    productId: adminReview.product.toString(),
+    productId: adminReview.order_id?.toString() || adminReview.product_name || "",
     reviewerName: adminReview.user_name || "Unknown",
-    dueDate: adminReview.submitted_at || adminReview.created_at,
+    dueDate: adminReview.created_at,
     sentiment: "positive", // Default, not available in backend
     status: adminReview.status.toLowerCase() as "pending" | "submitted" | "flagged",
   };

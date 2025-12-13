@@ -268,7 +268,7 @@ export default function BrandStorefrontPage() {
 
         {!isLoading && storefronts.length === 0 && !showForm && (
           <div className="rounded-2xl border border-slate-200 bg-white p-12 text-center">
-            <FaLink className="mx-auto mb-4 text-4xl text-slate-400" />
+            <Icons.Link className="mx-auto mb-4 text-4xl text-slate-400" />
             <h3 className="mb-2 text-lg font-semibold text-slate-900">No Storefronts Added</h3>
             <p className="mb-4 text-slate-600">Add your first storefront link to get started.</p>
             <button

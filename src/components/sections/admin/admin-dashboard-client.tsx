@@ -2,13 +2,14 @@
 
 import { useEffect, useState } from "react";
 import { adminApi, type AdminActivity, type AdminComplianceAlert, type AdminUser, type AdminPayout, type AdminReview } from "@/lib/backend-api";
+import { ComplianceAlert } from "@/lib/types";
 import { AdminOverview } from "./admin-overview";
 import { ActivityFeed } from "./activity-feed";
 import { CompliancePanel } from "./compliance-panel";
 
 export function AdminDashboardClient() {
   const [activities, setActivities] = useState<AdminActivity[]>([]);
-  const [alerts, setAlerts] = useState<AdminComplianceAlert[]>([]);
+  const [alerts, setAlerts] = useState<ComplianceAlert[]>([]);
   const [users, setUsers] = useState<AdminUser[]>([]);
   const [pendingReviews, setPendingReviews] = useState<AdminReview[]>([]);
   const [payouts, setPayouts] = useState<AdminPayout[]>([]);
@@ -29,7 +30,15 @@ export function AdminDashboardClient() {
         ]);
 
         setActivities(activitiesResponse.activities);
-        setAlerts(alertsResponse.alerts);
+        const mappedAlerts: ComplianceAlert[] = alertsResponse.alerts.map((alert: AdminComplianceAlert) => ({
+          id: alert.id,
+          title: alert.title,
+          description: alert.description,
+          risk: alert.risk,
+          marketplace: alert.marketplace,
+          updatedAt: alert.updated_at,
+        }));
+        setAlerts(mappedAlerts);
         setUsers(usersResponse.users);
         setPendingReviews(submissionsResponse.pending_reviews.data);
         setPayouts(payoutsResponse.payouts);

@@ -6,25 +6,27 @@ import { VerifierScreen } from "@/components/sections/admin/verifier-screen";
 import { PendingReview } from "@/lib/types";
 
 function mapToPendingReview(review: AdminReview, order?: AdminOrder): PendingReview {
-  // Get purchase proof URL from order if available
-  const orderScreenshot = order?.purchase_proof 
-    ? `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}${order.purchase_proof}`
-    : '/placeholder-order.png';
-  
-  // Use review URL or placeholder
+  // Purchase proof is not provided in admin order data; use placeholder
+  const orderScreenshot = '/placeholder-order.png';
+  // Use review URL as proof if available; otherwise placeholder
   const reviewScreenshot = review.review_url || '/placeholder-review.png';
 
   return {
     id: review.id.toString(),
+    userId: review.user_email || "",
     userName: review.user_name || "Unknown",
-    orderId: review.order_id,
     productName: review.product_name,
-    rating: review.rating,
-    reviewText: review.review_text || "",
-    reviewUrl: review.review_url || "",
+    productImage: "/placeholder-product.png",
+    orderId: review.order_id,
     orderScreenshot,
     reviewScreenshot,
-    submittedAt: review.submitted_at || review.created_at,
+    reviewLink: review.review_url || "#",
+    brandRequirements: {
+      rating: review.rating || 5,
+      mustInclude: [],
+      mustNotInclude: [],
+    },
+    submittedAt: review.created_at,
     status: review.status.toLowerCase() as "pending" | "approved" | "rejected",
   };
 }

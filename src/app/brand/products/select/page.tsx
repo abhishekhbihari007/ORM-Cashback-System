@@ -15,7 +15,7 @@ function mapBrandProductToProduct(bp: BrandProduct): Product {
     rating: 0, // Not available in product data, would need to calculate from reviews
     reviews: 0, // Not available, would need to count
     targetReviews: 100, // Default
-    status: bp.is_active ? "growing" : "stable",
+    status: "growing",
   };
 }
 
