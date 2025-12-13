@@ -1210,3 +1210,55 @@ export async function healthCheck(): Promise<{ status: string; message: string }
   }
 }
 
+
+    rating: number;
+    title?: string;
+    review_text?: string;
+    review_url?: string;
+  }): Promise<ReviewSubmissionResponse> {
+    return apiRequest<ReviewSubmissionResponse>('/user/reviews/', {
+      method: 'POST',
+      body: JSON.stringify(payload),
+    });
+  },
+  async getReviews(): Promise<BrandReviewsResponse> {
+    return apiRequest<BrandReviewsResponse>('/user/reviews/list/');
+  },
+  async getWallet(): Promise<UserWalletResponse> {
+    return apiRequest<UserWalletResponse>('/user/wallet/');
+  },
+
+  async requestWithdrawal(amount: string, paymentMethod: 'upi' | 'bank', accountDetails: string): Promise<{ status: string; message: string; transaction: any }> {
+    return apiRequest('/user/withdraw/', {
+      method: 'POST',
+      body: JSON.stringify({
+        amount,
+        payment_method: paymentMethod,
+        account_details: accountDetails,
+      }),
+    });
+  },
+};
+
+/**
+ * Health check
+ */
+export async function healthCheck(): Promise<{ status: string; message: string }> {
+  try {
+    const response = await fetch(`${API_BASE_URL}/health/`);
+    if (!response.ok) {
+      throw new Error('Health check failed');
+    }
+    return response.json();
+  } catch (error: any) {
+    if (error.name === 'TypeError' && error.message.includes('fetch')) {
+      throw new Error(
+        `Backend server is not reachable at ${API_BASE_URL}. ` +
+        `Please ensure the Django server is running. Start it with: ` +
+        `cd orm-cashback-backend && python manage.py runserver`
+      );
+    }
+    throw error;
+  }
+}
+

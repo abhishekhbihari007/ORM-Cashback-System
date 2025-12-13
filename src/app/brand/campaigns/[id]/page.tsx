@@ -19,7 +19,7 @@ export default function CampaignDetailPage() {
   const [isEditing, setIsEditing] = useState(false);
   const [editName, setEditName] = useState("");
 
-  const loadData = async () => {
+  const loadData = useCallback(async () => {
     try {
       setIsLoading(true);
       setError(null);
@@ -34,13 +34,13 @@ export default function CampaignDetailPage() {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [campaignId]);
 
   useEffect(() => {
     if (campaignId) {
       loadData();
     }
-  }, [campaignId]);
+  }, [campaignId, loadData]);
 
   const handleStatusUpdate = async (newStatus: Campaign['status']) => {
     if (!campaign) return;
