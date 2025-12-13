@@ -143,11 +143,6 @@ export default function AdminPage() {
     }
   };
 
-  const [showRejectOrderModal, setShowRejectOrderModal] = useState(false);
-  const [showRejectReviewModal, setShowRejectReviewModal] = useState(false);
-  const [rejectReason, setRejectReason] = useState("");
-  const [pendingRejectItem, setPendingRejectItem] = useState<{ type: 'order' | 'review'; id: number } | null>(null);
-
   const handleRejectOrder = async (order: AdminOrder) => {
     setPendingRejectItem({ type: 'order', id: order.id });
     setRejectReason("");

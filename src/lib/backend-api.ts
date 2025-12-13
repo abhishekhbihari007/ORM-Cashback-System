@@ -1209,26 +1209,6 @@ export async function healthCheck(): Promise<{ status: string; message: string }
     throw error;
   }
 }
-
-
-    rating: number;
-    title?: string;
-    review_text?: string;
-    review_url?: string;
-  }): Promise<ReviewSubmissionResponse> {
-    return apiRequest<ReviewSubmissionResponse>('/user/reviews/', {
-      method: 'POST',
-      body: JSON.stringify(payload),
-    });
-  },
-  async getReviews(): Promise<BrandReviewsResponse> {
-    return apiRequest<BrandReviewsResponse>('/user/reviews/list/');
-  },
-  async getWallet(): Promise<UserWalletResponse> {
-    return apiRequest<UserWalletResponse>('/user/wallet/');
-  },
-
-  async requestWithdrawal(amount: string, paymentMethod: 'upi' | 'bank', accountDetails: string): Promise<{ status: string; message: string; transaction: any }> {
     return apiRequest('/user/withdraw/', {
       method: 'POST',
       body: JSON.stringify({

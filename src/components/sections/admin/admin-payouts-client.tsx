@@ -42,8 +42,6 @@ export function AdminPayoutsClient() {
     loadPayouts();
   }, [loadPayouts]);
 
-  const [success, setSuccess] = useState<string | null>(null);
-
   const handleMarkAsDone = async (payoutId: string) => {
     const payout = payouts.find((p) => p.id === payoutId);
     if (!payout) return;

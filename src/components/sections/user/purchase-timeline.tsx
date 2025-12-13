@@ -1,7 +1,7 @@
 import React from "react";
 import { PurchaseHistory } from "@/lib/types";
 import Link from "next/link";
-import { FaCheckCircle, FaClock, FaTag, FaCircleXmark } from "react-icons/fa6";
+import { FaCircleCheck, FaClock, FaTag, FaCircleXmark } from "react-icons/fa6";
 
 type PurchaseWithMeta = PurchaseHistory & {
   isLocal?: boolean;
@@ -27,7 +27,7 @@ const statusStyles: Record<
   },
   paid: {
     badge: "bg-emerald-50 text-emerald-700 border border-emerald-100",
-    icon: <FaCheckCircle className="h-3.5 w-3.5" />,
+    icon: <FaCircleCheck className="h-3.5 w-3.5" />,
   },
   rejected: {
     badge: "bg-red-50 text-red-700 border border-red-100",
