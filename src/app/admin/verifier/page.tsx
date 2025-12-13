@@ -1,13 +1,10 @@
-import { api } from "@/lib/api";
-import { VerifierScreen } from "@/components/sections/admin/verifier-screen";
+import { AdminVerifierClient } from "@/components/sections/admin/admin-verifier-client";
 
 export const metadata = {
   title: "Admin • Verifier",
 };
 
-export default async function AdminVerifierPage() {
-  const pendingReviews = await api.fetchPendingReviews();
-
+export default function AdminVerifierPage() {
   return (
     <div className="bg-slate-50">
       <div className="container-responsive space-y-6 py-10">
@@ -18,7 +15,7 @@ export default async function AdminVerifierPage() {
             Approve or reject reviews quickly. Left side shows user uploads, right side shows brand requirements.
           </p>
         </div>
-        <VerifierScreen reviews={pendingReviews} />
+        <AdminVerifierClient />
       </div>
     </div>
   );

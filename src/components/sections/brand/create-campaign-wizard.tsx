@@ -1,23 +1,150 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { brandApi, type BrandProduct } from "@/lib/backend-api";
+import { FaPlus, FaTrash, FaSpinner } from "react-icons/fa6";
 
 type Step = 1 | 2 | 3;
 
-export function CreateCampaignWizard() {
-  const [step, setStep] = useState<Step>(1);
-  const [productLink, setProductLink] = useState("");
-  const [quantity, setQuantity] = useState("");
-  const [budgetPerReview, setBudgetPerReview] = useState("");
-  const [isSubmitting, setIsSubmitting] = useState(false);
+interface ProductConfig {
+  productId: string;
+  ratingsRequired: string;
+  reviewsRequired: string;
+  cashback: string;
+  currency: string;
+}
 
-  const totalBudget = quantity && budgetPerReview 
-    ? (parseInt(quantity) * parseFloat(budgetPerReview)).toFixed(2)
-    : "0";
+export function CreateCampaignWizard() {
+  const router = useRouter();
+  const [step, setStep] = useState<Step>(1);
+  const [products, setProducts] = useState<BrandProduct[]>([]);
+  const [isLoadingProducts, setIsLoadingProducts] = useState(true);
+  const [campaignName, setCampaignName] = useState("");
+  const [productConfigs, setProductConfigs] = useState<ProductConfig[]>([
+    { productId: "", ratingsRequired: "", reviewsRequired: "", cashback: "", currency: "INR" },
+  ]);
+  const [budgetByCurrency, setBudgetByCurrency] = useState<Record<string, number>>({});
+  const [primaryCurrency, setPrimaryCurrency] = useState("INR");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState<string | null>(null);
+  const [walletBalance, setWalletBalance] = useState<{ balance: number; locked: number; available: number; currency: string } | null>(null);
+
+  useEffect(() => {
+    const loadProducts = async () => {
+      try {
+        setIsLoadingProducts(true);
+        const response = await brandApi.getProducts();
+        setProducts(response.products);
+      } catch (err: any) {
+        setError(err.message || "Failed to load products. Add a product first.");
+      } finally {
+        setIsLoadingProducts(false);
+      }
+    };
+
+    const loadWallet = async () => {
+      try {
+        const stats = await brandApi.getStats();
+        setWalletBalance({
+          balance: parseFloat(stats.stats.wallet_balance || "0"),
+          locked: parseFloat(stats.stats.locked_balance || "0"),
+          available: parseFloat(stats.stats.available_balance || "0"),
+          currency: stats.stats.currency || "INR",
+        });
+      } catch (err: any) {
+        // Error is already handled by setError, only log in development
+        if (process.env.NODE_ENV === 'development') {
+          console.error("Failed to load wallet balance:", err);
+        }
+      }
+    };
+
+    loadProducts();
+    loadWallet();
+  }, []);
+
+  useEffect(() => {
+    // Calculate budget by currency
+    const budget: Record<string, number> = {};
+    let firstCurrency = "INR";
+    
+    productConfigs.forEach((config) => {
+      if (config.reviewsRequired && config.cashback && config.currency) {
+        const currency = config.currency;
+        if (!budget[currency]) {
+          budget[currency] = 0;
+        }
+        budget[currency] += parseInt(config.reviewsRequired, 10) * parseFloat(config.cashback);
+        
+        if (!firstCurrency || firstCurrency === "INR") {
+          firstCurrency = currency;
+        }
+      }
+    });
+    
+    setBudgetByCurrency(budget);
+    setPrimaryCurrency(firstCurrency);
+  }, [productConfigs]);
+
+  const handleAddProduct = () => {
+    setProductConfigs([
+      ...productConfigs,
+      { productId: "", ratingsRequired: "", reviewsRequired: "", cashback: "", currency: primaryCurrency },
+    ]);
+  };
+
+  const handleRemoveProduct = (index: number) => {
+    if (productConfigs.length > 1) {
+      setProductConfigs(productConfigs.filter((_, i) => i !== index));
+    }
+  };
+
+  const handleProductConfigChange = (index: number, field: keyof ProductConfig, value: string) => {
+    const updated = [...productConfigs];
+    
+    // Update currency based on selected product
+    if (field === 'productId' && value) {
+      const product = products.find((p) => String(p.id) === value);
+      if (product) {
+        updated[index] = { ...updated[index], [field]: value, currency: product.currency || "INR" };
+      } else {
+        updated[index] = { ...updated[index], [field]: value };
+      }
+    } else {
+      updated[index] = { ...updated[index], [field]: value };
+    }
+    
+    setProductConfigs(updated);
+  };
 
   const handleNext = () => {
-    if (step < 3) {
-      setStep((prev) => (prev + 1) as Step);
+    if (step === 1) {
+      if (!campaignName.trim()) {
+        setError("Please enter a campaign name");
+        return;
+      }
+      setError(null);
+      setStep(2);
+    } else if (step === 2) {
+      // Validate product configs
+      const hasInvalid = productConfigs.some(
+        (config) =>
+          !config.productId ||
+          !config.ratingsRequired ||
+          !config.reviewsRequired ||
+          !config.cashback ||
+          parseInt(config.ratingsRequired, 10) <= 0 ||
+          parseInt(config.reviewsRequired, 10) <= 0 ||
+          parseFloat(config.cashback) <= 0
+      );
+      if (hasInvalid) {
+        setError("Please fill all fields for all products");
+        return;
+      }
+      setError(null);
+      setStep(3);
     }
   };
 
@@ -28,17 +155,114 @@ export function CreateCampaignWizard() {
   };
 
   const handleSubmit = async () => {
+    // Validate all product configs
+    const hasInvalid = productConfigs.some(
+      (config) =>
+        !config.productId ||
+        !config.ratingsRequired ||
+        !config.reviewsRequired ||
+        !config.cashback ||
+        parseInt(config.ratingsRequired, 10) <= 0 ||
+        parseInt(config.reviewsRequired, 10) <= 0 ||
+        parseFloat(config.cashback) <= 0
+    );
+
+    if (hasInvalid) {
+      setError("Please fill all fields for all products");
+      return;
+    }
+
     setIsSubmitting(true);
-    // In real app, this would create the campaign via API
-    setTimeout(() => {
-      alert("Campaign created successfully!");
+    setError(null);
+    setSuccess(null);
+
+    // Validate all products use the same currency
+    const currencies = productConfigs
+      .filter(config => config.productId)
+      .map(config => {
+        const product = products.find((p) => String(p.id) === config.productId);
+        return product?.currency || config.currency || "INR";
+      });
+    
+    const uniqueCurrencies = [...new Set(currencies)];
+    if (uniqueCurrencies.length > 1) {
+      setError(`All products must use the same currency. Found: ${uniqueCurrencies.join(", ")}`);
       setIsSubmitting(false);
-      // Reset form
-      setProductLink("");
-      setQuantity("");
-      setBudgetPerReview("");
-      setStep(1);
-    }, 1500);
+      return;
+    }
+
+    const campaignCurrency = uniqueCurrencies[0] || primaryCurrency;
+    const totalBudget = Object.values(budgetByCurrency).reduce((sum, val) => sum + val, 0);
+    const totalBudgetStr = totalBudget.toFixed(2);
+
+    // Validate wallet balance
+    if (walletBalance) {
+      if (campaignCurrency !== walletBalance.currency) {
+        setError(`Campaign currency (${campaignCurrency}) does not match wallet currency (${walletBalance.currency})`);
+        setIsSubmitting(false);
+        return;
+      }
+      
+      if (totalBudget > walletBalance.available) {
+        setError(`Insufficient wallet balance. Required: ${campaignCurrency} ${totalBudgetStr}, Available: ${campaignCurrency} ${walletBalance.available.toFixed(2)}`);
+        setIsSubmitting(false);
+        return;
+      }
+    }
+
+    try {
+      // Create campaign
+      const campaignResponse = await brandApi.createCampaign({
+        name: campaignName,
+        total_budget: totalBudgetStr,
+        currency: campaignCurrency,
+      });
+
+      const campaignId = campaignResponse.campaign.id;
+
+      // Create review slots for each product and link them to the campaign
+      const createdSlots: number[] = [];
+      try {
+        for (const config of productConfigs) {
+          const product = products.find((p) => String(p.id) === config.productId);
+          if (product) {
+            const slotResponse = await brandApi.createReviewSlot({
+              product: parseInt(config.productId, 10),
+              campaign: campaignId,
+              cashback_amount: config.cashback,
+              currency: product.currency || config.currency || campaignCurrency,
+              total_slots: parseInt(config.reviewsRequired, 10),
+              min_review_rating: parseInt(config.ratingsRequired, 10),
+              review_deadline_days: 7,
+            });
+            // Track created slots for rollback if needed
+            if (slotResponse && typeof slotResponse === 'object' && 'campaign' in slotResponse && slotResponse.campaign && typeof slotResponse.campaign === 'object' && 'id' in slotResponse.campaign) {
+              createdSlots.push((slotResponse.campaign as { id: number }).id);
+            }
+          }
+        }
+      } catch (slotError: any) {
+        // If slot creation fails, delete the campaign to maintain consistency
+        try {
+          await brandApi.deleteCampaign(campaignId);
+          setError(`Failed to create review slots: ${slotError.message}. Campaign creation was rolled back. Please try again.`);
+        } catch (deleteError: any) {
+          // If deletion also fails, inform user to manually delete
+          setError(`Campaign created but failed to create review slots: ${slotError.message}. Please delete the campaign manually and try again.`);
+        }
+        setIsSubmitting(false);
+        return;
+      }
+
+      setSuccess("Campaign created successfully!");
+      setTimeout(() => {
+        router.push(`/brand/campaigns/${campaignId}`);
+      }, 1500);
+    } catch (err: any) {
+      setError(err.message || "Failed to create campaign.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -63,7 +287,7 @@ export function CreateCampaignWizard() {
                     step >= stepNum ? "text-slate-900" : "text-slate-400"
                   }`}
                 >
-                  {stepNum === 1 ? "Product Link" : stepNum === 2 ? "Quantity" : "Budget"}
+                  {stepNum === 1 ? "Campaign Name" : stepNum === 2 ? "Add Products" : "Budget"}
                 </p>
               </div>
               {stepNum < 3 && (
@@ -80,36 +304,41 @@ export function CreateCampaignWizard() {
 
       {/* Step Content */}
       <div className="rounded-3xl border border-slate-100 bg-white p-8 shadow-sm">
+        {error && (
+          <div className="mb-6 rounded-2xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700">
+            {error}
+          </div>
+        )}
+        {success && (
+          <div className="mb-6 rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-700">
+            {success}
+          </div>
+        )}
+
         {step === 1 && (
           <div className="space-y-6">
             <div>
-              <h2 className="text-2xl font-bold text-slate-900">Step 1: Product Link</h2>
+              <h2 className="text-2xl font-bold text-slate-900">Step 1: Campaign Name</h2>
               <p className="mt-2 text-slate-600">
-                Paste the Amazon, Flipkart, or Nykaa product URL you want reviews for.
+                Give your campaign a name to easily identify it later.
               </p>
             </div>
             <div>
               <label className="mb-2 block text-sm font-semibold text-slate-700">
-                Product URL
+                Campaign Name
               </label>
               <input
-                type="url"
-                value={productLink}
-                onChange={(e) => setProductLink(e.target.value)}
-                placeholder="https://amazon.in/dp/..."
-                className="w-full rounded-xl border border-slate-200 px-4 py-3 focus:border-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-100"
+                type="text"
+                value={campaignName}
+                onChange={(e) => setCampaignName(e.target.value)}
+                placeholder="Summer Product Launch Campaign"
+                className="w-full rounded-xl border border-slate-200 px-4 py-3 text-lg focus:border-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-100"
               />
-              {productLink && (
-                <div className="mt-4 rounded-xl border border-slate-200 bg-slate-50 p-4">
-                  <p className="text-sm font-semibold text-slate-900">Preview</p>
-                  <p className="mt-1 text-sm text-slate-600">{productLink}</p>
-                </div>
-              )}
             </div>
             <div className="flex justify-end">
               <button
                 onClick={handleNext}
-                disabled={!productLink}
+                disabled={!campaignName.trim()}
                 className="rounded-full bg-blue-600 px-6 py-3 font-semibold text-white transition hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 Next →
@@ -121,27 +350,138 @@ export function CreateCampaignWizard() {
         {step === 2 && (
           <div className="space-y-6">
             <div>
-              <h2 className="text-2xl font-bold text-slate-900">Step 2: Add Slots</h2>
+              <h2 className="text-2xl font-bold text-slate-900">Step 2: Add Products</h2>
               <p className="mt-2 text-slate-600">
-                How many reviews do you need? This sets the number of slots (reviews required) for this campaign.
+                Add products to your campaign. For each product, specify the number of ratings and reviews required.
+                Remember, one campaign can have multiple products and each product will have slots.
               </p>
             </div>
-            <div>
-              <label className="mb-2 block text-sm font-semibold text-slate-700">
-                Number of Slots (Reviews Required)
-              </label>
-              <input
-                type="number"
-                value={quantity}
-                onChange={(e) => setQuantity(e.target.value)}
-                placeholder="50"
-                min="1"
-                className="w-full rounded-xl border border-slate-200 px-4 py-3 text-lg focus:border-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-100"
-              />
-              <p className="mt-2 text-xs text-slate-500">
-                Each slot represents one review. Users will fill these slots by purchasing and reviewing your product.
-              </p>
-            </div>
+
+            {isLoadingProducts ? (
+              <div className="flex items-center justify-center py-8">
+                <FaSpinner className="h-6 w-6 animate-spin text-blue-600" />
+              </div>
+            ) : products.length === 0 ? (
+              <div className="rounded-2xl border border-dashed border-slate-300 bg-slate-50 p-6 text-sm text-slate-600">
+                No products found.{" "}
+                <a href="/brand/products" className="text-indigo-600 underline">
+                  Add a product first
+                </a>
+                .
+              </div>
+            ) : (
+              <div className="space-y-4">
+                {productConfigs.map((config, index) => (
+                  <div
+                    key={index}
+                    className="rounded-xl border border-slate-200 bg-slate-50 p-4"
+                  >
+                    <div className="mb-4 flex items-center justify-between">
+                      <h3 className="font-semibold text-slate-900">Product {index + 1}</h3>
+                      {productConfigs.length > 1 && (
+                        <button
+                          onClick={() => handleRemoveProduct(index)}
+                          className="text-red-600 hover:text-red-700"
+                        >
+                          <FaTrash className="h-4 w-4" />
+                        </button>
+                      )}
+                    </div>
+
+                    <div className="space-y-4">
+                      <div>
+                        <label className="mb-2 block text-sm font-semibold text-slate-700">
+                          Product Link
+                        </label>
+                        <select
+                          value={config.productId}
+                          onChange={(e) =>
+                            handleProductConfigChange(index, "productId", e.target.value)
+                          }
+                          className="w-full rounded-xl border border-slate-200 px-4 py-3 focus:border-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-100"
+                        >
+                          <option value="">Select product</option>
+                          {products.map((product) => (
+                            <option key={product.id} value={product.id}>
+                              {product.name} • {product.review_platform}
+                            </option>
+                          ))}
+                        </select>
+                        {config.productId && (
+                          <a
+                            href={products.find((p) => String(p.id) === config.productId)?.product_url}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="mt-2 inline-flex text-sm text-indigo-600 underline"
+                          >
+                            View product link
+                          </a>
+                        )}
+                      </div>
+
+                      <div className="grid gap-4 md:grid-cols-3">
+                        <div>
+                          <label className="mb-2 block text-sm font-semibold text-slate-700">
+                            Number of Ratings Required
+                          </label>
+                          <input
+                            type="number"
+                            min="1"
+                            max="5"
+                            value={config.ratingsRequired}
+                            onChange={(e) =>
+                              handleProductConfigChange(index, "ratingsRequired", e.target.value)
+                            }
+                            placeholder="5"
+                            className="w-full rounded-xl border border-slate-200 px-4 py-3 focus:border-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-100"
+                          />
+                        </div>
+                        <div>
+                          <label className="mb-2 block text-sm font-semibold text-slate-700">
+                            Number of Reviews Required
+                          </label>
+                          <input
+                            type="number"
+                            min="1"
+                            value={config.reviewsRequired}
+                            onChange={(e) =>
+                              handleProductConfigChange(index, "reviewsRequired", e.target.value)
+                            }
+                            placeholder="10"
+                            className="w-full rounded-xl border border-slate-200 px-4 py-3 focus:border-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-100"
+                          />
+                        </div>
+                        <div>
+                          <label className="mb-2 block text-sm font-semibold text-slate-700">
+                            Cashback per Review ({config.currency || primaryCurrency})
+                          </label>
+                          <input
+                            type="number"
+                            min="0.01"
+                            step="0.01"
+                            value={config.cashback}
+                            onChange={(e) =>
+                              handleProductConfigChange(index, "cashback", e.target.value)
+                            }
+                            placeholder="100"
+                            className="w-full rounded-xl border border-slate-200 px-4 py-3 focus:border-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-100"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+
+                <button
+                  onClick={handleAddProduct}
+                  className="flex w-full items-center justify-center gap-2 rounded-xl border-2 border-dashed border-slate-300 bg-white px-4 py-3 text-slate-600 transition hover:border-blue-400 hover:bg-blue-50 hover:text-blue-600"
+                >
+                  <FaPlus className="h-4 w-4" />
+                  Add Another Product
+                </button>
+              </div>
+            )}
+
             <div className="flex justify-between">
               <button
                 onClick={handleBack}
@@ -151,8 +491,7 @@ export function CreateCampaignWizard() {
               </button>
               <button
                 onClick={handleNext}
-                disabled={!quantity || parseInt(quantity) <= 0}
-                className="rounded-full bg-blue-600 px-6 py-3 font-semibold text-white transition hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="rounded-full bg-blue-600 px-6 py-3 font-semibold text-white transition hover:bg-blue-700"
               >
                 Next →
               </button>
@@ -163,45 +502,34 @@ export function CreateCampaignWizard() {
         {step === 3 && (
           <div className="space-y-6">
             <div>
-              <h2 className="text-2xl font-bold text-slate-900">Step 3: Budget</h2>
+              <h2 className="text-2xl font-bold text-slate-900">Step 3: Budget Summary</h2>
               <p className="mt-2 text-slate-600">
-                Set the cost per review. This is the amount you&apos;ll pay for each approved review.
+                Review your campaign budget before creating it.
               </p>
             </div>
-            <div>
-              <label className="mb-2 block text-sm font-semibold text-slate-700">
-                Cost per Review (₹)
-              </label>
-              <input
-                type="number"
-                value={budgetPerReview}
-                onChange={(e) => setBudgetPerReview(e.target.value)}
-                placeholder="100"
-                min="1"
-                step="0.01"
-                className="w-full rounded-xl border border-slate-200 px-4 py-3 text-lg focus:border-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-100"
-              />
-            </div>
+
             <div className="rounded-xl bg-blue-50 p-6">
-              <div className="space-y-2">
-                <div className="flex justify-between text-sm">
-                  <span className="text-slate-600">Quantity</span>
-                  <span className="font-semibold text-slate-900">{quantity || 0} reviews</span>
+              <h3 className="mb-4 font-semibold text-slate-900">Campaign Summary</h3>
+              <div className="space-y-2 text-sm">
+                <div className="flex justify-between">
+                  <span className="text-slate-600">Campaign Name</span>
+                  <span className="font-semibold text-slate-900">{campaignName}</span>
                 </div>
-                <div className="flex justify-between text-sm">
-                  <span className="text-slate-600">Cost per Review</span>
-                  <span className="font-semibold text-slate-900">
-                    ₹{budgetPerReview || "0"}
-                  </span>
+                <div className="flex justify-between">
+                  <span className="text-slate-600">Total Products</span>
+                  <span className="font-semibold text-slate-900">{productConfigs.length}</span>
                 </div>
                 <div className="border-t border-blue-200 pt-2">
                   <div className="flex justify-between">
                     <span className="font-semibold text-slate-900">Total Budget</span>
-                    <span className="text-xl font-bold text-blue-700">₹{totalBudget}</span>
+                    <span className="text-xl font-bold text-blue-700">
+                      {primaryCurrency} {Object.values(budgetByCurrency).reduce((sum, val) => sum + val, 0).toFixed(2)}
+                    </span>
                   </div>
                 </div>
               </div>
             </div>
+
             <div className="flex justify-between">
               <button
                 onClick={handleBack}
@@ -211,10 +539,17 @@ export function CreateCampaignWizard() {
               </button>
               <button
                 onClick={handleSubmit}
-                disabled={isSubmitting || !budgetPerReview || parseFloat(budgetPerReview) <= 0}
+                disabled={isSubmitting || Object.values(budgetByCurrency).reduce((sum, val) => sum + val, 0) <= 0}
                 className="rounded-full bg-gradient-to-r from-green-600 to-emerald-600 px-6 py-3 font-semibold text-white shadow-lg shadow-green-200 transition hover:from-green-700 hover:to-emerald-700 disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                {isSubmitting ? "Creating..." : "Create Campaign"}
+                {isSubmitting ? (
+                  <span className="flex items-center gap-2">
+                    <FaSpinner className="h-4 w-4 animate-spin" />
+                    Creating...
+                  </span>
+                ) : (
+                  "Create Campaign"
+                )}
               </button>
             </div>
           </div>
@@ -223,4 +558,3 @@ export function CreateCampaignWizard() {
     </div>
   );
 }
-

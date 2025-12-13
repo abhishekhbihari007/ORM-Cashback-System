@@ -1,13 +1,10 @@
-import { api } from "@/lib/api";
-import { ReviewReportList } from "@/components/sections/brand/review-report-list";
+import { ReviewReportsClient } from "@/components/sections/brand/review-reports-client";
 
 export const metadata = {
   title: "Brand • Review Reports",
 };
 
-export default async function BrandReportsPage() {
-  const reviewReports = await api.fetchReviewReports();
-
+export default function BrandReportsPage() {
   return (
     <div className="page-wrapper bg-slate-50">
       <div className="container-responsive space-y-6 py-10">
@@ -18,7 +15,7 @@ export default async function BrandReportsPage() {
             View all actual reviews posted on Amazon/Flipkart. Click links to verify them.
           </p>
         </div>
-        <ReviewReportList reports={reviewReports} />
+        <ReviewReportsClient />
       </div>
     </div>
   );

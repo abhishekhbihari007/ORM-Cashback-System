@@ -6,7 +6,8 @@ import { usePathname } from "next/navigation";
 import { useAuth } from "@/contexts/AuthContext";
 import { useAnimation } from "@/contexts/AnimationContext";
 import { LogoIcon } from "@/components/ui/logo-icon";
-import { FaUser, FaRightFromBracket } from "react-icons/fa6";
+import { FaUser, FaRightFromBracket, FaBell } from "react-icons/fa6";
+import notifications from "@/data/notifications";
 
 export function FeedHeader() {
   const { user, logout } = useAuth();
@@ -14,12 +15,16 @@ export function FeedHeader() {
   const pathname = usePathname();
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const [accountDropdownOpen, setAccountDropdownOpen] = useState(false);
+  const [notificationOpen, setNotificationOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const notificationRef = useRef<HTMLDivElement>(null);
 
   const toggleMobileNav = () => setMobileNavOpen((prev) => !prev);
   const closeMobileNav = () => setMobileNavOpen(false);
   const toggleAccountDropdown = () => setAccountDropdownOpen((prev) => !prev);
   const closeAccountDropdown = () => setAccountDropdownOpen(false);
+  const toggleNotificationDropdown = () => setNotificationOpen((prev) => !prev);
+  const closeNotificationDropdown = () => setNotificationOpen(false);
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -37,6 +42,23 @@ export function FeedHeader() {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [accountDropdownOpen]);
+
+  // Close notifications dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (notificationRef.current && !notificationRef.current.contains(event.target as Node)) {
+        setNotificationOpen(false);
+      }
+    };
+
+    if (notificationOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [notificationOpen]);
 
   const handleLogout = () => {
     if (confirm("Are you sure you want to logout?")) {
@@ -63,18 +85,18 @@ export function FeedHeader() {
       <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 flex items-center justify-between relative py-2">
         {/* Hamburger - mobile */}
         <button
-          className="absolute left-0 sm:left-1.5 top-1/2 -translate-y-1/2 -translate-x-full flex flex-col items-start justify-center gap-1 w-6 h-6 sm:w-7 sm:h-7 transition-all duration-300 hover:scale-110 z-50 lg:hidden"
+          className="flex flex-col items-center justify-center gap-1 w-6 h-6 sm:w-7 sm:h-7 transition-all duration-300 hover:scale-110 z-50 lg:hidden flex-shrink-0"
           onClick={toggleMobileNav}
           aria-label="Toggle menu"
         >
-          <span className={`h-0.5 w-6 bg-slate-900 transition-all duration-300 ${mobileNavOpen ? 'rotate-45 translate-y-1.5' : ''}`} />
-          <span className={`h-0.5 w-6 bg-slate-900 transition-all duration-300 ${mobileNavOpen ? '-rotate-45 -translate-y-1.5' : ''}`} />
+          <span className={`h-0.5 w-4 sm:w-5 bg-slate-900 transition-all duration-300 ${mobileNavOpen ? 'rotate-45 translate-y-1.5 w-5 sm:w-6' : ''}`} />
+          <span className={`h-0.5 w-5 sm:w-6 bg-slate-900 transition-all duration-300 ${mobileNavOpen ? '-rotate-45 -translate-y-1.5' : ''}`} />
         </button>
 
         {/* Left Side - Logo */}
         <Link 
           href={user?.role === "user" ? "/user" : "/"} 
-          className="flex items-center gap-1.5 sm:gap-2 ml-4 sm:ml-6 lg:ml-0" 
+          className="flex items-center gap-1.5 sm:gap-2 ml-2 sm:ml-4 lg:ml-0" 
           onClick={() => {
             triggerGraphAnimation();
           }}
@@ -109,8 +131,53 @@ export function FeedHeader() {
         </nav>
 
         {/* Right Side - User Avatar with Dropdown */}
+        <div className="flex items-center gap-2 sm:gap-4 relative">
+          {/* Notifications */}
+          {user && (
+            <div className="relative" ref={notificationRef}>
+              <button
+                onClick={toggleNotificationDropdown}
+                className="flex h-8 w-8 sm:h-10 sm:w-10 items-center justify-center rounded-full bg-slate-100 text-slate-600 relative"
+                aria-label="Notifications"
+              >
+                <FaBell size={16} />
+                <span className="absolute -top-1 -right-1 rounded-full bg-red-500 px-1.5 text-[10px] font-semibold text-white">
+                  {notifications.slice(0, 99).length}
+                </span>
+              </button>
+              {notificationOpen && (
+                <div className="absolute right-0 mt-2 w-72 rounded-lg border border-slate-200 bg-white shadow-lg z-50">
+                  <div className="flex items-center justify-between px-4 py-3 border-b border-slate-100">
+                    <p className="text-sm font-semibold text-slate-900">Notifications</p>
+                    <button className="text-xs font-medium text-blue-600 hover:underline">Mark all read</button>
+                  </div>
+                  <div className="max-h-80 overflow-y-auto">
+                    {notifications.length === 0 ? (
+                      <p className="px-4 py-6 text-sm text-slate-500 text-center">
+                        No notifications
+                      </p>
+                    ) : (
+                      notifications.map((note) => (
+                        <div key={note.id} className="px-4 py-3 border-b border-slate-100 last:border-none hover:bg-slate-50 transition">
+                          <p className="text-sm font-semibold text-slate-900">{note.title}</p>
+                          <p className="mt-0.5 text-xs text-slate-600">{note.message}</p>
+                          <p className="mt-1 text-xs text-slate-400">{note.time}</p>
+                        </div>
+                      ))
+                    )}
+                  </div>
+                  <div className="px-4 py-2 text-right border-t border-slate-100">
+                    <Link href="/notifications" className="text-xs font-semibold text-blue-600 hover:underline">
+                      View all →
+                    </Link>
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* User Avatar */}
         <div className="flex items-center gap-2 sm:gap-4 relative" ref={dropdownRef}>
-          {/* User Avatar - Clickable Button */}
           {user ? (
             <div className="relative">
               <button
@@ -122,8 +189,6 @@ export function FeedHeader() {
                 </div>
                 <span className="hidden sm:inline md:block text-xs sm:text-sm font-semibold text-slate-900">{user.name}</span>
               </button>
-
-              {/* Dropdown Menu */}
               {accountDropdownOpen && (
                 <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-slate-200 py-2 z-50">
                   <Link
@@ -151,6 +216,7 @@ export function FeedHeader() {
               <FaUser size={16} className="sm:w-[18px] sm:h-[18px]" />
             </div>
           )}
+          </div>
         </div>
       </div>
 

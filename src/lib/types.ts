@@ -41,8 +41,10 @@ export interface PurchaseHistory {
   store: string;
   product: string;
   amount: number;
-  status: "tracking" | "reviewed" | "paid";
+  status: "tracking" | "reviewed" | "paid" | "rejected";
   purchasedAt: string;
+  productLink?: string;
+  rejectionReason?: string;
 }
 
 export interface PaymentRecord {

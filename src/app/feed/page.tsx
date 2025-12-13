@@ -2,102 +2,157 @@
 
 import { MobileLayout } from "@/components/layouts/MobileLayout";
 import Image from "next/image";
+import { MouseEvent, useCallback, useState, useMemo, useEffect } from "react";
+import { FaMagnifyingGlass, FaXmark } from "react-icons/fa6";
+import { userApi, type ShopProduct } from "@/lib/backend-api";
 
-// Mock product data with marketplace links
-const mockProducts = [
-  {
-    id: "1",
-    productName: "Wireless Earbuds Pro",
-    price: 2999,
-    cashbackPercent: 100,
-    cashbackAmount: 2999,
-    productImage: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=1000&auto=format&fit=crop",
-    marketplace: "Amazon",
-    productLink: "https://www.amazon.in/dp/B0B1234567",
-  },
-  {
-    id: "2",
-    productName: "Vitamin C Face Serum",
-    price: 1299,
-    cashbackPercent: 100,
-    cashbackAmount: 1299,
-    productImage: "https://images.unsplash.com/photo-1620916566398-39f1143ab7be?q=80&w=1000&auto=format&fit=crop",
-    marketplace: "Nykaa",
-    productLink: "https://www.nykaa.com/vitamin-c-face-serum/p/123456",
-  },
-  {
-    id: "3",
-    productName: "Smart Watch Series 8",
-    price: 15999,
-    cashbackPercent: 100,
-    cashbackAmount: 15999,
-    productImage: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?q=80&w=1000&auto=format&fit=crop",
-    marketplace: "Flipkart",
-    productLink: "https://www.flipkart.com/smart-watch-series-8/p/itm123456",
-  },
-  {
-    id: "4",
-    productName: "Wireless Charging Pad",
-    price: 899,
-    cashbackPercent: 100,
-    cashbackAmount: 899,
-    productImage: "https://images.unsplash.com/photo-1586953208448-b95a79798f07?q=80&w=1000&auto=format&fit=crop",
-    marketplace: "Amazon",
-    productLink: "https://www.amazon.in/dp/B0B7654321",
-  },
-  {
-    id: "5",
-    productName: "Organic Green Tea",
-    price: 499,
-    cashbackPercent: 100,
-    cashbackAmount: 499,
-    productImage: "https://images.unsplash.com/photo-1556679343-c7306c1976bc?q=80&w=1000&auto=format&fit=crop",
-    marketplace: "Myntra",
-    productLink: "https://www.myntra.com/organic-green-tea/123456",
-  },
-  {
-    id: "6",
-    productName: "Yoga Mat Premium",
-    price: 1299,
-    cashbackPercent: 100,
-    cashbackAmount: 1299,
-    productImage: "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?q=80&w=1000&auto=format&fit=crop",
-    marketplace: "Amazon",
-    productLink: "https://www.amazon.in/dp/B0B9876543",
-  },
-  {
-    id: "7",
-    productName: "Luxury Perfume Set",
-    price: 3499,
-    cashbackPercent: 100,
-    cashbackAmount: 3499,
-    productImage: "https://images.unsplash.com/photo-1541643600914-78b084683601?q=80&w=1000&auto=format&fit=crop",
-    marketplace: "Sephora",
-    productLink: "https://www.sephora.in/product/luxury-perfume-set/123456",
-  },
-  {
-    id: "8",
-    productName: "Skincare Bundle",
-    price: 2499,
-    cashbackPercent: 100,
-    cashbackAmount: 2499,
-    productImage: "https://images.unsplash.com/photo-1556228578-0d85b1a4d571?q=80&w=1000&auto=format&fit=crop",
-    marketplace: "Nykaa",
-    productLink: "https://www.nykaa.com/skincare-bundle/p/789012",
-  },
-  {
-    id: "9",
-    productName: "Fashion T-Shirt",
-    price: 799,
-    cashbackPercent: 100,
-    cashbackAmount: 799,
-    productImage: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?q=80&w=1000&auto=format&fit=crop",
-    marketplace: "Myntra",
-    productLink: "https://www.myntra.com/fashion-t-shirt/456789",
-  },
-];
+type TrackedPurchase = {
+  id: string;
+  store: string;
+  product: string;
+  amount: number;
+  status: "tracking";
+  purchasedAt: string;
+  productLink: string;
+};
+
+const MARKETPLACE_LABELS: Record<string, string> = {
+  AMAZON: "Amazon",
+  FLIPKART: "Flipkart",
+  SHOPIFY: "Shopify",
+  NYKAA: "Nykaa",
+  MEESHO: "Meesho",
+  OTHER: "Other",
+};
+
+type ProductDisplay = {
+  id: string;
+  productName: string;
+  price: number;
+  cashbackPercent: number;
+  cashbackAmount: number;
+  productImage: string;
+  marketplace: string;
+  productLink: string;
+};
 
 export default function FeedPage() {
+  const [products, setProducts] = useState<ShopProduct[]>([]);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedMarketplace, setSelectedMarketplace] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [trackingId, setTrackingId] = useState<number | null>(null);
+
+  useEffect(() => {
+    const loadProducts = async () => {
+      try {
+        setIsLoading(true);
+        setError(null);
+        const response = await userApi.getShopProducts();
+        setProducts(response.products);
+      } catch (err: any) {
+        setError(err.message || "Unable to load products. Please try again.");
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    loadProducts();
+  }, []);
+
+  const marketplaces = useMemo(() => {
+    const unique = Array.from(new Set(products.map(p => MARKETPLACE_LABELS[p.review_platform] || p.review_platform)));
+    return unique.sort();
+  }, [products]);
+
+  const displayProducts: ProductDisplay[] = useMemo(() => {
+    return products.map((product) => ({
+      id: product.id.toString(),
+      productName: product.name,
+      price: parseFloat(product.price),
+      cashbackPercent: 100, // All products offer 100% cashback
+      cashbackAmount: parseFloat(product.price),
+      productImage: (product as any).product_image || product.main_image || "/placeholder-product.png",
+      marketplace: MARKETPLACE_LABELS[product.review_platform] || product.review_platform,
+      productLink: product.product_url,
+    }));
+  }, [products]);
+
+  const filteredProducts = useMemo(() => {
+    let filtered = displayProducts;
+
+    // Filter by marketplace
+    if (selectedMarketplace) {
+      filtered = filtered.filter(p => p.marketplace === selectedMarketplace);
+    }
+
+    // Filter by search query
+    if (searchQuery.trim()) {
+      const query = searchQuery.toLowerCase();
+      filtered = filtered.filter(p => 
+        p.productName.toLowerCase().includes(query) ||
+        p.marketplace.toLowerCase().includes(query)
+      );
+    }
+
+    return filtered;
+  }, [searchQuery, selectedMarketplace, displayProducts]);
+
+  const handleGetDealClick = useCallback(async (product: ProductDisplay, shopProduct: ShopProduct) => {
+    if (typeof window === "undefined") return;
+
+    // Track click via API
+    try {
+      setTrackingId(shopProduct.id);
+      await userApi.trackClick(shopProduct.id);
+    } catch (err: any) {
+      // Silently fail click tracking, only log in development
+      if (process.env.NODE_ENV === 'development') {
+        console.error("Failed to track click:", err);
+      }
+    } finally {
+      setTrackingId(null);
+    }
+
+    // Store in localStorage for tracking
+    const newEntry: TrackedPurchase = {
+      id: typeof crypto !== "undefined" && "randomUUID" in crypto ? crypto.randomUUID() : `${product.id}-${Date.now()}`,
+      store: product.marketplace,
+      product: product.productName,
+      amount: product.price,
+      status: "tracking",
+      purchasedAt: new Date().toISOString(),
+      productLink: product.productLink,
+    };
+
+    try {
+      const stored = window.localStorage.getItem("trackedPurchases");
+      const parsed: TrackedPurchase[] = stored ? JSON.parse(stored) : [];
+      const updated = [newEntry, ...parsed].slice(0, 50); // cap history
+      window.localStorage.setItem("trackedPurchases", JSON.stringify(updated));
+      window.dispatchEvent(new Event("tracked-purchases:updated"));
+    } catch (error) {
+      // Silently fail purchase tracking, only log in development
+      if (process.env.NODE_ENV === 'development') {
+        console.error("Unable to store tracked purchase", error);
+      }
+    }
+
+    window.open(product.productLink, "_blank", "noopener,noreferrer");
+  }, []);
+
+  const handleLinkClick = useCallback(
+    (event: MouseEvent<HTMLAnchorElement>, product: ProductDisplay) => {
+      event.preventDefault();
+      const shopProduct = products.find(p => p.id.toString() === product.id);
+      if (shopProduct) {
+        handleGetDealClick(product, shopProduct);
+      }
+    },
+    [handleGetDealClick, products]
+  );
+
   return (
     <MobileLayout>
       <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-indigo-50/30 relative overflow-hidden">
@@ -112,8 +167,86 @@ export default function FeedPage() {
               Get 100% cashback on these products
             </p>
           </div>
+
+          {/* Search and Filters */}
+          <div className="mb-6 space-y-4">
+            {/* Search Bar */}
+            <div className="relative">
+              <FaMagnifyingGlass className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-400" />
+              <input
+                type="text"
+                placeholder="Search products or marketplace..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full pl-10 pr-10 py-3 rounded-xl border border-slate-200 bg-white text-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-100"
+              />
+              {searchQuery && (
+                <button
+                  onClick={() => setSearchQuery("")}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+                >
+                  <FaXmark className="h-4 w-4" />
+                </button>
+              )}
+            </div>
+
+            {/* Marketplace Filters */}
+            <div className="flex flex-wrap gap-2">
+              <button
+                onClick={() => setSelectedMarketplace(null)}
+                className={`px-4 py-2 rounded-full text-xs font-semibold transition ${
+                  selectedMarketplace === null
+                    ? "bg-indigo-600 text-white"
+                    : "bg-slate-100 text-slate-600 hover:bg-slate-200"
+                }`}
+              >
+                All
+              </button>
+              {marketplaces.map((marketplace) => (
+                <button
+                  key={marketplace}
+                  onClick={() => setSelectedMarketplace(marketplace)}
+                  className={`px-4 py-2 rounded-full text-xs font-semibold transition ${
+                    selectedMarketplace === marketplace
+                      ? "bg-indigo-600 text-white"
+                      : "bg-slate-100 text-slate-600 hover:bg-slate-200"
+                  }`}
+                >
+                  {marketplace}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Results Count */}
+          {!isLoading && filteredProducts.length !== displayProducts.length && (
+            <div className="mb-4 text-sm text-slate-600">
+              Showing {filteredProducts.length} of {displayProducts.length} products
+            </div>
+          )}
+
+          {/* Error State */}
+          {error && (
+            <div className="rounded-xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700">
+              {error}
+            </div>
+          )}
+
+          {/* Loading State */}
+          {isLoading ? (
+            <div className="text-center py-12">
+              <p className="text-slate-500 mb-2">Loading products...</p>
+            </div>
+          ) : filteredProducts.length === 0 ? (
+            <div className="text-center py-12">
+              <p className="text-slate-500 mb-2">No products found</p>
+              <p className="text-sm text-slate-400">Try adjusting your search or filters</p>
+            </div>
+          ) : (
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-            {mockProducts.map((product) => (
+              {filteredProducts.map((product) => {
+                const isTracking = trackingId === parseInt(product.id);
+                return (
               <div
                 key={product.id}
                 className="group overflow-hidden rounded-xl border border-slate-200/50 bg-gradient-to-br from-white to-slate-50/50 shadow-md shadow-slate-200/40 transition-all hover:shadow-xl hover:shadow-orange-500/20 hover:scale-[1.02] backdrop-blur-sm"
@@ -158,14 +291,19 @@ export default function FeedPage() {
                     href={product.productLink}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="block w-full rounded-lg bg-gradient-to-r from-orange-500 to-red-600 px-3 py-2 text-xs font-semibold text-white shadow-lg shadow-orange-500/30 transition-all hover:from-orange-600 hover:to-red-700 hover:shadow-xl hover:shadow-orange-500/40 hover:scale-105 text-center"
+                    onClick={(event) => handleLinkClick(event, product)}
+                    className={`block w-full rounded-lg bg-gradient-to-r from-orange-500 to-red-600 px-3 py-2 text-xs font-semibold text-white shadow-lg shadow-orange-500/30 transition-all hover:from-orange-600 hover:to-red-700 hover:shadow-xl hover:shadow-orange-500/40 hover:scale-105 text-center ${
+                      isTracking ? "opacity-50 cursor-not-allowed pointer-events-none" : ""
+                    }`}
                   >
-                    Get Deal
+                    {isTracking ? "Tracking..." : "Get Deal"}
                   </a>
                 </div>
               </div>
-            ))}
+            );
+              })}
           </div>
+          )}
         </div>
       </div>
     </MobileLayout>

@@ -5,20 +5,28 @@ import Image from "next/image";
 
 type Props = {
   campaigns: Campaign[];
+  analytics?: {
+    reviews_received_today: number;
+    average_rating: number;
+    total_slots_remaining: number;
+    active_campaigns: number;
+  };
 };
 
-export function LiveAnalyticsBoard({ campaigns }: Props) {
+export function LiveAnalyticsBoard({ campaigns, analytics }: Props) {
   const activeCampaigns = campaigns.filter((c) => c.status === "active");
-  const totalToday = campaigns.reduce((sum, c) => {
-    // Simulate today's reviews (in real app, this would come from API)
+  const totalToday = analytics?.reviews_received_today ?? campaigns.reduce((sum, c) => {
+    // Fallback: simulate today's reviews
     return sum + Math.floor(c.reviewsReceived * 0.1);
   }, 0);
-  const averageRating =
+  const averageRating = analytics?.average_rating.toFixed(1) ?? (
     campaigns.length > 0
       ? (
           campaigns.reduce((sum, c) => sum + c.averageRating, 0) / campaigns.length
         ).toFixed(1)
-      : "0.0";
+      : "0.0"
+  );
+  const totalSlotsRemaining = analytics?.total_slots_remaining ?? campaigns.reduce((sum, c) => sum + c.slotsRemaining, 0);
 
   return (
     <div className="space-y-6">
@@ -40,7 +48,7 @@ export function LiveAnalyticsBoard({ campaigns }: Props) {
         />
         <StatCard
           label="Total Slots Remaining"
-          value={`${campaigns.reduce((sum, c) => sum + c.slotsRemaining, 0)}`}
+          value={`${totalSlotsRemaining}`}
           helper="Active campaigns"
         />
       </div>

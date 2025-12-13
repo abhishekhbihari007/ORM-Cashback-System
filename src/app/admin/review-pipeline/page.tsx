@@ -1,12 +1,10 @@
-import { api } from "@/lib/api";
-import { ReviewPipeline } from "@/components/sections/brand/review-pipeline";
+import { AdminReviewPipelineClient } from "@/components/sections/admin/admin-review-pipeline-client";
 
 export const metadata = {
   title: "Admin • Review Pipeline",
 };
 
-export default async function AdminReviewPipelinePage() {
-  const requests = await api.fetchReviewRequests();
+export default function AdminReviewPipelinePage() {
   return (
     <div className="page-wrapper bg-slate-50">
       <div className="container-responsive space-y-6 py-10">
@@ -17,7 +15,7 @@ export default async function AdminReviewPipelinePage() {
             Admins can reassign slots, pause campaigns, or trigger compliance pings.
           </p>
         </div>
-        <ReviewPipeline requests={requests} />
+        <AdminReviewPipelineClient />
       </div>
     </div>
   );

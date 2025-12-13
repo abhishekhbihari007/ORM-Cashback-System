@@ -7,6 +7,7 @@ import { SocialSidebar } from "@/components/layout/social-sidebar";
 import { QueryProvider } from "@/providers/query-provider";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { AnimationProvider } from "@/contexts/AnimationContext";
+import { ErrorBoundary } from "@/components/error-boundary";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -33,16 +34,18 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${inter.variable} ${poppins.variable} bg-white text-slate-900`}>
-        <QueryProvider>
-          <AuthProvider>
-            <AnimationProvider>
-              <SocialSidebar />
-              <SiteHeader />
-              <main>{children}</main>
-              <SiteFooter />
-            </AnimationProvider>
-          </AuthProvider>
-        </QueryProvider>
+        <ErrorBoundary>
+          <QueryProvider>
+            <AuthProvider>
+              <AnimationProvider>
+                <SocialSidebar />
+                <SiteHeader />
+                <main>{children}</main>
+                <SiteFooter />
+              </AnimationProvider>
+            </AuthProvider>
+          </QueryProvider>
+        </ErrorBoundary>
       </body>
     </html>
   );

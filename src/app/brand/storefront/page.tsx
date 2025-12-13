@@ -1,9 +1,19 @@
 "use client";
 
-import { useState } from "react";
-import { FaLink, FaCircleCheck, FaPlus } from "react-icons/fa6";
+import { useState, useEffect } from "react";
+import { FaLink, FaCircleCheck, FaPlus, FaTrash } from "react-icons/fa6";
+import { brandApi, type StorefrontLink, type StorefrontPlatform } from "@/lib/backend-api";
 
-interface StorefrontLink {
+const MARKETPLACE_LABELS: Record<string, string> = {
+  AMAZON: "Amazon",
+  FLIPKART: "Flipkart",
+  SHOPIFY: "Shopify",
+  NYKAA: "Nykaa",
+  MEESHO: "Meesho",
+  OTHER: "Other",
+};
+
+interface StorefrontDisplay {
   id: string;
   name: string;
   url: string;
@@ -11,39 +21,91 @@ interface StorefrontLink {
   addedAt: string;
 }
 
-// Mock data - in real app, this would come from API
-const mockStorefronts: StorefrontLink[] = [
-  {
-    id: "1",
-    name: "Amazon India Store",
-    url: "https://amazon.in/shops/your-store",
-    marketplace: "Amazon",
-    addedAt: new Date().toISOString(),
-  },
-];
+function mapStorefrontLink(link: StorefrontLink): StorefrontDisplay {
+  const marketplaceLabel = MARKETPLACE_LABELS[link.marketplace] || link.marketplace;
+  const name = link.country 
+    ? `${marketplaceLabel} ${link.country} Store`
+    : `${marketplaceLabel} Store`;
+  
+  return {
+    id: link.id.toString(),
+    name,
+    url: link.url,
+    marketplace: marketplaceLabel,
+    addedAt: link.created_at,
+  };
+}
 
 export default function BrandStorefrontPage() {
-  const [storefronts, setStorefronts] = useState<StorefrontLink[]>(mockStorefronts);
+  const [storefronts, setStorefronts] = useState<StorefrontDisplay[]>([]);
   const [showForm, setShowForm] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
-    name: "",
     url: "",
-    marketplace: "Amazon",
+    marketplace: "AMAZON" as StorefrontPlatform,
+    country: "",
+    notes: "",
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    const newStorefront: StorefrontLink = {
-      id: Date.now().toString(),
-      name: formData.name,
-      url: formData.url,
-      marketplace: formData.marketplace,
-      addedAt: new Date().toISOString(),
+  useEffect(() => {
+    const loadStorefronts = async () => {
+      try {
+        setIsLoading(true);
+        setError(null);
+        const response = await brandApi.getStorefronts();
+        const mapped = response.storefronts.map(mapStorefrontLink);
+        setStorefronts(mapped);
+      } catch (err: any) {
+        setError(err.message || "Unable to load storefronts. Please try again.");
+      } finally {
+        setIsLoading(false);
+      }
     };
-    setStorefronts([...storefronts, newStorefront]);
-    setFormData({ name: "", url: "", marketplace: "Amazon" });
-    setShowForm(false);
-    alert("Storefront link added successfully!");
+    loadStorefronts();
+  }, []);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      setIsSubmitting(true);
+      setError(null);
+      await brandApi.createStorefront({
+        url: formData.url,
+        marketplace: formData.marketplace,
+        country: formData.country || undefined,
+        notes: formData.notes || undefined,
+      });
+      
+      // Reload storefronts
+      const response = await brandApi.getStorefronts();
+      const mapped = response.storefronts.map(mapStorefrontLink);
+      setStorefronts(mapped);
+      
+      setFormData({ url: "", marketplace: "AMAZON", country: "", notes: "" });
+      setShowForm(false);
+    } catch (err: any) {
+      setError(err.message || "Failed to add storefront. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleDelete = async (id: string) => {
+    if (!confirm("Are you sure you want to delete this storefront?")) return;
+    
+    try {
+      setError(null);
+      await brandApi.deleteStorefront(parseInt(id));
+      
+      // Reload storefronts
+      const response = await brandApi.getStorefronts();
+      const mapped = response.storefronts.map(mapStorefrontLink);
+      setStorefronts(mapped);
+    } catch (err: any) {
+      setError(err.message || "Failed to delete storefront. Please try again.");
+    }
   };
 
   return (
@@ -71,19 +133,6 @@ export default function BrandStorefrontPage() {
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
                 <label className="mb-2 block text-sm font-semibold text-slate-700">
-                  Storefront Name
-                </label>
-                <input
-                  type="text"
-                  value={formData.name}
-                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  placeholder="e.g., Amazon India Store"
-                  className="w-full rounded-xl border border-slate-200 px-4 py-3 focus:border-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-100"
-                  required
-                />
-              </div>
-              <div>
-                <label className="mb-2 block text-sm font-semibold text-slate-700">
                   Storefront URL
                 </label>
                 <input
@@ -101,28 +150,60 @@ export default function BrandStorefrontPage() {
                 </label>
                 <select
                   value={formData.marketplace}
-                  onChange={(e) => setFormData({ ...formData, marketplace: e.target.value })}
+                  onChange={(e) => setFormData({ ...formData, marketplace: e.target.value as StorefrontPlatform })}
                   className="w-full rounded-xl border border-slate-200 px-4 py-3 focus:border-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-100"
                 >
-                  <option value="Amazon">Amazon</option>
-                  <option value="Flipkart">Flipkart</option>
-                  <option value="Nykaa">Nykaa</option>
-                  <option value="Meesho">Meesho</option>
-                  <option value="Other">Other</option>
+                  <option value="AMAZON">Amazon</option>
+                  <option value="FLIPKART">Flipkart</option>
+                  <option value="NYKAA">Nykaa</option>
+                  <option value="MEESHO">Meesho</option>
+                  <option value="SHOPIFY">Shopify</option>
+                  <option value="OTHER">Other</option>
                 </select>
               </div>
+              <div>
+                <label className="mb-2 block text-sm font-semibold text-slate-700">
+                  Country (optional)
+                </label>
+                <input
+                  type="text"
+                  value={formData.country}
+                  onChange={(e) => setFormData({ ...formData, country: e.target.value })}
+                  placeholder="e.g., India"
+                  className="w-full rounded-xl border border-slate-200 px-4 py-3 focus:border-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-100"
+                />
+              </div>
+              <div>
+                <label className="mb-2 block text-sm font-semibold text-slate-700">
+                  Notes (optional)
+                </label>
+                <textarea
+                  value={formData.notes}
+                  onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
+                  placeholder="Internal notes about this storefront"
+                  className="w-full rounded-xl border border-slate-200 px-4 py-3 focus:border-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-100"
+                  rows={3}
+                />
+              </div>
+              {error && (
+                <div className="rounded-lg border border-rose-200 bg-rose-50 px-4 py-2 text-sm text-rose-700">
+                  {error}
+                </div>
+              )}
               <div className="flex gap-3">
                 <button
                   type="submit"
-                  className="rounded-full bg-blue-600 px-6 py-3 font-semibold text-white transition hover:bg-blue-700"
+                  disabled={isSubmitting}
+                  className="rounded-full bg-blue-600 px-6 py-3 font-semibold text-white transition hover:bg-blue-700 disabled:opacity-50"
                 >
-                  Add Storefront
+                  {isSubmitting ? "Adding..." : "Add Storefront"}
                 </button>
                 <button
                   type="button"
                   onClick={() => {
                     setShowForm(false);
-                    setFormData({ name: "", url: "", marketplace: "Amazon" });
+                    setFormData({ url: "", marketplace: "AMAZON", country: "", notes: "" });
+                    setError(null);
                   }}
                   className="rounded-full border border-slate-200 px-6 py-3 font-semibold text-slate-600 transition hover:bg-slate-50"
                 >
@@ -133,38 +214,59 @@ export default function BrandStorefrontPage() {
           </div>
         )}
 
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {storefronts.map((storefront) => (
-            <div
-              key={storefront.id}
-              className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm"
-            >
-              <div className="flex items-start justify-between">
-                <div className="flex-1">
-                  <div className="mb-2 flex items-center gap-2">
-                    <FaLink className="text-blue-600" />
-                    <h3 className="text-lg font-semibold text-slate-900">{storefront.name}</h3>
-                  </div>
-                  <p className="mb-2 text-sm text-slate-600">{storefront.marketplace}</p>
-                  <a
-                    href={storefront.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-sm text-blue-600 hover:underline"
-                  >
-                    {storefront.url}
-                  </a>
-                  <p className="mt-3 text-xs text-slate-500">
-                    Added {new Date(storefront.addedAt).toLocaleDateString()}
-                  </p>
-                </div>
-                <FaCircleCheck className="text-green-500" />
-              </div>
-            </div>
-          ))}
-        </div>
+        {error && !showForm && (
+          <div className="rounded-2xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700">
+            Error: {error}
+          </div>
+        )}
 
-        {storefronts.length === 0 && !showForm && (
+        {isLoading ? (
+          <div className="rounded-2xl border border-slate-200 bg-white p-12 text-center text-slate-500">
+            Loading storefronts...
+          </div>
+        ) : (
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+            {storefronts.map((storefront) => (
+              <div
+                key={storefront.id}
+                className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm"
+              >
+                <div className="flex items-start justify-between">
+                  <div className="flex-1">
+                    <div className="mb-2 flex items-center gap-2">
+                      <FaLink className="text-blue-600" />
+                      <h3 className="text-lg font-semibold text-slate-900">{storefront.name}</h3>
+                    </div>
+                    <p className="mb-2 text-sm text-slate-600">{storefront.marketplace}</p>
+                    <a
+                      href={storefront.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-sm text-blue-600 hover:underline break-all"
+                    >
+                      {storefront.url}
+                    </a>
+                    <p className="mt-3 text-xs text-slate-500">
+                      Added {new Date(storefront.addedAt).toLocaleDateString()}
+                    </p>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <FaCircleCheck className="text-green-500" />
+                    <button
+                      onClick={() => handleDelete(storefront.id)}
+                      className="text-red-500 hover:text-red-700 transition"
+                      title="Delete storefront"
+                    >
+                      <FaTrash className="h-4 w-4" />
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {!isLoading && storefronts.length === 0 && !showForm && (
           <div className="rounded-2xl border border-slate-200 bg-white p-12 text-center">
             <FaLink className="mx-auto mb-4 text-4xl text-slate-400" />
             <h3 className="mb-2 text-lg font-semibold text-slate-900">No Storefronts Added</h3>

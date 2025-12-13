@@ -6,23 +6,41 @@ import { StatusBadge } from "@/components/ui/status-badge";
 
 type Props = {
   payouts: PayoutRequest[];
+  onMarkAsDone?: (payoutId: string) => void | Promise<void>;
 };
 
-export function PayoutManager({ payouts }: Props) {
+export function PayoutManager({ payouts, onMarkAsDone }: Props) {
   const [payoutList, setPayoutList] = useState(payouts);
 
-  const handleMarkAsDone = (payoutId: string) => {
-    setPayoutList((prev) =>
-      prev.map((payout) =>
-        payout.id === payoutId
-          ? {
-              ...payout,
-              status: "completed" as const,
-              completedAt: new Date().toISOString(),
-            }
-          : payout
-      )
-    );
+  const handleMarkAsDone = async (payoutId: string) => {
+    if (onMarkAsDone) {
+      await onMarkAsDone(payoutId);
+      // Update local state optimistically
+      setPayoutList((prev) =>
+        prev.map((payout) =>
+          payout.id === payoutId
+            ? {
+                ...payout,
+                status: "completed" as const,
+                completedAt: new Date().toISOString(),
+              }
+            : payout
+        )
+      );
+    } else {
+      // Fallback to local state update only
+      setPayoutList((prev) =>
+        prev.map((payout) =>
+          payout.id === payoutId
+            ? {
+                ...payout,
+                status: "completed" as const,
+                completedAt: new Date().toISOString(),
+              }
+            : payout
+        )
+      );
+    }
   };
 
   const pendingPayouts = payoutList.filter((p) => p.status === "pending" || p.status === "processing");

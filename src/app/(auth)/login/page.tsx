@@ -11,21 +11,26 @@ import { ParticleBackground } from "@/components/ui/particle-background";
 function LoginForm() {
   // Enterprise feature hidden for now - will be enabled after launch
   const searchParams = useSearchParams();
-  const [activeTab, setActiveTab] = useState<"shoppers" | "brands">(() => {
+  const [activeTab, setActiveTab] = useState<"shoppers" | "brands" | "admin">(() => {
     const tab = searchParams.get("tab");
-    return tab === "brands" ? "brands" : "shoppers";
+    if (tab === "admin") return "admin";
+    if (tab === "brands") return "brands";
+    return "shoppers";
   });
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const { login } = useAuth();
 
   // Update active tab when query parameter changes
   useEffect(() => {
     const tab = searchParams.get("tab");
-    const newTab = tab === "brands" ? "brands" : "shoppers";
+    let newTab: "shoppers" | "brands" | "admin" = "shoppers";
+    if (tab === "admin") newTab = "admin";
+    else if (tab === "brands") newTab = "brands";
     if (newTab !== activeTab) {
       setActiveTab(newTab);
     }
@@ -39,29 +44,35 @@ function LoginForm() {
       return;
     }
 
+    // Validate inputs
+    if (!email || !email.trim()) {
+      setError("Please enter your email address");
+      return;
+    }
+
+    if (!password) {
+      setError("Please enter your password");
+      return;
+    }
+
     try {
       setIsLoading(true);
+      setError(null);
 
-      // TODO: TEMPORARY - Replace with real authentication API call
-      // For now, allowing direct login without credentials for development/testing
-      // When real auth is implemented, validate email/password here and call API
-      
-      // Simulate API call delay
-      await new Promise((resolve) => setTimeout(resolve, 500));
-
-      // TODO: Replace this with actual authentication logic
-      // Example: const response = await api.login(email, password, activeTab);
-      // if (response.success) { login(response.role); }
-
-      if (activeTab === "shoppers") {
-        login("user");
-      } else if (activeTab === "brands") {
-        login("brand");
+      // Determine role based on active tab
+      let role: "user" | "brand" | "admin" = "user";
+      if (activeTab === "brands") {
+        role = "brand";
+      } else if (activeTab === "admin") {
+        role = "admin";
       }
 
+      // Call real backend API
+      await login(email, password, role);
+
       setIsLoading(false);
-    } catch {
-      alert("An error occurred. Please try again.");
+    } catch (err: any) {
+      setError(err.message || "Login failed. Please check your credentials and try again.");
       setIsLoading(false);
     }
   };
@@ -134,7 +145,6 @@ function LoginForm() {
             </div>
 
             {/* Tabs */}
-            {/* Enterprise feature hidden for now - will be enabled after launch */}
             <div className="flex gap-2 mb-6 p-1 bg-slate-100 rounded-lg relative z-10">
               <button
                 type="button"
@@ -166,6 +176,13 @@ function LoginForm() {
               </button>
             </div>
 
+            {/* Error Message */}
+            {error && (
+              <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-700 relative z-10">
+                {error}
+              </div>
+            )}
+
             {/* Form */}
             <form onSubmit={handleSubmit} className="space-y-5 relative z-10">
               {/* Email Field */}
@@ -189,7 +206,7 @@ function LoginForm() {
               </div>
 
               {/* Password Field */}
-              {activeTab === "brands" ? (
+              {activeTab === "brands" || activeTab === "shoppers" || activeTab === "admin" ? (
                 <div>
                   <label htmlFor="password" className="block text-slate-700 font-medium mb-2 text-sm">
                     Password

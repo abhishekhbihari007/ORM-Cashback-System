@@ -1,13 +1,10 @@
-import { api } from "@/lib/api";
-import { UserManager } from "@/components/sections/admin/user-manager";
+import { AdminUsersClient } from "@/components/sections/admin/admin-users-client";
 
 export const metadata = {
   title: "Admin • User Manager",
 };
 
-export default async function AdminUsersPage() {
-  const users = await api.fetchUsers();
-
+export default function AdminUsersPage() {
   return (
     <div className="page-wrapper bg-slate-50">
       <div className="container-responsive space-y-6 py-10">
@@ -18,7 +15,7 @@ export default async function AdminUsersPage() {
             Manage all registered users. Ban scammers or edit balances as needed.
           </p>
         </div>
-        <UserManager users={users} />
+        <AdminUsersClient />
       </div>
     </div>
   );

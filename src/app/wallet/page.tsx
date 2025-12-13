@@ -1,14 +1,11 @@
-import { api } from "@/lib/api";
-import { WalletView } from "@/components/sections/user/wallet-view";
+import { WalletPageClient } from "@/components/sections/user/wallet-page-client";
 import { MobileLayout } from "@/components/layouts/MobileLayout";
 
 export const metadata = {
   title: "My Wallet • Cashback Balance",
 };
 
-export default async function WalletPage() {
-  const wallet = await api.fetchWallet();
-
+export default function WalletPage() {
   return (
     <MobileLayout>
       <div className="bg-slate-50">
@@ -19,7 +16,7 @@ export default async function WalletPage() {
               View your balance and withdraw money
             </p>
           </div>
-          <WalletView wallet={wallet} />
+          <WalletPageClient />
         </div>
       </div>
     </MobileLayout>

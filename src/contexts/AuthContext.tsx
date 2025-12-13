@@ -3,89 +3,85 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from "react";
 import { useRouter } from "next/navigation";
 import { AuthUser, UserRole } from "@/lib/types";
+import { authApi, clearTokens, getAccessToken } from "@/lib/backend-api";
 
 interface AuthContextType {
   user: AuthUser | null;
-  login: (role: UserRole) => void;
+  login: (email: string, password: string, role: UserRole) => Promise<void>;
   logout: () => void;
   updateUser: (updates: Partial<AuthUser>) => void;
+  isLoading: boolean;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-// Mock users for each role
-const mockUsers: Record<UserRole, AuthUser> = {
-  user: {
-    id: "user-1",
-    name: "Rahul Sharma",
-    email: "rahul@example.com",
-    role: "user",
-    balance: 1200,
-  },
-  brand: {
-    id: "brand-1",
-    name: "Varun Brand",
-    email: "varun@example.com",
-    role: "brand",
-    balance: 50000,
-  },
-  admin: {
-    id: "admin-1",
-    name: "Priya Admin",
-    email: "priya@example.com",
-    role: "admin",
-    balance: 0,
-  },
-  enterprise: {
-    id: "enterprise-1",
-    name: "Arjun Enterprise",
-    email: "arjun@example.com",
-    role: "enterprise",
-    balance: 250000,
-  },
-};
+// Map backend user payload to frontend role
+function mapBackendRole(backendUser: any): UserRole {
+  if (backendUser?.is_staff || backendUser?.is_superuser) return 'admin';
+  if (backendUser?.role === 'BRAND') return 'brand';
+  return 'user';
+}
+
+// Convert backend user to frontend AuthUser
+function convertBackendUser(backendUser: any): AuthUser {
+  return {
+    id: String(backendUser.id),
+    name: `${backendUser.first_name || ''} ${backendUser.last_name || ''}`.trim() || backendUser.email,
+    email: backendUser.email,
+    role: mapBackendRole(backendUser),
+    balance: 0, // Will be fetched from wallet endpoint if needed
+  };
+}
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<AuthUser | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
 
-  const login = (role: UserRole) => {
-    const mockUser = mockUsers[role];
-    setUser(mockUser);
-    
-    // Store in localStorage and cookie for persistence
-    if (typeof window !== "undefined") {
-      const userJson = JSON.stringify(mockUser);
-      localStorage.setItem("auth_user", userJson);
-      // Set cookie for middleware
-      document.cookie = `auth_user=${userJson}; path=/; max-age=86400`;
-    }
+  const persistUser = (nextUser: AuthUser | null) => {
+    setUser(nextUser);
 
-    // Redirect based on role
-    // Enterprise feature hidden for now - will be enabled after launch
-    switch (role) {
-      case "user":
-        router.push("/user");
-        break;
-      case "brand":
-        router.push("/dashboard");
-        break;
-      case "admin":
-        router.push("/admin");
-        break;
-      // case "enterprise":
-      //   router.push("/enterprise");
-      //   break;
-      default:
-        break;
+    if (typeof window !== "undefined") {
+      if (nextUser) {
+        const userJson = JSON.stringify(nextUser);
+        localStorage.setItem("auth_user", userJson);
+        document.cookie = `auth_user=${userJson}; path=/; max-age=86400`;
+      } else {
+        localStorage.removeItem("auth_user");
+        document.cookie = "auth_user=; path=/; max-age=0";
+      }
+    }
+  };
+
+  const login = async (email: string, password: string, role: UserRole) => {
+    try {
+      const response = await authApi.login(email, password);
+      const mappedUser = convertBackendUser(response.user);
+      persistUser(mappedUser);
+
+      const redirectRole = mappedUser.role || role;
+      switch (redirectRole) {
+        case "brand":
+          router.push("/dashboard");
+          break;
+        case "admin":
+          router.push("/admin");
+          break;
+        case "user":
+        default:
+          router.push("/user");
+          break;
+      }
+    } catch (error: any) {
+      clearTokens();
+      persistUser(null);
+      throw new Error(error.message || "Login failed. Please try again.");
     }
   };
 
   const logout = () => {
-    setUser(null);
-    if (typeof window !== "undefined") {
-      localStorage.removeItem("auth_user");
-    }
+    authApi.logout();
+    persistUser(null);
     router.push("/login");
   };
 
@@ -93,38 +89,39 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     if (!user) return;
     
     const updatedUser = { ...user, ...updates };
-    setUser(updatedUser);
-    
-    // Update localStorage and cookie
-    if (typeof window !== "undefined") {
-      const userJson = JSON.stringify(updatedUser);
-      localStorage.setItem("auth_user", userJson);
-      document.cookie = `auth_user=${userJson}; path=/; max-age=86400`;
-    }
+    persistUser(updatedUser);
   };
 
-  // Load user from localStorage on mount and sync with cookie
-  // This is necessary for persistence - disabling eslint rule
+  // Load user from token on mount
   useEffect(() => {
-    if (typeof window !== "undefined" && !user) {
-      const stored = localStorage.getItem("auth_user");
-      if (stored) {
-        try {
-          const userData = JSON.parse(stored);
-          setUser(userData);
-          // Sync with cookie for middleware
-          document.cookie = `auth_user=${stored}; path=/; max-age=86400`;
-        } catch {
-          // Invalid stored data - clear it
-          localStorage.removeItem("auth_user");
-        }
+    const loadUser = async () => {
+      if (typeof window === "undefined") return;
+      
+      setIsLoading(true);
+      
+      if (!getAccessToken()) {
+        persistUser(null);
+        setIsLoading(false);
+        return;
       }
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+
+      try {
+        const response = await authApi.getCurrentUser();
+        const mappedUser = convertBackendUser(response.user);
+        persistUser(mappedUser);
+      } catch (error) {
+        clearTokens();
+        persistUser(null);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    loadUser();
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user, login, logout, updateUser }}>
+    <AuthContext.Provider value={{ user, login, logout, updateUser, isLoading }}>
       {children}
     </AuthContext.Provider>
   );

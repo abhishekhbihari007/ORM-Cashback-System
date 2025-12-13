@@ -3,39 +3,62 @@
 import { useState } from "react";
 import { Wallet } from "@/lib/types";
 import { StatCard } from "@/components/ui/stat-card";
+import { userApi } from "@/lib/backend-api";
+import { FaSpinner } from "react-icons/fa6";
 
 type Props = {
   wallet: Wallet;
+  onRefresh?: () => void;
 };
 
-export function WalletView({ wallet }: Props) {
+export function WalletView({ wallet, onRefresh }: Props) {
   const [showWithdrawForm, setShowWithdrawForm] = useState(false);
   const [withdrawAmount, setWithdrawAmount] = useState("");
   const [paymentMethod, setPaymentMethod] = useState<"bank" | "upi">("upi");
   const [accountDetails, setAccountDetails] = useState("");
   const [isProcessing, setIsProcessing] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState<string | null>(null);
 
   const handleWithdraw = async () => {
     const amount = parseFloat(withdrawAmount);
     if (isNaN(amount) || amount <= 0 || amount > wallet.withdrawableCash) {
-      alert("Please enter a valid amount");
+      setError("Please enter a valid amount");
       return;
     }
 
-    if (!accountDetails) {
-      alert("Please enter your account details");
+    if (!accountDetails.trim()) {
+      setError("Please enter your account details");
       return;
     }
 
     setIsProcessing(true);
-    // In real app, this would process withdrawal via API
-    setTimeout(() => {
-      alert(`Withdrawal request of ₹${amount} submitted successfully!`);
-      setIsProcessing(false);
+    setError(null);
+    setSuccess(null);
+
+    try {
+      await userApi.requestWithdrawal(
+        amount.toString(),
+        paymentMethod,
+        accountDetails.trim()
+      );
+      
+      setSuccess(`Withdrawal request of ₹${amount.toFixed(2)} submitted successfully! It will be processed by admin.`);
       setShowWithdrawForm(false);
       setWithdrawAmount("");
       setAccountDetails("");
-    }, 1500);
+      
+      // Refresh wallet data
+      if (onRefresh) {
+        setTimeout(() => {
+          onRefresh();
+        }, 1000);
+      }
+    } catch (err: any) {
+      setError(err.message || "Failed to submit withdrawal request. Please try again.");
+    } finally {
+      setIsProcessing(false);
+    }
   };
 
   return (
@@ -86,6 +109,16 @@ export function WalletView({ wallet }: Props) {
 
         {showWithdrawForm && (
           <div className="mt-6 space-y-4 border-t border-slate-100 pt-6">
+            {error && (
+              <div className="rounded-lg bg-red-50 border border-red-200 p-3 text-sm text-red-700">
+                {error}
+              </div>
+            )}
+            {success && (
+              <div className="rounded-lg bg-green-50 border border-green-200 p-3 text-sm text-green-700">
+                {success}
+              </div>
+            )}
             <div>
               <label className="mb-2 block text-sm font-semibold text-slate-700">
                 Amount to Withdraw
@@ -161,8 +194,9 @@ export function WalletView({ wallet }: Props) {
                 type="button"
                 onClick={handleWithdraw}
                 disabled={isProcessing || !withdrawAmount || !accountDetails}
-                className="flex-1 rounded-full bg-gradient-to-r from-green-600 to-emerald-600 px-6 py-3 font-semibold text-white shadow-lg shadow-green-200 transition hover:from-green-700 hover:to-emerald-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="flex-1 rounded-full bg-gradient-to-r from-green-600 to-emerald-600 px-6 py-3 font-semibold text-white shadow-lg shadow-green-200 transition hover:from-green-700 hover:to-emerald-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
               >
+                {isProcessing && <FaSpinner className="animate-spin" />}
                 {isProcessing ? "Processing..." : "Request Withdrawal"}
               </button>
             </div>

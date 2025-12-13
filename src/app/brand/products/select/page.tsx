@@ -1,23 +1,48 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { api } from "@/lib/api";
+import { brandApi, type BrandProduct } from "@/lib/backend-api";
 import { Product } from "@/lib/types";
 import { FaCircleCheck, FaCircle, FaStar } from "react-icons/fa6";
 import { useRouter } from "next/navigation";
+
+function mapBrandProductToProduct(bp: BrandProduct): Product {
+  return {
+    id: bp.id.toString(),
+    name: bp.name,
+    marketplace: bp.review_platform,
+    sku: bp.sku || "N/A",
+    rating: 0, // Not available in product data, would need to calculate from reviews
+    reviews: 0, // Not available, would need to count
+    targetReviews: 100, // Default
+    status: bp.is_active ? "growing" : "stable",
+  };
+}
 
 export default function SelectProductsPage() {
   const [products, setProducts] = useState<Product[]>([]);
   const [selectedProducts, setSelectedProducts] = useState<Set<string>>(new Set());
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState<string | null>(null);
   const router = useRouter();
 
   // Fetch products on mount
   useEffect(() => {
-    api.fetchProducts().then((data) => {
-      setProducts(data);
-      setLoading(false);
-    });
+    const loadProducts = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        const response = await brandApi.getProducts();
+        const mappedProducts = response.products.map(mapBrandProductToProduct);
+        setProducts(mappedProducts);
+      } catch (err: any) {
+        setError(err.message || "Unable to load products. Please try again.");
+      } finally {
+        setLoading(false);
+      }
+    };
+    loadProducts();
   }, []);
 
   const toggleSelection = (productId: string) => {
@@ -32,19 +57,33 @@ export default function SelectProductsPage() {
 
   const handleContinue = () => {
     if (selectedProducts.size === 0) {
-      alert("Please select at least one product to improve reputation.");
+      setError("Please select at least one product to improve reputation.");
+      setTimeout(() => setError(null), 3000);
       return;
     }
-    // In real app, this would save selected products and redirect to campaign creation
-    alert(`Selected ${selectedProducts.size} product(s) for reputation improvement.`);
-    router.push("/brand/campaigns/create");
+    setSuccess(`Selected ${selectedProducts.size} product(s) for reputation improvement.`);
+    setTimeout(() => {
+      router.push("/brand/campaigns/create");
+    }, 1000);
   };
 
   if (loading) {
     return (
       <div className="page-wrapper bg-slate-50">
         <div className="container-responsive py-10">
-          <div className="text-center">Loading products...</div>
+          <div className="text-center text-slate-500">Loading products...</div>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="page-wrapper bg-slate-50">
+        <div className="container-responsive py-10">
+          <div className="rounded-2xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700">
+            Error: {error}
+          </div>
         </div>
       </div>
     );

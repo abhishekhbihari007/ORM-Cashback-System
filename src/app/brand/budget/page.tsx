@@ -1,13 +1,10 @@
-import { api } from "@/lib/api";
-import { BudgetWidget } from "@/components/sections/brand/budget-widget";
+import { BudgetPageClient } from "@/components/sections/brand/budget-page-client";
 
 export const metadata = {
   title: "Brand Budget • ORM Dashboard",
 };
 
-export default async function BrandBudgetPage() {
-  const snapshot = await api.fetchBudget();
-
+export default function BrandBudgetPage() {
   return (
     <div className="page-wrapper bg-white">
       <div className="container-responsive space-y-6 py-10">
@@ -18,7 +15,7 @@ export default async function BrandBudgetPage() {
             Allocate funds per marketplace, automate reviewer reimbursements, and keep CAC predictable.
           </p>
         </div>
-        <BudgetWidget snapshot={snapshot} />
+        <BudgetPageClient />
         <div className="rounded-3xl border border-slate-100 bg-slate-50 p-6 text-sm text-slate-600">
           <p className="font-semibold text-slate-900">Cashback leverage tips</p>
           <p className="mt-2">

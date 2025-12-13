@@ -1,13 +1,10 @@
-import { AddFundsWallet } from "@/components/sections/brand/add-funds-wallet";
-import { api } from "@/lib/api";
+import { WalletPageClient } from "@/components/sections/brand/wallet-page-client";
 
 export const metadata = {
   title: "Brand • Add Funds",
 };
 
-export default async function BrandWalletPage() {
-  const budget = await api.fetchBudget();
-
+export default function BrandWalletPage() {
   return (
     <div className="page-wrapper bg-slate-50">
       <div className="container-responsive space-y-6 py-10">
@@ -18,7 +15,7 @@ export default async function BrandWalletPage() {
             Load money into your wallet to pay for reviews. Secure payment via Razorpay or Stripe.
           </p>
         </div>
-        <AddFundsWallet budget={budget} />
+        <WalletPageClient />
       </div>
     </div>
   );

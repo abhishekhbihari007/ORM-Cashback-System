@@ -1,12 +1,10 @@
-import { api } from "@/lib/api";
-import { ReviewHistory } from "@/components/sections/user/review-history";
+import { UserReviewsClient } from "@/components/sections/user/user-reviews-client";
 
 export const metadata = {
   title: "User Reviews • ORM Dashboard",
 };
 
-export default async function UserReviewsPage() {
-  const reviews = await api.fetchReviewRequests();
+export default function UserReviewsPage() {
   return (
     <div className="page-wrapper bg-slate-50">
       <div className="container-responsive space-y-6 py-10">
@@ -17,7 +15,7 @@ export default async function UserReviewsPage() {
             Instructions, timelines, and proof uploads all managed inside the app.
           </p>
         </div>
-        <ReviewHistory reviews={reviews} />
+        <UserReviewsClient />
       </div>
     </div>
   );

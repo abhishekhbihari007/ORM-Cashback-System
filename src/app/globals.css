@@ -1,6 +1,7 @@
 @import "tailwindcss";
 
 :root {
+  /* Existing palette (kept for current UI) */
   --brand-primary: #0f172a;
   --brand-secondary: #2563eb;
   --brand-accent: #f97316;
@@ -9,6 +10,15 @@
   --brand-border: #e2e8f0;
   --brand-success: #16a34a;
   --brand-danger: #dc2626;
+
+  /* vCommission theme tokens (available for future use without changing current visuals) */
+  --vc-primary: #d92632;
+  --vc-primary-dark: #a51722;
+  --vc-black: #050505;
+  --vc-white: #ffffff;
+  --vc-gray-100: #f5f5f5;
+  --vc-gray-500: #757575;
+  --vc-gray-900: #1c1c1c;
 }
 
 * {

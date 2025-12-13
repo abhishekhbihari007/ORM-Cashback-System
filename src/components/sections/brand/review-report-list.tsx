@@ -2,12 +2,40 @@
 
 import { ReviewReport } from "@/lib/types";
 import { StatusBadge } from "@/components/ui/status-badge";
+import { FaDownload } from "react-icons/fa6";
 
 type Props = {
   reports: ReviewReport[];
 };
 
 export function ReviewReportList({ reports }: Props) {
+  const handleExportCSV = () => {
+    const headers = ["Product Name", "Reviewer Name", "Rating", "Posted Date", "Status", "Review Link"];
+    const rows = reports.map((report) => [
+      report.productName,
+      report.reviewerName,
+      report.rating.toString(),
+      new Date(report.postedAt).toLocaleDateString(),
+      report.verified ? "Verified" : "Pending",
+      report.reviewLink,
+    ]);
+
+    const csvContent = [
+      headers.join(","),
+      ...rows.map((row) => row.map((cell) => `"${cell}"`).join(",")),
+    ].join("\n");
+
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    const link = document.createElement("a");
+    const url = URL.createObjectURL(blob);
+    link.setAttribute("href", url);
+    link.setAttribute("download", `review-reports-${new Date().toISOString().split("T")[0]}.csv`);
+    link.style.visibility = "hidden";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between rounded-2xl border border-slate-100 bg-white px-6 py-4 shadow-sm">
@@ -21,6 +49,13 @@ export function ReviewReportList({ reports }: Props) {
             {reports.filter((r) => r.verified).length}
           </p>
         </div>
+        <button
+          onClick={handleExportCSV}
+          className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-600 hover:bg-slate-50 transition"
+        >
+          <FaDownload className="h-4 w-4" />
+          Export CSV
+        </button>
       </div>
 
       <div className="overflow-hidden rounded-3xl border border-slate-100 bg-white shadow-sm">

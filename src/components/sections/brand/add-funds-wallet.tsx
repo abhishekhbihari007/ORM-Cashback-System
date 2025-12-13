@@ -12,20 +12,26 @@ export function AddFundsWallet({ budget }: Props) {
   const [amount, setAmount] = useState("");
   const [paymentMethod, setPaymentMethod] = useState<"razorpay" | "stripe">("razorpay");
   const [isProcessing, setIsProcessing] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState<string | null>(null);
 
   const handleAddFunds = async () => {
     const amountNum = parseFloat(amount);
     if (isNaN(amountNum) || amountNum <= 0) {
-      alert("Please enter a valid amount");
+      setError("Please enter a valid amount");
+      setTimeout(() => setError(null), 3000);
       return;
     }
 
     setIsProcessing(true);
+    setError(null);
+    setSuccess(null);
     // In real app, this would integrate with Razorpay/Stripe
     setTimeout(() => {
-      alert(`Payment of ₹${amountNum} would be processed via ${paymentMethod}`);
+      setSuccess(`Payment of ₹${amountNum} would be processed via ${paymentMethod}`);
       setIsProcessing(false);
       setAmount("");
+      setTimeout(() => setSuccess(null), 5000);
     }, 1500);
   };
 
@@ -102,6 +108,17 @@ export function AddFundsWallet({ budget }: Props) {
       {/* Add Funds Form */}
       <div className="rounded-3xl border border-slate-100 bg-white p-6 shadow-sm">
         <h3 className="mb-6 text-lg font-semibold text-slate-900">Add Funds</h3>
+
+        {error && (
+          <div className="mb-4 rounded-lg border border-red-200 bg-red-50 p-3 text-red-800 text-sm">
+            {error}
+          </div>
+        )}
+        {success && (
+          <div className="mb-4 rounded-lg border border-green-200 bg-green-50 p-3 text-green-800 text-sm">
+            {success}
+          </div>
+        )}
 
         <div className="space-y-6">
           <div>

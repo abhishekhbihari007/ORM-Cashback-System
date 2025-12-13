@@ -85,9 +85,9 @@ export function SiteHeader() {
     if (user.role === "brand") {
       // Brand logged in - no Home button
       return [
-        { label: "Dashboard", href: "/dashboard" },
-        { label: "Create Campaign", href: "/dashboard/create-campaign" },
-        { label: "Reports", href: "/dashboard/reports" },
+        { label: "Dashboard", href: "/brand" },
+        { label: "Create Campaign", href: "/brand/campaigns/create" },
+        { label: "My Campaigns", href: "/brand/campaigns" },
         { label: "How It Works", href: "/how-it-works" },
       ];
     }
@@ -108,7 +108,6 @@ export function SiteHeader() {
         { label: "Master View", href: "/admin" },
         { label: "Verifier Tool", href: "/admin/verifier" },
         { label: "Payouts", href: "/admin/payouts" },
-        { label: "How It Works", href: "/how-it-works" },
       ];
     }
 
@@ -136,7 +135,7 @@ export function SiteHeader() {
       <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 flex items-center justify-between relative py-2">
         {/* Hamburger Menu - Show on all pages for smaller screens, always on home page */}
         <button 
-          className={`absolute left-0 sm:left-1.5 md:left-3 lg:left-6 top-1/2 -translate-y-1/2 -translate-x-full flex flex-col items-start justify-center gap-1 w-6 h-6 sm:w-7 sm:h-7 transition-all duration-300 hover:scale-110 z-[60] ${
+          className={`flex flex-col items-center justify-center gap-1 w-6 h-6 sm:w-7 sm:h-7 transition-all duration-300 hover:scale-110 z-[60] flex-shrink-0 ${
             isHomePage ? '' : 'lg:hidden'
           }`}
           onClick={toggleMobileNav}
@@ -153,7 +152,7 @@ export function SiteHeader() {
         {/* Logo - Center/Left */}
         <Link 
           href="/" 
-          className={`flex items-center gap-1.5 sm:gap-2 ${isHomePage ? 'ml-6 sm:ml-8 md:ml-10 lg:ml-12' : 'ml-4 sm:ml-6 lg:ml-0'}`}
+          className={`flex items-center gap-1.5 sm:gap-2 ${isHomePage ? 'ml-2 sm:ml-4 md:ml-6 lg:ml-12' : 'ml-2 sm:ml-4 lg:ml-0'}`}
           onClick={() => {
             closeMobileNav();
             triggerGraphAnimation();

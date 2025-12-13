@@ -6,20 +6,24 @@ import Link from "next/link";
 import { ArrowLeft, Mail, Lock, Eye, EyeOff, User, Phone } from "lucide-react";
 import { LogoIcon } from "@/components/ui/logo-icon";
 import { ParticleBackground } from "@/components/ui/particle-background";
+import { authApi } from "@/lib/backend-api";
 
 export default function SignUpPage() {
   const [activeTab, setActiveTab] = useState<"shoppers" | "brands">("shoppers");
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const { login } = useAuth();
 
   // Shopper form fields
   const [shopperName, setShopperName] = useState("");
   const [shopperEmail, setShopperEmail] = useState("");
+  const [shopperPhone, setShopperPhone] = useState("");
   const [shopperPassword, setShopperPassword] = useState("");
   const [showShopperPassword, setShowShopperPassword] = useState(false);
 
   // Brand form fields
   const [brandName, setBrandName] = useState("");
+  const [brandCompanyName, setBrandCompanyName] = useState("");
   const [brandEmail, setBrandEmail] = useState("");
   const [brandPhone, setBrandPhone] = useState("");
   const [brandPassword, setBrandPassword] = useState("");
@@ -34,39 +38,62 @@ export default function SignUpPage() {
       return;
     }
     
+    const splitName = (fullName: string) => {
+      const parts = fullName.trim().split(/\s+/);
+      const firstName = parts[0] || "";
+      const lastName = parts.slice(1).join(" ") || "";
+      return {
+        firstName: firstName || "User",
+        lastName: lastName || firstName || "User",
+      };
+    };
+
     try {
+      setError(null);
       setIsLoading(true);
 
       // Validate form fields based on active tab
       if (activeTab === "shoppers") {
-        if (!shopperName || !shopperEmail || !shopperPassword) {
-          alert("Please fill in all fields");
+        if (!shopperName || !shopperEmail || !shopperPhone || !shopperPassword) {
+          setError("Please fill in all shopper fields.");
           setIsLoading(false);
           return;
         }
       } else {
         if (!brandName || !brandEmail || !brandPhone || !brandPassword) {
-          alert("Please fill in all fields");
+          setError("Please fill in all brand fields.");
           setIsLoading(false);
           return;
         }
       }
 
-      // Simulate API call delay
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      
-      // Show success message before redirect
-      alert("Account Created Successfully!");
-      
-      // Log the user in based on their selected role
-      // The login function will handle the redirect automatically
       if (activeTab === "shoppers") {
-        login("user");
+        const { firstName, lastName } = splitName(shopperName);
+        await authApi.register(
+          shopperEmail,
+          shopperPassword,
+          shopperPassword,
+          firstName,
+          lastName,
+          shopperPhone,
+          "USER"
+        );
+        await login(shopperEmail, shopperPassword, "user");
       } else {
-        login("brand");
+        const { firstName, lastName } = splitName(brandName);
+        await authApi.register(
+          brandEmail,
+          brandPassword,
+          brandPassword,
+          firstName,
+          lastName,
+          brandPhone,
+          "BRAND"
+        );
+        await login(brandEmail, brandPassword, "brand");
       }
-    } catch {
-      alert("An error occurred. Please try again.");
+    } catch (err: any) {
+      setError(err.message || "An error occurred. Please try again.");
     } finally {
       setIsLoading(false);
     }
@@ -173,6 +200,13 @@ export default function SignUpPage() {
                 </button>
               </div>
 
+              {/* Error */}
+              {error && (
+                <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-700">
+                  {error}
+                </div>
+              )}
+
               {/* Form */}
               <form onSubmit={handleSubmit} className="space-y-5 relative z-10">
                 {activeTab === "shoppers" ? (
@@ -192,6 +226,26 @@ export default function SignUpPage() {
                           onChange={(e) => setShopperName(e.target.value)}
                           required
                           placeholder="Rahul Sharma"
+                          className="w-full rounded-xl border border-slate-200 bg-white pl-10 pr-4 py-3 text-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-100 transition"
+                        />
+                      </div>
+                    </div>
+
+                    <div>
+                      <label htmlFor="shopper-phone" className="block text-slate-700 font-medium mb-2 text-sm">
+                        Phone Number
+                      </label>
+                      <div className="relative">
+                        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                          <Phone className="h-5 w-5 text-slate-400" />
+                        </div>
+                        <input
+                          id="shopper-phone"
+                          type="tel"
+                          value={shopperPhone}
+                          onChange={(e) => setShopperPhone(e.target.value)}
+                          required
+                          placeholder="+1 (555) 987-6543"
                           className="w-full rounded-xl border border-slate-200 bg-white pl-10 pr-4 py-3 text-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-100 transition"
                         />
                       </div>
@@ -252,7 +306,7 @@ export default function SignUpPage() {
                   <>
                     <div>
                       <label htmlFor="brand-name" className="block text-slate-700 font-medium mb-2 text-sm">
-                        Company/Brand Name
+                        Full Name
                       </label>
                       <div className="relative">
                         <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -264,6 +318,25 @@ export default function SignUpPage() {
                           value={brandName}
                           onChange={(e) => setBrandName(e.target.value)}
                           required
+                          placeholder="Priya Malhotra"
+                          className="w-full rounded-xl border border-slate-200 bg-white pl-10 pr-4 py-3 text-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-100 transition"
+                        />
+                      </div>
+                    </div>
+
+                    <div>
+                      <label htmlFor="brand-company" className="block text-slate-700 font-medium mb-2 text-sm">
+                        Company / Brand Name
+                      </label>
+                      <div className="relative">
+                        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                          <User className="h-5 w-5 text-slate-400" />
+                        </div>
+                        <input
+                          id="brand-company"
+                          type="text"
+                          value={brandCompanyName}
+                          onChange={(e) => setBrandCompanyName(e.target.value)}
                           placeholder="Acme Corporation"
                           className="w-full rounded-xl border border-slate-200 bg-white pl-10 pr-4 py-3 text-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-100 transition"
                         />
@@ -346,10 +419,6 @@ export default function SignUpPage() {
                 <button
                   type="submit"
                   disabled={isLoading}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    handleSubmit();
-                  }}
                   className="w-full rounded-xl bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 hover:opacity-90 hover:shadow-lg hover:shadow-indigo-500/25 px-4 py-3 text-sm font-semibold text-white shadow-lg shadow-indigo-500/25 transition focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 relative z-10 cursor-pointer"
                   style={{ pointerEvents: isLoading ? 'none' : 'auto' }}
                 >

@@ -10,6 +10,8 @@ export default function ProfilePage() {
   const { user, logout, updateUser } = useAuth();
   const router = useRouter();
   const [isSaving, setIsSaving] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState<string | null>(null);
   const [formData, setFormData] = useState(() => ({
     name: user?.name || "",
     email: user?.email || "",
@@ -51,12 +53,20 @@ export default function ProfilePage() {
 
     try {
       setIsSaving(true);
+      setError(null);
 
-      // TODO: Replace with actual API call to update user profile
-      // await api.updateProfile(formData);
+      // Split name into first_name and last_name
+      const nameParts = formData.name.trim().split(/\s+/);
+      const firstName = nameParts[0] || "";
+      const lastName = nameParts.slice(1).join(" ") || "";
 
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 800));
+      // Call API to update profile
+      const { authApi } = await import("@/lib/backend-api");
+      const response = await authApi.updateProfile({
+        first_name: firstName,
+        last_name: lastName,
+        phone_number: formData.phone || undefined,
+      });
 
       // Update user in context
       updateUser({
@@ -64,11 +74,13 @@ export default function ProfilePage() {
         email: formData.email,
       });
 
-      alert("Profile updated successfully!");
       setIsSaving(false);
-    } catch {
-      alert("Failed to save profile. Please try again.");
+      setSuccess("Profile updated successfully!");
+      // Clear success message after 3 seconds
+      setTimeout(() => setSuccess(null), 3000);
+    } catch (err: any) {
       setIsSaving(false);
+      setError(err.message || "Failed to save profile. Please try again.");
     }
   };
 
@@ -97,6 +109,18 @@ export default function ProfilePage() {
               Update your profile information
             </p>
           </div>
+
+          {error && (
+            <div className="mb-4 rounded-lg border border-red-200 bg-red-50 p-4 text-sm text-red-800">
+              {error}
+            </div>
+          )}
+
+          {success && (
+            <div className="mb-4 rounded-lg border border-green-200 bg-green-50 p-4 text-sm text-green-800">
+              {success}
+            </div>
+          )}
 
           <form onSubmit={handleSave} className="space-y-6">
             {/* Profile Picture Section */}

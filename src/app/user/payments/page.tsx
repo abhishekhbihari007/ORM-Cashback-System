@@ -1,12 +1,10 @@
-import { api } from "@/lib/api";
-import { PaymentStatus } from "@/components/sections/user/payment-status";
+import { PaymentsClient } from "@/components/sections/user/payments-client";
 
 export const metadata = {
   title: "User Payments • ORM Dashboard",
 };
 
-export default async function UserPaymentsPage() {
-  const payments = await api.fetchPayments();
+export default function UserPaymentsPage() {
   return (
     <div className="page-wrapper bg-white">
       <div className="container-responsive space-y-6 py-10">
@@ -17,7 +15,7 @@ export default async function UserPaymentsPage() {
             Every payout is linked to a purchase ID and timestamped for policy compliance.
           </p>
         </div>
-        <PaymentStatus payments={payments} />
+        <PaymentsClient />
       </div>
     </div>
   );

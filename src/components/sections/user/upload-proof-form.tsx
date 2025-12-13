@@ -8,6 +8,8 @@ export function UploadProofForm() {
   const [reviewLink, setReviewLink] = useState("");
   const [orderId, setOrderId] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState<string | null>(null);
 
   const handleOrderUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -26,20 +28,33 @@ export function UploadProofForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
+    setError(null);
+    setSuccess(null);
 
     // In real app, this would upload files and submit to API
     setTimeout(() => {
-      alert("Proof uploaded successfully! Your cashback is pending approval.");
+      setSuccess("Proof uploaded successfully! Your cashback is pending approval.");
       setIsSubmitting(false);
       setOrderScreenshot(null);
       setReviewScreenshot(null);
       setReviewLink("");
       setOrderId("");
+      setTimeout(() => setSuccess(null), 5000);
     }, 1500);
   };
 
   return (
     <form onSubmit={handleSubmit} className="mx-auto max-w-2xl space-y-6">
+      {error && (
+        <div className="rounded-lg border border-red-200 bg-red-50 p-4 text-red-800">
+          {error}
+        </div>
+      )}
+      {success && (
+        <div className="rounded-lg border border-green-200 bg-green-50 p-4 text-green-800">
+          {success}
+        </div>
+      )}
       <div className="rounded-3xl border border-slate-100 bg-white p-6 shadow-sm">
         <h2 className="mb-6 text-xl font-bold text-slate-900">Upload Your Proof</h2>
 

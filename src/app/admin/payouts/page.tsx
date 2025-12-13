@@ -1,13 +1,10 @@
-import { api } from "@/lib/api";
-import { PayoutManager } from "@/components/sections/admin/payout-manager";
+import { AdminPayoutsClient } from "@/components/sections/admin/admin-payouts-client";
 
 export const metadata = {
   title: "Admin • Payout Manager",
 };
 
-export default async function AdminPayoutsPage() {
-  const payoutRequests = await api.fetchPayoutRequests();
-
+export default function AdminPayoutsPage() {
   return (
     <div className="page-wrapper bg-slate-50">
       <div className="container-responsive space-y-6 py-10">
@@ -18,7 +15,7 @@ export default async function AdminPayoutsPage() {
             Manage withdrawal requests. Mark payments as done after processing.
           </p>
         </div>
-        <PayoutManager payouts={payoutRequests} />
+        <AdminPayoutsClient />
       </div>
     </div>
   );

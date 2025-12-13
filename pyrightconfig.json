@@ -1,0 +1,16 @@
+{
+  "include": [
+    "orm-cashback-backend"
+  ],
+  "exclude": [
+    "**/node_modules",
+    "**/__pycache__",
+    "**/.*"
+  ],
+  "venvPath": "orm-cashback-backend",
+  "venv": "venv",
+  "pythonVersion": "3.11",
+  "reportMissingImports": "warning",
+  "reportMissingTypeStubs": false
+}
+

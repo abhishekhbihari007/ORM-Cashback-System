@@ -1,12 +1,10 @@
-import { api } from "@/lib/api";
-import { CompliancePanel } from "@/components/sections/admin/compliance-panel";
+import { AdminComplianceClient } from "@/components/sections/admin/admin-compliance-client";
 
 export const metadata = {
   title: "Admin • Compliance Monitor",
 };
 
-export default async function AdminComplianceMonitorPage() {
-  const alerts = await api.fetchComplianceAlerts();
+export default function AdminComplianceMonitorPage() {
   return (
     <div className="page-wrapper bg-white">
       <div className="container-responsive space-y-6 py-10">
@@ -17,7 +15,7 @@ export default async function AdminComplianceMonitorPage() {
             Stay ahead of policy changes, review velocity spikes, and suspicious activities.
           </p>
         </div>
-        <CompliancePanel alerts={alerts} />
+        <AdminComplianceClient />
       </div>
     </div>
   );

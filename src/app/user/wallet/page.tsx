@@ -1,13 +1,10 @@
-import { api } from "@/lib/api";
-import { WalletView } from "@/components/sections/user/wallet-view";
+import { WalletPageClient } from "@/components/sections/user/wallet-page-client";
 
 export const metadata = {
   title: "My Wallet • Cashback Balance",
 };
 
-export default async function UserWalletPage() {
-  const wallet = await api.fetchWallet();
-
+export default function UserWalletPage() {
   return (
     <div className="page-wrapper bg-slate-50">
       <div className="container-responsive space-y-6 py-6 md:py-10">
@@ -17,7 +14,7 @@ export default async function UserWalletPage() {
             View your cashback balance and withdraw money to your bank/UPI.
           </p>
         </div>
-        <WalletView wallet={wallet} />
+        <WalletPageClient />
       </div>
     </div>
   );

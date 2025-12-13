@@ -7,9 +7,11 @@ import { StatusBadge } from "@/components/ui/status-badge";
 
 type Props = {
   reviews: PendingReview[];
+  onApprove?: (reviewId: string) => void | Promise<void>;
+  onReject?: (reviewId: string) => void | Promise<void>;
 };
 
-export function VerifierScreen({ reviews }: Props) {
+export function VerifierScreen({ reviews, onApprove, onReject }: Props) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [processedReviews, setProcessedReviews] = useState<Set<string>>(new Set());
 
@@ -25,14 +27,20 @@ export function VerifierScreen({ reviews }: Props) {
     );
   }
 
-  const handleApprove = () => {
+  const handleApprove = async () => {
+    if (onApprove) {
+      await onApprove(currentReview.id);
+    }
     setProcessedReviews((prev) => new Set([...prev, currentReview.id]));
     if (currentIndex < reviews.length - 1) {
       setCurrentIndex((prev) => prev + 1);
     }
   };
 
-  const handleReject = () => {
+  const handleReject = async () => {
+    if (onReject) {
+      await onReject(currentReview.id);
+    }
     setProcessedReviews((prev) => new Set([...prev, currentReview.id]));
     if (currentIndex < reviews.length - 1) {
       setCurrentIndex((prev) => prev + 1);

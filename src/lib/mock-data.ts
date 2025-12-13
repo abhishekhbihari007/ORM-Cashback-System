@@ -96,6 +96,7 @@ export const purchaseHistory: PurchaseHistory[] = Array.from({ length: 4 }, () =
   amount: Number(faker.commerce.price({ min: 25, max: 120 })),
   status: faker.helpers.arrayElement(["tracking", "reviewed", "paid"]),
   purchasedAt: faker.date.recent({ days: 15 }).toISOString(),
+  productLink: faker.internet.url(),
 }));
 
 export const paymentRecords: PaymentRecord[] = [
