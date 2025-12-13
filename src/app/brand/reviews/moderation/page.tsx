@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { brandApi, type BrandReview, type BrandOrder } from "@/lib/backend-api";
 import { PendingReview } from "@/lib/types";
 import Image from "next/image";
-import { FaCircleCheck, FaCircleXmark, FaArrowUpRightFromSquare, FaSpinner, FaXmark } from "react-icons/fa6";
+import { Icons } from "@/lib/icons";
 
 function mapToPendingReview(review: BrandReview, order?: BrandOrder): PendingReview {
   return {
@@ -147,7 +147,7 @@ export default function BrandReviewModerationPage() {
                 onClick={() => setError(null)}
                 className="text-rose-600 hover:text-rose-800"
               >
-                <FaXmark className="h-4 w-4" />
+                <Icons.X className="h-4 w-4" />
               </button>
             </div>
           </div>
@@ -193,7 +193,7 @@ export default function BrandReviewModerationPage() {
                   onClick={() => setError(null)}
                   className="text-red-600 hover:text-red-800"
                 >
-                  <FaXmark className="h-4 w-4" />
+                  <Icons.X className="h-4 w-4" />
                 </button>
               </div>
             </div>
@@ -207,7 +207,7 @@ export default function BrandReviewModerationPage() {
                   onClick={() => setSuccess(null)}
                   className="text-green-600 hover:text-green-800"
                 >
-                  <FaXmark className="h-4 w-4" />
+                  <Icons.X className="h-4 w-4" />
                 </button>
               </div>
             </div>
@@ -278,7 +278,7 @@ export default function BrandReviewModerationPage() {
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 truncate rounded-lg bg-blue-50 px-4 py-2 text-sm text-blue-600 hover:bg-blue-100"
               >
-                <FaArrowUpRightFromSquare className="h-4 w-4" />
+                <Icons.ArrowUpRight className="h-4 w-4" />
                 {currentReview.reviewLink}
               </a>
             </div>
@@ -349,7 +349,7 @@ export default function BrandReviewModerationPage() {
             disabled={isProcessing}
             className="flex-1 rounded-full border-2 border-red-200 bg-white px-6 py-4 text-lg font-semibold text-red-600 transition hover:bg-red-50 disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            <FaCircleXmark className="inline h-5 w-5 mr-2" />
+            <Icons.CircleX className="inline h-5 w-5 mr-2" />
             Reject
           </button>
           <button
@@ -359,12 +359,12 @@ export default function BrandReviewModerationPage() {
           >
             {isProcessing ? (
               <>
-                <FaSpinner className="h-5 w-5 animate-spin" />
+                <Icons.Spinner className="h-5 w-5" />
                 Processing...
               </>
             ) : (
               <>
-                <FaCircleCheck className="h-5 w-5" />
+                <Icons.CircleCheck className="h-5 w-5" />
                 Approve & Release Payment
               </>
             )}

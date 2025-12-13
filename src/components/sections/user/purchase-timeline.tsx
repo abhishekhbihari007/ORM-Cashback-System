@@ -1,7 +1,7 @@
 import React from "react";
 import { PurchaseHistory } from "@/lib/types";
 import Link from "next/link";
-import { FaCircleCheck, FaClock, FaTag, FaCircleXmark } from "react-icons/fa6";
+import { Icons } from "@/lib/icons";
 
 type PurchaseWithMeta = PurchaseHistory & {
   isLocal?: boolean;
@@ -19,11 +19,11 @@ const statusStyles: Record<
 > = {
   tracking: {
     badge: "bg-amber-50 text-amber-700 border border-amber-100",
-    icon: <FaClock className="h-3.5 w-3.5" />,
+    icon: <Icons.Clock className="h-3.5 w-3.5" />,
   },
   reviewed: {
     badge: "bg-blue-50 text-blue-700 border border-blue-100",
-    icon: <FaTag className="h-3.5 w-3.5" />,
+    icon: <Icons.Tag className="h-3.5 w-3.5" />,
   },
   paid: {
     badge: "bg-emerald-50 text-emerald-700 border border-emerald-100",
@@ -31,7 +31,7 @@ const statusStyles: Record<
   },
   rejected: {
     badge: "bg-red-50 text-red-700 border border-red-100",
-    icon: <FaCircleXmark className="h-3.5 w-3.5" />,
+    icon: <Icons.CircleX className="h-3.5 w-3.5" />,
   },
 };
 
@@ -173,7 +173,7 @@ export function PurchaseTimeline({
                       onClick={() => onRemoveLocal(purchase.id)}
                       className="inline-flex items-center gap-1 rounded-full px-3 py-1 text-xs font-semibold text-amber-800 transition hover:text-rose-600"
                     >
-                      <FaCircleXmark className="h-3 w-3" />
+                      <Icons.CircleX className="h-3 w-3" />
                       Dismiss
                     </button>
                   )}
