@@ -1,7 +1,7 @@
 import React from "react";
 import { PurchaseHistory } from "@/lib/types";
 import Link from "next/link";
-import { FaCheckCircle, FaClock, FaTag, FaTimesCircle } from "react-icons/fa6";
+import { FaCheckCircle, FaClock, FaTag, FaCircleXmark } from "react-icons/fa6";
 
 type PurchaseWithMeta = PurchaseHistory & {
   isLocal?: boolean;
@@ -31,7 +31,7 @@ const statusStyles: Record<
   },
   rejected: {
     badge: "bg-red-50 text-red-700 border border-red-100",
-    icon: <FaTimesCircle className="h-3.5 w-3.5" />,
+    icon: <FaCircleXmark className="h-3.5 w-3.5" />,
   },
 };
 
@@ -173,7 +173,7 @@ export function PurchaseTimeline({
                       onClick={() => onRemoveLocal(purchase.id)}
                       className="inline-flex items-center gap-1 rounded-full px-3 py-1 text-xs font-semibold text-amber-800 transition hover:text-rose-600"
                     >
-                      <FaTimesCircle className="h-3 w-3" />
+                      <FaCircleXmark className="h-3 w-3" />
                       Dismiss
                     </button>
                   )}
