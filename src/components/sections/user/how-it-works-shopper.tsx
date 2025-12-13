@@ -1,13 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import {
-  FaCartShopping,
-  FaCircleCheck,
-  FaChevronDown,
-  FaChartBar,
-  FaUserCheck,
-} from "react-icons/fa6";
+import { Icons } from "@/lib/icons";
 
 export function HowItWorksShopper() {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
@@ -18,25 +12,25 @@ export function HowItWorksShopper() {
 
   const shopperSteps = [
     {
-      icon: FaCartShopping,
+      icon: Icons.ShoppingCart,
       title: "Browse Deals",
       description: "Explore products with 100% cashback offers. Each deal shows product details, marketplace link, and cashback amount. Click 'Get Deal' to visit the marketplace.",
       color: "orange",
     },
     {
-      icon: FaUserCheck,
+      icon: Icons.UserCheck,
       title: "Purchase & Review",
       description: "Buy the product at full price from Amazon, Flipkart, Myntra, or other marketplaces. Wait for delivery, then post an authentic review with your honest feedback.",
       color: "green",
     },
     {
-      icon: FaCircleCheck,
+      icon: Icons.CircleCheck,
       title: "Upload Proof",
       description: "Submit your order screenshot, review screenshot, and review link through our upload portal. Our verification team will review your submission.",
       color: "yellow",
     },
     {
-      icon: FaChartBar,
+      icon: Icons.ChartBar,
       title: "Get Cashback",
       description: "Once approved, receive 100% cashback directly to your wallet. Withdraw anytime via UPI or bank transfer. Track all your earnings in your dashboard.",
       color: "red",
@@ -124,7 +118,7 @@ export function HowItWorksShopper() {
                 className="flex w-full items-center justify-between p-4 text-left"
               >
                 <h4 className="text-sm font-semibold text-slate-900 pr-4">{faq.question}</h4>
-                <FaChevronDown
+                <Icons.ChevronDown
                   className={`h-4 w-4 text-slate-400 transition-transform flex-shrink-0 ${
                     openFaq === index ? "rotate-180" : ""
                   }`}

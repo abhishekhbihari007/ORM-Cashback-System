@@ -1,9 +1,9 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { FaPlus } from "react-icons/fa6";
 import { ProductFormModal, ProductFormData } from "@/components/sections/brand/product-form-modal";
 import { brandApi, type BrandProduct } from "@/lib/backend-api";
+import { Icons } from "@/lib/icons";
 
 function formatCurrency(amount: string, currency: string) {
   const value = Number(amount);
@@ -78,7 +78,7 @@ export default function BrandProductsPage() {
             onClick={() => setIsModalOpen(true)}
             className="inline-flex items-center gap-2 rounded-full bg-indigo-600 px-6 py-3 font-semibold text-white shadow-lg shadow-indigo-200 transition hover:bg-indigo-700"
           >
-            <FaPlus className="h-4 w-4" />
+            <Icons.Plus className="h-4 w-4" />
             Add Product
           </button>
         </div>

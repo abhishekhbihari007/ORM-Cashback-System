@@ -1,6 +1,6 @@
 import { AdminActivity } from "@/lib/types";
 import { StatusBadge } from "@/components/ui/status-badge";
-import { FaUser, FaCartShopping, FaStar, FaMoneyBill, FaBan, FaCircleCheck } from "react-icons/fa6";
+import { Icons } from "@/lib/icons";
 
 type Props = {
   activities: AdminActivity[];
@@ -14,21 +14,21 @@ const severityVariant: Record<string, "success" | "warning" | "danger"> = {
 
 const getActivityIcon = (activity: string) => {
   if (activity.toLowerCase().includes("purchase") || activity.toLowerCase().includes("buy")) {
-    return <FaCartShopping className="text-blue-600" />;
+    return <Icons.ShoppingCart className="text-blue-600 h-5 w-5" />;
   }
   if (activity.toLowerCase().includes("review")) {
-    return <FaStar className="text-yellow-500" />;
+    return <Icons.Star className="text-yellow-500 h-5 w-5" />;
   }
   if (activity.toLowerCase().includes("payment") || activity.toLowerCase().includes("payout")) {
-    return <FaMoneyBill className="text-green-600" />;
+    return <Icons.Banknote className="text-green-600 h-5 w-5" />;
   }
   if (activity.toLowerCase().includes("ban") || activity.toLowerCase().includes("block")) {
-    return <FaBan className="text-red-600" />;
+    return <Icons.Ban className="text-red-600 h-5 w-5" />;
   }
   if (activity.toLowerCase().includes("approve") || activity.toLowerCase().includes("verified")) {
-    return <FaCircleCheck className="text-green-600" />;
+    return <Icons.CircleCheck className="text-green-600 h-5 w-5" />;
   }
-  return <FaUser className="text-slate-600" />;
+  return <Icons.User className="text-slate-600 h-5 w-5" />;
 };
 
 export function ActivityFeed({ activities }: Props) {

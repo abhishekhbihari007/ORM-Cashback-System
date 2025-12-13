@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useAnimation } from "@/contexts/AnimationContext";
 import { FeedHeader } from "@/components/layout/feed-header";
-import { FaHouse, FaUpload, FaWallet } from "react-icons/fa6";
+import { Icons } from "@/lib/icons";
 
 type MobileLayoutProps = {
   children: React.ReactNode;
@@ -19,9 +19,9 @@ export function MobileLayout({ children, showHeader = true }: MobileLayoutProps)
   const showBottomNav = false;
 
   const navItems = [
-    { href: "/feed", label: "Home", icon: FaHouse },
-    { href: "/upload", label: "Upload", icon: FaUpload },
-    { href: "/wallet", label: "Wallet", icon: FaWallet },
+    { href: "/feed", label: "Home", icon: Icons.House },
+    { href: "/upload", label: "Upload", icon: Icons.Upload },
+    { href: "/wallet", label: "Wallet", icon: Icons.Wallet },
   ];
   
   // Check if current path matches any nav item or user dashboard

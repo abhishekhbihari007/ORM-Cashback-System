@@ -57,6 +57,15 @@ import {
   PenSquare,
   AlertTriangle,
   Circle,
+  LineChart,
+  Package,
+  CirclePlus,
+  MessageCircle,
+  Globe,
+  Store,
+  Banknote,
+  Ban,
+  UserCheck,
 } from "lucide-react";
 import { LucideProps } from "lucide-react";
 import React from "react";
@@ -81,6 +90,7 @@ export const Icons = {
   Spinner: (props: IconProps & { className?: string }) => (
     <Loader2 {...props} className={`animate-spin ${props.className || ""}`} />
   ),
+  PlusCircle: (props: IconProps) => <CirclePlus {...props} />,
   ArrowUpRight: (props: IconProps) => <ArrowUpRight {...props} />,
   Plus: (props: IconProps) => <Plus {...props} />,
   Trash: (props: IconProps) => <Trash2 {...props} />,
@@ -101,14 +111,21 @@ export const Icons = {
   Shield: (props: IconProps) => <Shield {...props} />,
   Rocket: (props: IconProps) => <Rocket {...props} />,
   ChartBar: (props: IconProps) => <BarChart3 {...props} />,
+  ChartLine: (props: IconProps) => <LineChart {...props} />,
   Crown: (props: IconProps) => <Crown {...props} />,
   UserShield: (props: IconProps) => <UserShield {...props} />,
   UserTie: (props: IconProps) => <UserTie {...props} />,
   Star: (props: IconProps) => <Star {...props} />,
   ArrowUp: (props: IconProps) => <ArrowUp {...props} />,
+  Box: (props: IconProps) => <Package {...props} />,
+  Store: (props: IconProps) => <Store {...props} />,
+  Globe: (props: IconProps) => <Globe {...props} />,
+  Comment: (props: IconProps) => <MessageCircle {...props} />,
+  UserCheck: (props: IconProps) => <UserCheck {...props} />,
   
   // Dashboard icons
   DollarSign: (props: IconProps) => <DollarSign {...props} />,
+  Banknote: (props: IconProps) => <Banknote {...props} />,
   Users: (props: IconProps) => <Users {...props} />,
   FileCheck: (props: IconProps) => <FileCheck {...props} />,
   FileText: (props: IconProps) => <FileText {...props} />,
@@ -116,6 +133,7 @@ export const Icons = {
   House: (props: IconProps) => <Home {...props} />,
   Upload: (props: IconProps) => <Upload {...props} />,
   Wallet: (props: IconProps) => <Wallet {...props} />,
+  Ban: (props: IconProps) => <Ban {...props} />,
   
   // Social icons
   Facebook: (props: IconProps) => <Facebook {...props} />,

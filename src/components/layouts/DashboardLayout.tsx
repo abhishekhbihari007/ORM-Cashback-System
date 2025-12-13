@@ -4,19 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useAuth } from "@/contexts/AuthContext";
 import { UserRole } from "@/lib/types";
-import {
-  FaChartLine,
-  FaBox,
-  FaDollarSign,
-  FaUsers,
-  FaFileCircleCheck,
-  FaChartBar,
-  FaRightFromBracket,
-  FaWallet,
-  FaCirclePlus,
-  FaFileLines,
-  FaBuilding,
-} from "react-icons/fa6";
+import { Icons } from "@/lib/icons";
 
 type NavItem = {
   href: string;
@@ -25,30 +13,30 @@ type NavItem = {
 };
 
 const brandNavItems: NavItem[] = [
-  { href: "/dashboard", label: "Dashboard", icon: FaChartLine },
-  { href: "/brand/storefront", label: "Storefront", icon: FaBox },
-  { href: "/brand/products", label: "Products", icon: FaBox },
-  { href: "/brand/products/select", label: "Select Products", icon: FaCirclePlus },
-  { href: "/brand/campaigns/create", label: "Create Campaign", icon: FaCirclePlus },
-  { href: "/brand/orders", label: "Orders", icon: FaFileLines },
-  { href: "/brand/reviews", label: "Reviews", icon: FaFileLines },
-  { href: "/brand/budget", label: "Add Budget", icon: FaWallet },
+  { href: "/dashboard", label: "Dashboard", icon: Icons.ChartLine },
+  { href: "/brand/storefront", label: "Storefront", icon: Icons.Box },
+  { href: "/brand/products", label: "Products", icon: Icons.Box },
+  { href: "/brand/products/select", label: "Select Products", icon: Icons.PlusCircle },
+  { href: "/brand/campaigns/create", label: "Create Campaign", icon: Icons.PlusCircle },
+  { href: "/brand/orders", label: "Orders", icon: Icons.FileText },
+  { href: "/brand/reviews", label: "Reviews", icon: Icons.FileText },
+  { href: "/brand/budget", label: "Add Budget", icon: Icons.Wallet },
 ];
 
 const adminNavItems: NavItem[] = [
-  { href: "/admin", label: "Dashboard", icon: FaChartLine },
-  { href: "/admin/verifier", label: "Verifier", icon: FaFileCircleCheck },
-  { href: "/admin/users", label: "User Manager", icon: FaUsers },
-  { href: "/admin/payouts", label: "Payout Manager", icon: FaDollarSign },
-  { href: "/admin/review-pipeline", label: "Review Pipeline", icon: FaFileLines },
-  { href: "/admin/user-activities", label: "Activities", icon: FaChartBar },
+  { href: "/admin", label: "Dashboard", icon: Icons.ChartLine },
+  { href: "/admin/verifier", label: "Verifier", icon: Icons.FileCheck },
+  { href: "/admin/users", label: "User Manager", icon: Icons.Users },
+  { href: "/admin/payouts", label: "Payout Manager", icon: Icons.DollarSign },
+  { href: "/admin/review-pipeline", label: "Review Pipeline", icon: Icons.FileText },
+  { href: "/admin/user-activities", label: "Activities", icon: Icons.ChartBar },
 ];
 
 const enterpriseNavItems: NavItem[] = [
-  { href: "/enterprise", label: "Enterprise Home", icon: FaChartLine },
-  { href: "/enterprise/brands", label: "Brands", icon: FaBuilding },
-  { href: "/enterprise/analytics", label: "Analytics", icon: FaChartBar },
-  { href: "/enterprise/team", label: "Team & Access", icon: FaUsers },
+  { href: "/enterprise", label: "Enterprise Home", icon: Icons.ChartLine },
+  { href: "/enterprise/brands", label: "Brands", icon: Icons.Building },
+  { href: "/enterprise/analytics", label: "Analytics", icon: Icons.ChartBar },
+  { href: "/enterprise/team", label: "Team & Access", icon: Icons.Users },
 ];
 
 export function DashboardLayout({ children, role }: { children: React.ReactNode; role: UserRole }) {
@@ -110,7 +98,7 @@ export function DashboardLayout({ children, role }: { children: React.ReactNode;
               onClick={logout}
               className="flex w-full items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium text-red-600 transition hover:bg-red-50"
             >
-              <FaRightFromBracket size={20} />
+              <Icons.LogOut className="h-5 w-5" />
               <span>Logout</span>
             </button>
           </div>

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { FaXmark } from "react-icons/fa6";
+import { Icons } from "@/lib/icons";
 
 export interface ProductFormData {
   name: string;
@@ -90,7 +90,7 @@ export function ProductFormModal({
           type="button"
           aria-label="Close product modal"
         >
-          <FaXmark className="h-5 w-5" />
+          <Icons.X className="h-5 w-5" />
         </button>
 
         <div className="mb-6 space-y-2">

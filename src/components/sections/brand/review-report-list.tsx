@@ -2,7 +2,7 @@
 
 import { ReviewReport } from "@/lib/types";
 import { StatusBadge } from "@/components/ui/status-badge";
-import { FaDownload } from "react-icons/fa6";
+import { Icons } from "@/lib/icons";
 
 type Props = {
   reports: ReviewReport[];
@@ -53,7 +53,7 @@ export function ReviewReportList({ reports }: Props) {
           onClick={handleExportCSV}
           className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-600 hover:bg-slate-50 transition"
         >
-          <FaDownload className="h-4 w-4" />
+          <Icons.Download className="h-4 w-4" />
           Export CSV
         </button>
       </div>

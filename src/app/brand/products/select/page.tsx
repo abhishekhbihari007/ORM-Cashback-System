@@ -3,8 +3,8 @@
 import { useState, useEffect } from "react";
 import { brandApi, type BrandProduct } from "@/lib/backend-api";
 import { Product } from "@/lib/types";
-import { FaCircleCheck, FaCircle, FaStar } from "react-icons/fa6";
 import { useRouter } from "next/navigation";
+import { Icons } from "@/lib/icons";
 
 function mapBrandProductToProduct(bp: BrandProduct): Product {
   return {
@@ -129,9 +129,9 @@ export default function SelectProductsPage() {
                 >
                   <div className="flex items-center gap-4">
                     {isSelected ? (
-                      <FaCircleCheck className="text-blue-600" size={24} />
+                      <Icons.CircleCheck className="text-blue-600" size={24} />
                     ) : (
-                      <FaCircle className="text-slate-300" size={24} />
+                      <Icons.Circle className="text-slate-300" size={24} />
                     )}
                     <div>
                       <h3 className="font-semibold text-slate-900">{product.name}</h3>
@@ -143,7 +143,7 @@ export default function SelectProductsPage() {
                   <div className="flex items-center gap-4">
                     <div className="text-right">
                       <div className="flex items-center gap-1">
-                        <FaStar className="text-yellow-400" />
+                        <Icons.Star className="text-yellow-400" />
                         <span className="font-semibold text-slate-900">{product.rating.toFixed(1)}</span>
                       </div>
                       <p className="text-xs text-slate-500">{product.reviews} reviews</p>

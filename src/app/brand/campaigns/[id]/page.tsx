@@ -3,7 +3,7 @@
 import { useEffect, useState, useCallback } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { brandApi, type Campaign, type CampaignProduct } from "@/lib/backend-api";
-import { FaSpinner, FaTriangleExclamation, FaArrowLeft, FaPause, FaPlay, FaPenToSquare } from "react-icons/fa6";
+import { Icons } from "@/lib/icons";
 
 export default function CampaignDetailPage() {
   const params = useParams();
@@ -115,7 +115,7 @@ export default function CampaignDetailPage() {
       <div className="page-wrapper bg-slate-50">
         <div className="container-responsive py-10">
           <div className="flex items-center justify-center py-20">
-            <FaSpinner className="h-8 w-8 animate-spin text-blue-600" />
+            <Icons.Spinner className="h-8 w-8 text-blue-600" />
           </div>
         </div>
       </div>
@@ -129,7 +129,7 @@ export default function CampaignDetailPage() {
           <div className="rounded-lg border border-red-200 bg-red-50 p-4 text-red-800">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <FaTriangleExclamation className="h-5 w-5" />
+                <Icons.AlertTriangle className="h-5 w-5" />
                 <span>{error || "Campaign not found"}</span>
               </div>
               <button
@@ -155,7 +155,7 @@ export default function CampaignDetailPage() {
           onClick={() => router.push('/brand/campaigns')}
           className="flex items-center gap-2 text-slate-600 hover:text-slate-900"
         >
-          <FaArrowLeft className="h-4 w-4" />
+        <Icons.ArrowLeft className="h-4 w-4" />
           Back to Campaigns
         </button>
 
@@ -196,7 +196,7 @@ export default function CampaignDetailPage() {
                   className="rounded-lg p-2 text-slate-600 hover:bg-slate-100"
                   title="Edit campaign name"
                 >
-                  <FaPenToSquare className="h-4 w-4" />
+                  <Icons.PenSquare className="h-4 w-4" />
                 </button>
                 <span className={`rounded-full px-3 py-1 text-sm font-semibold ${getStatusColor(campaign.status)}`}>
                   {campaign.status}
@@ -214,7 +214,7 @@ export default function CampaignDetailPage() {
                 disabled={isUpdating || isEditing}
                 className="flex items-center gap-2 rounded-lg border border-yellow-300 bg-yellow-50 px-4 py-2 text-sm font-semibold text-yellow-800 transition hover:bg-yellow-100 disabled:opacity-50"
               >
-                <FaPause className="h-4 w-4" />
+                <Icons.Pause className="h-4 w-4" />
                 {isUpdating ? 'Pausing...' : 'Pause Campaign'}
               </button>
             )}
@@ -224,7 +224,7 @@ export default function CampaignDetailPage() {
                 disabled={isUpdating || isEditing}
                 className="flex items-center gap-2 rounded-lg border border-green-300 bg-green-50 px-4 py-2 text-sm font-semibold text-green-800 transition hover:bg-green-100 disabled:opacity-50"
               >
-                <FaPlay className="h-4 w-4" />
+                <Icons.Play className="h-4 w-4" />
                 {isUpdating ? 'Resuming...' : 'Resume Campaign'}
               </button>
             )}
@@ -240,7 +240,7 @@ export default function CampaignDetailPage() {
         {isLowBudget && (
           <div className="rounded-lg border border-yellow-200 bg-yellow-50 p-4 text-yellow-800">
             <div className="flex items-center gap-2">
-              <FaTriangleExclamation className="h-5 w-5" />
+              <Icons.AlertTriangle className="h-5 w-5" />
               <span className="font-semibold">Low Budget Alert:</span>
               <span>You have a low budget to run this campaign. Consider adding more funds.</span>
             </div>

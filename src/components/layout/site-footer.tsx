@@ -3,8 +3,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { FaFacebook, FaInstagram, FaLinkedin, FaXTwitter, FaYoutube } from "react-icons/fa6";
 import { LogoIcon } from "@/components/ui/logo-icon";
+import { Icons } from "@/lib/icons";
 
 export function SiteFooter() {
   const pathname = usePathname();
@@ -52,19 +52,19 @@ export function SiteFooter() {
             </p>
             <div className="flex items-center gap-5 text-slate-600">
               <Link href="#" className="hover:text-blue-600 transition-colors duration-300 hover:scale-110 transform">
-                <FaFacebook size={24} />
+                <Icons.Facebook className="h-6 w-6" />
               </Link>
               <Link href="#" className="hover:text-pink-600 transition-colors duration-300 hover:scale-110 transform">
-                <FaInstagram size={24} />
+                <Icons.Instagram className="h-6 w-6" />
               </Link>
               <Link href="#" className="hover:text-slate-900 transition-colors duration-300 hover:scale-110 transform">
-                <FaXTwitter size={24} />
+                <Icons.Twitter className="h-6 w-6" />
               </Link>
               <Link href="#" className="hover:text-blue-700 transition-colors duration-300 hover:scale-110 transform">
-                <FaLinkedin size={24} />
+                <Icons.Linkedin className="h-6 w-6" />
               </Link>
               <Link href="#" className="hover:text-red-600 transition-colors duration-300 hover:scale-110 transform">
-                <FaYoutube size={24} />
+                <Icons.Youtube className="h-6 w-6" />
               </Link>
             </div>
           </div>

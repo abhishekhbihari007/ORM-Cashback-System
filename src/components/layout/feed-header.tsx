@@ -6,8 +6,8 @@ import { usePathname } from "next/navigation";
 import { useAuth } from "@/contexts/AuthContext";
 import { useAnimation } from "@/contexts/AnimationContext";
 import { LogoIcon } from "@/components/ui/logo-icon";
-import { FaUser, FaRightFromBracket, FaBell } from "react-icons/fa6";
 import notifications from "@/data/notifications";
+import { Icons } from "@/lib/icons";
 
 export function FeedHeader() {
   const { user, logout } = useAuth();
@@ -140,7 +140,7 @@ export function FeedHeader() {
                 className="flex h-8 w-8 sm:h-10 sm:w-10 items-center justify-center rounded-full bg-slate-100 text-slate-600 relative"
                 aria-label="Notifications"
               >
-                <FaBell size={16} />
+                <Icons.Bell className="h-4 w-4" />
                 <span className="absolute -top-1 -right-1 rounded-full bg-red-500 px-1.5 text-[10px] font-semibold text-white">
                   {notifications.slice(0, 99).length}
                 </span>
@@ -185,7 +185,7 @@ export function FeedHeader() {
                 className="flex items-center gap-2 sm:gap-3 hover:opacity-80 transition-opacity cursor-pointer"
               >
                 <div className="flex h-8 w-8 sm:h-10 sm:w-10 items-center justify-center rounded-full bg-indigo-100 text-indigo-600">
-                  <FaUser size={16} className="sm:w-[18px] sm:h-[18px]" />
+                  <Icons.User className="h-4 w-4 sm:h-[18px] sm:w-[18px]" />
                 </div>
                 <span className="hidden sm:inline md:block text-xs sm:text-sm font-semibold text-slate-900">{user.name}</span>
               </button>
@@ -198,14 +198,14 @@ export function FeedHeader() {
                     }}
                     className="flex items-center gap-3 px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 transition"
                   >
-                    <FaUser size={16} />
+                    <Icons.User className="h-4 w-4" />
                     <span>Profile</span>
                   </Link>
                   <button
                     onClick={handleLogout}
                     className="w-full flex items-center gap-3 px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition text-left"
                   >
-                    <FaRightFromBracket size={16} />
+                    <Icons.LogOut className="h-4 w-4" />
                     <span>Logout</span>
                   </button>
                 </div>
@@ -213,7 +213,7 @@ export function FeedHeader() {
             </div>
           ) : (
             <div className="flex h-8 w-8 sm:h-10 sm:w-10 items-center justify-center rounded-full bg-slate-100 text-slate-600">
-              <FaUser size={16} className="sm:w-[18px] sm:h-[18px]" />
+              <Icons.User className="h-4 w-4 sm:h-[18px] sm:w-[18px]" />
             </div>
           )}
           </div>

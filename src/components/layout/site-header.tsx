@@ -5,8 +5,8 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useAuth } from "@/contexts/AuthContext";
 import { useAnimation } from "@/contexts/AnimationContext";
-import { FaUser, FaRightFromBracket } from "react-icons/fa6";
 import { LogoIcon } from "@/components/ui/logo-icon";
+import { Icons } from "@/lib/icons";
 
 export function SiteHeader() {
   const pathname = usePathname();
@@ -202,7 +202,7 @@ export function SiteHeader() {
                 <div className={`flex h-8 w-8 sm:h-10 sm:w-10 items-center justify-center rounded-full ${
                   isHomePage || isLightPage ? 'bg-indigo-100 text-indigo-600' : 'bg-indigo-500/20 text-indigo-300'
                 }`}>
-                  <FaUser size={16} className="sm:w-[18px] sm:h-[18px]" />
+                  <Icons.User className="h-4 w-4 sm:h-[18px] sm:w-[18px]" />
                 </div>
                 <span className={`hidden sm:inline md:block text-xs sm:text-sm font-semibold ${
                   isHomePage || isLightPage ? 'text-slate-900' : 'text-white'
@@ -227,7 +227,7 @@ export function SiteHeader() {
                         : 'text-slate-200 hover:bg-slate-700'
                     }`}
                   >
-                    <FaUser size={16} />
+                    <Icons.User className="h-4 w-4" />
                     <span>Profile</span>
                   </Link>
                   <button
@@ -238,7 +238,7 @@ export function SiteHeader() {
                         : 'text-red-400 hover:bg-red-900/20'
                     }`}
                   >
-                    <FaRightFromBracket size={16} />
+                    <Icons.LogOut className="h-4 w-4" />
                     <span>Logout</span>
                   </button>
                 </div>

@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
-import { FaArrowUp, FaStar } from "react-icons/fa6";
+import { Icons } from "@/lib/icons";
 import { useAnimation } from "@/contexts/AnimationContext";
 
 const StarRatingGraphCard: React.FC = () => {
@@ -95,7 +95,7 @@ const StarRatingGraphCard: React.FC = () => {
       {/* Header */}
       <div className="flex items-center justify-between mb-4">
         <h3 className="text-xl font-semibold flex items-center gap-2 text-slate-900">
-          <FaArrowUp className="h-6 w-6 text-emerald-500" />
+          <Icons.ArrowUp className="h-6 w-6 text-emerald-500" />
           Review Performance
         </h3>
         <span 
@@ -109,7 +109,7 @@ const StarRatingGraphCard: React.FC = () => {
 
       {/* Current Rating */}
       <div className="flex items-center mb-6">
-        <FaStar className="h-10 w-10 text-yellow-400 fill-yellow-400 mr-2" />
+        <Icons.Star className="h-10 w-10 text-yellow-400 fill-yellow-400 mr-2" />
         <span className="text-5xl font-bold text-emerald-500">
           {currentRating.toFixed(1)}
         </span>

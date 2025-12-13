@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { FaCrown, FaUserShield, FaUserTie } from "react-icons/fa6";
+import { Icons } from "@/lib/icons";
 
 type Member = {
   name: string;
@@ -36,9 +36,9 @@ const members: Member[] = [
 ];
 
 const roleIcon: Record<Member["role"], React.ReactElement> = {
-  Owner: <FaCrown className="h-4 w-4 text-amber-500" />,
-  Manager: <FaUserTie className="h-4 w-4 text-blue-500" />,
-  Analyst: <FaUserShield className="h-4 w-4 text-emerald-500" />,
+  Owner: <Icons.Crown className="h-4 w-4 text-amber-500" />,
+  Manager: <Icons.UserTie className="h-4 w-4 text-blue-500" />,
+  Analyst: <Icons.UserShield className="h-4 w-4 text-emerald-500" />,
 };
 
 export function EnterpriseTeam() {

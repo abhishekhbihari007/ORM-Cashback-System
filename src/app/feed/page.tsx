@@ -3,8 +3,8 @@
 import { MobileLayout } from "@/components/layouts/MobileLayout";
 import Image from "next/image";
 import { MouseEvent, useCallback, useState, useMemo, useEffect } from "react";
-import { FaMagnifyingGlass, FaXmark } from "react-icons/fa6";
 import { userApi, type ShopProduct } from "@/lib/backend-api";
+import { Icons } from "@/lib/icons";
 
 type TrackedPurchase = {
   id: string;
@@ -172,7 +172,7 @@ export default function FeedPage() {
           <div className="mb-6 space-y-4">
             {/* Search Bar */}
             <div className="relative">
-              <FaMagnifyingGlass className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-400" />
+              <Icons.Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-400" />
               <input
                 type="text"
                 placeholder="Search products or marketplace..."
@@ -185,7 +185,7 @@ export default function FeedPage() {
                   onClick={() => setSearchQuery("")}
                   className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
                 >
-                  <FaXmark className="h-4 w-4" />
+                  <Icons.X className="h-4 w-4" />
                 </button>
               )}
             </div>

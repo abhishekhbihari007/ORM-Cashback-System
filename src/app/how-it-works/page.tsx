@@ -1,14 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import {
-  FaChartBar,
-  FaChevronDown,
-  FaCartShopping,
-  FaShield,
-  FaRocket,
-  FaCircleCheck,
-} from "react-icons/fa6";
+import { Icons } from "@/lib/icons";
 
 export default function HowItWorksPage() {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
@@ -19,25 +12,25 @@ export default function HowItWorksPage() {
 
   const brandSteps = [
     {
-      icon: FaRocket,
+      icon: Icons.Rocket,
       title: "Campaign Setup",
       description: "Create your campaign in minutes. Select products, set budget, define review requirements, and launch. Our intuitive dashboard makes it effortless.",
       color: "orange",
     },
     {
-      icon: FaCartShopping,
+      icon: Icons.ShoppingCart,
       title: "Real Purchase Network",
       description: "Our verified network of shoppers purchases your products at full price from Amazon, Flipkart, Myntra, Nykaa, and more. Every purchase is authentic.",
       color: "green",
     },
     {
-      icon: FaShield,
+      icon: Icons.Shield,
       title: "Verification",
       description: "Every review is verified for compliance before it goes live. Our system ensures quality and authenticity at scale.",
       color: "yellow",
     },
     {
-      icon: FaChartBar,
+      icon: Icons.ChartBar,
       title: "Data & Analytics",
       description: "Track performance in real-time with comprehensive analytics. Monitor sentiment, reputation metrics, and ROI through your dashboard.",
       color: "red",
@@ -97,7 +90,7 @@ export default function HowItWorksPage() {
         <div className="container-responsive py-12 md:py-16 relative z-10">
           <div className="mx-auto max-w-4xl text-center">
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-orange-100 to-red-100 border border-orange-200/50 text-orange-700 text-sm font-semibold mb-4 shadow-md shadow-orange-500/10">
-              <FaCircleCheck className="h-4 w-4 text-orange-600" />
+              <Icons.CircleCheck className="h-4 w-4 text-orange-600" />
               Trusted by 10,000+ Brands
             </div>
             <h1 className="text-5xl font-black leading-tight bg-gradient-to-r from-slate-900 via-indigo-900 to-slate-900 bg-clip-text text-transparent md:text-7xl">
@@ -108,15 +101,15 @@ export default function HowItWorksPage() {
             </p>
             <div className="mt-5 flex flex-wrap items-center justify-center gap-4 text-sm">
               <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-green-50 border border-green-200/50 text-green-700 shadow-sm">
-                <FaCircleCheck className="h-5 w-5 text-green-600" />
+                <Icons.CircleCheck className="h-5 w-5 text-green-600" />
                 <span className="font-medium">100% Authentic Reviews</span>
               </div>
               <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-blue-50 border border-blue-200/50 text-blue-700 shadow-sm">
-                <FaCircleCheck className="h-5 w-5 text-blue-600" />
+                <Icons.CircleCheck className="h-5 w-5 text-blue-600" />
                 <span className="font-medium">Marketplace Compliant</span>
               </div>
               <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-purple-50 border border-purple-200/50 text-purple-700 shadow-sm">
-                <FaCircleCheck className="h-5 w-5 text-purple-600" />
+                <Icons.CircleCheck className="h-5 w-5 text-purple-600" />
                 <span className="font-medium">Real-Time Analytics</span>
               </div>
             </div>
@@ -214,7 +207,7 @@ export default function HowItWorksPage() {
                       className="flex w-full items-center justify-between p-5 text-left"
                     >
                       <h3 className="text-lg font-semibold text-slate-900 pr-4 group-hover:text-orange-700 transition-colors">{faq.question}</h3>
-                      <FaChevronDown
+                    <Icons.ChevronDown
                         className={`h-5 w-5 text-slate-400 transition-transform flex-shrink-0 group-hover:text-orange-600 ${
                           openFaq === index ? "rotate-180" : ""
                         }`}
@@ -245,7 +238,7 @@ export default function HowItWorksPage() {
                         className="flex w-full items-center justify-between p-5 text-left"
                       >
                         <h3 className="text-lg font-semibold text-slate-900 pr-4 group-hover:text-indigo-700 transition-colors">{faq.question}</h3>
-                        <FaChevronDown
+                      <Icons.ChevronDown
                           className={`h-5 w-5 text-slate-400 transition-transform flex-shrink-0 group-hover:text-indigo-600 ${
                             openFaq === actualIndex ? "rotate-180" : ""
                           }`}

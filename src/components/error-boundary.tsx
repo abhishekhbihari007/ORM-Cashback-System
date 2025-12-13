@@ -1,7 +1,7 @@
 "use client";
 
 import React, { Component, ErrorInfo, ReactNode } from "react";
-import { FaTriangleExclamation } from "react-icons/fa6";
+import { Icons } from "@/lib/icons";
 
 interface Props {
   children: ReactNode;
@@ -40,7 +40,7 @@ export class ErrorBoundary extends Component<Props, State> {
         <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4">
           <div className="max-w-md w-full rounded-2xl border border-red-200 bg-white p-6 shadow-lg">
             <div className="flex items-center gap-3 mb-4">
-              <FaTriangleExclamation className="h-6 w-6 text-red-600" />
+              <Icons.AlertTriangle className="h-6 w-6 text-red-600" />
               <h2 className="text-xl font-semibold text-slate-900">Something went wrong</h2>
             </div>
             <p className="text-sm text-slate-600 mb-4">

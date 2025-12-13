@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { FaFloppyDisk, FaPlus, FaStore, FaTrash, FaLink } from "react-icons/fa6";
 import { brandApi, type BrandProfile, type StorefrontLink, type StorefrontPlatform } from "@/lib/backend-api";
+import { Icons } from "@/lib/icons";
 
 const STOREFRONT_OPTIONS: { label: string; value: StorefrontPlatform }[] = [
   { label: "Amazon", value: "AMAZON" },
@@ -208,7 +208,7 @@ export default function BrandSettingsPage() {
               disabled={savingProfile}
               className="inline-flex items-center gap-2 rounded-full bg-indigo-600 px-6 py-3 font-semibold text-white shadow-lg shadow-indigo-200 transition hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              <FaFloppyDisk className="h-4 w-4" />
+              <Icons.Save className="h-4 w-4" />
               {savingProfile ? "Saving..." : "Save Profile"}
             </button>
           </div>
@@ -216,7 +216,7 @@ export default function BrandSettingsPage() {
 
         <div className="rounded-3xl border border-slate-100 bg-white p-6 shadow-sm space-y-6">
           <div className="flex flex-wrap items-center gap-2">
-            <FaStore className="h-5 w-5 text-slate-600" />
+            <Icons.Store className="h-5 w-5 text-slate-600" />
             <h2 className="text-xl font-semibold text-slate-900">Marketplace Storefronts</h2>
           </div>
           <p className="text-sm text-slate-500">
@@ -254,7 +254,7 @@ export default function BrandSettingsPage() {
                           rel="noreferrer"
                           className="inline-flex items-center gap-2 text-indigo-600 hover:underline"
                         >
-                          <FaLink className="h-3.5 w-3.5" />
+                          <Icons.Link className="h-3.5 w-3.5" />
                           {storefront.url}
                         </a>
                       </td>
@@ -263,7 +263,7 @@ export default function BrandSettingsPage() {
                           onClick={() => handleDeleteStorefront(storefront.id)}
                           className="inline-flex items-center gap-1 rounded-full border border-slate-200 px-3 py-1.5 text-xs font-semibold text-slate-600 hover:bg-slate-50"
                         >
-                          <FaTrash className="h-3.5 w-3.5" />
+                          <Icons.Trash className="h-3.5 w-3.5" />
                           Remove
                         </button>
                       </td>
@@ -332,7 +332,7 @@ export default function BrandSettingsPage() {
                 disabled={savingStorefront}
                 className="inline-flex items-center gap-2 rounded-full bg-slate-900 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-slate-300 transition hover:bg-slate-800 disabled:opacity-50"
               >
-                <FaPlus className="h-4 w-4" />
+                <Icons.Plus className="h-4 w-4" />
                 {savingStorefront ? "Adding..." : "Add Storefront"}
               </button>
             </div>

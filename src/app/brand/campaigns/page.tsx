@@ -3,7 +3,7 @@
 import { useEffect, useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { brandApi, type Campaign } from "@/lib/backend-api";
-import { FaPlus, FaSpinner, FaTriangleExclamation, FaMagnifyingGlass, FaChevronLeft, FaChevronRight } from "react-icons/fa6";
+import { Icons } from "@/lib/icons";
 
 export default function MyCampaignsPage() {
   const router = useRouter();
@@ -80,7 +80,7 @@ export default function MyCampaignsPage() {
       <div className="page-wrapper bg-slate-50">
         <div className="container-responsive py-10">
           <div className="flex items-center justify-center py-20">
-            <FaSpinner className="h-8 w-8 animate-spin text-blue-600" />
+          <Icons.Spinner className="h-8 w-8 text-blue-600" />
           </div>
         </div>
       </div>
@@ -102,7 +102,7 @@ export default function MyCampaignsPage() {
             onClick={() => router.push('/brand/campaigns/create')}
             className="flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-white hover:bg-blue-700"
           >
-            <FaPlus className="h-4 w-4" />
+        <Icons.Plus className="h-4 w-4" />
             Create Campaign
           </button>
         </div>
@@ -111,7 +111,7 @@ export default function MyCampaignsPage() {
         <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
           <div className="flex flex-1 items-center gap-2">
             <div className="relative flex-1">
-              <FaMagnifyingGlass className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+            <Icons.Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
               <input
                 type="text"
                 value={searchQuery}
@@ -145,7 +145,7 @@ export default function MyCampaignsPage() {
           <div className="rounded-lg border border-red-200 bg-red-50 p-4 text-red-800">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <FaTriangleExclamation className="h-5 w-5" />
+              <Icons.AlertTriangle className="h-5 w-5" />
                 <span>{error}</span>
               </div>
               <button
@@ -237,7 +237,7 @@ export default function MyCampaignsPage() {
                     disabled={currentPage === 1}
                     className="rounded-lg border border-slate-300 px-3 py-1 text-sm disabled:opacity-50 hover:bg-slate-50"
                   >
-                    <FaChevronLeft className="h-4 w-4" />
+              <Icons.ChevronLeft className="h-4 w-4" />
                   </button>
                   <span className="text-sm text-slate-700">
                     Page {currentPage} of {totalPages}
@@ -247,7 +247,7 @@ export default function MyCampaignsPage() {
                     disabled={currentPage === totalPages}
                     className="rounded-lg border border-slate-300 px-3 py-1 text-sm disabled:opacity-50 hover:bg-slate-50"
                   >
-                    <FaChevronRight className="h-4 w-4" />
+              <Icons.ChevronRight className="h-4 w-4" />
                   </button>
                 </div>
               </div>

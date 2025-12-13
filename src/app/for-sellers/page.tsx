@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import { FaCircleCheck, FaComments, FaGlobe, FaShield, FaStar } from "react-icons/fa6";
+import { Icons } from "@/lib/icons";
 
 export default function ForSellersPage() {
   const [visibleSections, setVisibleSections] = useState<Set<string>>(new Set(["hero"]));
@@ -278,7 +278,7 @@ export default function ForSellersPage() {
         >
           <div className="mx-auto max-w-4xl rounded-2xl border border-slate-700/50 bg-slate-800/50 backdrop-blur-sm p-8 shadow-xl shadow-black/20">
             <div className="flex flex-col items-center gap-4 md:flex-row md:justify-center">
-              <FaShield className="h-12 w-12 text-indigo-400" />
+              <Icons.Shield className="h-12 w-12 text-indigo-400" />
               <div className="text-center md:text-left">
                 <h2 className="text-2xl font-bold text-white">100% TOS Compliant / No Bots</h2>
                 <p className="mt-2 text-slate-300">
@@ -317,7 +317,7 @@ export default function ForSellersPage() {
             >
               <div className="relative">
                 <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-xl bg-indigo-500/20">
-                  <FaStar className="h-8 w-8 text-indigo-400" />
+                  <Icons.Star className="h-8 w-8 text-indigo-400" />
                 </div>
                 <h3 className="mb-3 text-2xl font-bold text-white">Review Generation</h3>
                 <p className="text-slate-300">
@@ -338,7 +338,7 @@ export default function ForSellersPage() {
             >
               <div className="relative">
                 <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-xl bg-indigo-500/20">
-                  <FaComments className="h-8 w-8 text-indigo-400" />
+                  <Icons.Comment className="h-8 w-8 text-indigo-400" />
                 </div>
                 <h3 className="mb-3 text-2xl font-bold text-white">Sentiment AI</h3>
                 <p className="text-slate-300">
@@ -359,7 +359,7 @@ export default function ForSellersPage() {
             >
               <div className="relative">
                 <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-xl bg-indigo-500/20">
-                  <FaGlobe className="h-8 w-8 text-indigo-400" />
+                  <Icons.Globe className="h-8 w-8 text-indigo-400" />
                 </div>
                 <h3 className="mb-3 text-2xl font-bold text-white">Multi-Channel Tracking</h3>
                 <p className="text-slate-300">
@@ -404,19 +404,19 @@ export default function ForSellersPage() {
               </div>
               <ul className="space-y-3">
                 <li className="flex items-center gap-2 text-slate-300">
-                  <FaCircleCheck className="h-5 w-5 text-indigo-400" />
+                  <Icons.CircleCheck className="h-5 w-5 text-indigo-400" />
                   <span>Up to 100 reviews/month</span>
                 </li>
                 <li className="flex items-center gap-2 text-slate-300">
-                  <FaCircleCheck className="h-5 w-5 text-indigo-400" />
+                  <Icons.CircleCheck className="h-5 w-5 text-indigo-400" />
                   <span>2 Marketplaces</span>
                 </li>
                 <li className="flex items-center gap-2 text-slate-300">
-                  <FaCircleCheck className="h-5 w-5 text-indigo-400" />
+                  <Icons.CircleCheck className="h-5 w-5 text-indigo-400" />
                   <span>Basic Analytics</span>
                 </li>
                 <li className="flex items-center gap-2 text-slate-300">
-                  <FaCircleCheck className="h-5 w-5 text-indigo-400" />
+                  <Icons.CircleCheck className="h-5 w-5 text-indigo-400" />
                   <span>Email Support</span>
                 </li>
               </ul>
@@ -448,23 +448,23 @@ export default function ForSellersPage() {
                   </div>
                   <ul className="space-y-3">
                     <li className="flex items-center gap-2 text-slate-300">
-                      <FaCircleCheck className="h-5 w-5 text-indigo-400" />
+                      <Icons.CircleCheck className="h-5 w-5 text-indigo-400" />
                       <span>Up to 500 reviews/month</span>
                     </li>
                     <li className="flex items-center gap-2 text-slate-300">
-                      <FaCircleCheck className="h-5 w-5 text-indigo-400" />
+                      <Icons.CircleCheck className="h-5 w-5 text-indigo-400" />
                       <span>5 Marketplaces</span>
                     </li>
                     <li className="flex items-center gap-2 text-slate-300">
-                      <FaCircleCheck className="h-5 w-5 text-indigo-400" />
+                      <Icons.CircleCheck className="h-5 w-5 text-indigo-400" />
                       <span>Advanced Analytics</span>
                     </li>
                     <li className="flex items-center gap-2 text-slate-300">
-                      <FaCircleCheck className="h-5 w-5 text-indigo-400" />
+                      <Icons.CircleCheck className="h-5 w-5 text-indigo-400" />
                       <span>Priority Support</span>
                     </li>
                     <li className="flex items-center gap-2 text-slate-300">
-                      <FaCircleCheck className="h-5 w-5 text-indigo-400" />
+                      <Icons.CircleCheck className="h-5 w-5 text-indigo-400" />
                       <span>Sentiment AI</span>
                     </li>
                   </ul>
@@ -490,23 +490,23 @@ export default function ForSellersPage() {
               </div>
               <ul className="space-y-3">
                 <li className="flex items-center gap-2 text-slate-300">
-                  <FaCircleCheck className="h-5 w-5 text-indigo-400" />
+                  <Icons.CircleCheck className="h-5 w-5 text-indigo-400" />
                   <span>Unlimited reviews</span>
                 </li>
                 <li className="flex items-center gap-2 text-slate-300">
-                  <FaCircleCheck className="h-5 w-5 text-indigo-400" />
+                  <Icons.CircleCheck className="h-5 w-5 text-indigo-400" />
                   <span>All Marketplaces</span>
                 </li>
                 <li className="flex items-center gap-2 text-slate-300">
-                  <FaCircleCheck className="h-5 w-5 text-indigo-400" />
+                  <Icons.CircleCheck className="h-5 w-5 text-indigo-400" />
                   <span>Custom Analytics</span>
                 </li>
                 <li className="flex items-center gap-2 text-slate-300">
-                  <FaCircleCheck className="h-5 w-5 text-indigo-400" />
+                  <Icons.CircleCheck className="h-5 w-5 text-indigo-400" />
                   <span>Dedicated Account Manager</span>
                 </li>
                 <li className="flex items-center gap-2 text-slate-300">
-                  <FaCircleCheck className="h-5 w-5 text-indigo-400" />
+                  <Icons.CircleCheck className="h-5 w-5 text-indigo-400" />
                   <span>API Access</span>
                 </li>
               </ul>

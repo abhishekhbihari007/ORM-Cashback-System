@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { brandApi, type BrandProduct } from "@/lib/backend-api";
-import { FaPlus, FaTrash, FaSpinner } from "react-icons/fa6";
+import { Icons } from "@/lib/icons";
 
 type Step = 1 | 2 | 3;
 
@@ -359,7 +359,7 @@ export function CreateCampaignWizard() {
 
             {isLoadingProducts ? (
               <div className="flex items-center justify-center py-8">
-                <FaSpinner className="h-6 w-6 animate-spin text-blue-600" />
+                <Icons.Spinner className="h-6 w-6 text-blue-600" />
               </div>
             ) : products.length === 0 ? (
               <div className="rounded-2xl border border-dashed border-slate-300 bg-slate-50 p-6 text-sm text-slate-600">
@@ -383,7 +383,7 @@ export function CreateCampaignWizard() {
                           onClick={() => handleRemoveProduct(index)}
                           className="text-red-600 hover:text-red-700"
                         >
-                          <FaTrash className="h-4 w-4" />
+                          <Icons.Trash className="h-4 w-4" />
                         </button>
                       )}
                     </div>
@@ -476,7 +476,7 @@ export function CreateCampaignWizard() {
                   onClick={handleAddProduct}
                   className="flex w-full items-center justify-center gap-2 rounded-xl border-2 border-dashed border-slate-300 bg-white px-4 py-3 text-slate-600 transition hover:border-blue-400 hover:bg-blue-50 hover:text-blue-600"
                 >
-                  <FaPlus className="h-4 w-4" />
+              <Icons.Plus className="h-4 w-4" />
                   Add Another Product
                 </button>
               </div>
@@ -544,7 +544,7 @@ export function CreateCampaignWizard() {
               >
                 {isSubmitting ? (
                   <span className="flex items-center gap-2">
-                    <FaSpinner className="h-4 w-4 animate-spin" />
+                    <Icons.Spinner className="h-4 w-4" />
                     Creating...
                   </span>
                 ) : (

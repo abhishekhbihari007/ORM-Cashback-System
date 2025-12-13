@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Wallet } from "@/lib/types";
 import { StatCard } from "@/components/ui/stat-card";
 import { userApi } from "@/lib/backend-api";
-import { FaSpinner } from "react-icons/fa6";
+import { Icons } from "@/lib/icons";
 
 type Props = {
   wallet: Wallet;
@@ -196,7 +196,7 @@ export function WalletView({ wallet, onRefresh }: Props) {
                 disabled={isProcessing || !withdrawAmount || !accountDetails}
                 className="flex-1 rounded-full bg-gradient-to-r from-green-600 to-emerald-600 px-6 py-3 font-semibold text-white shadow-lg shadow-green-200 transition hover:from-green-700 hover:to-emerald-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
               >
-                {isProcessing && <FaSpinner className="animate-spin" />}
+              {isProcessing && <Icons.Spinner className="h-4 w-4" />}
                 {isProcessing ? "Processing..." : "Request Withdrawal"}
               </button>
             </div>

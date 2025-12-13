@@ -1,8 +1,8 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { FaLink, FaCircleCheck, FaPlus, FaTrash } from "react-icons/fa6";
 import { brandApi, type StorefrontLink, type StorefrontPlatform } from "@/lib/backend-api";
+import { Icons } from "@/lib/icons";
 
 const MARKETPLACE_LABELS: Record<string, string> = {
   AMAZON: "Amazon",
@@ -123,7 +123,7 @@ export default function BrandStorefrontPage() {
             onClick={() => setShowForm(!showForm)}
             className="flex items-center gap-2 rounded-full bg-blue-600 px-6 py-3 font-semibold text-white shadow-lg transition hover:bg-blue-700"
           >
-            <FaPlus /> Add Storefront
+            <Icons.Plus className="h-4 w-4" /> Add Storefront
           </button>
         </div>
 
@@ -234,7 +234,7 @@ export default function BrandStorefrontPage() {
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
                     <div className="mb-2 flex items-center gap-2">
-                      <FaLink className="text-blue-600" />
+                      <Icons.Link className="text-blue-600 h-4 w-4" />
                       <h3 className="text-lg font-semibold text-slate-900">{storefront.name}</h3>
                     </div>
                     <p className="mb-2 text-sm text-slate-600">{storefront.marketplace}</p>
@@ -251,13 +251,13 @@ export default function BrandStorefrontPage() {
                     </p>
                   </div>
                   <div className="flex items-center gap-2">
-                    <FaCircleCheck className="text-green-500" />
+                    <Icons.CircleCheck className="text-green-500 h-4 w-4" />
                     <button
                       onClick={() => handleDelete(storefront.id)}
                       className="text-red-500 hover:text-red-700 transition"
                       title="Delete storefront"
                     >
-                      <FaTrash className="h-4 w-4" />
+                      <Icons.Trash className="h-4 w-4" />
                     </button>
                   </div>
                 </div>

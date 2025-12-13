@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useRouter } from "next/navigation";
 import { MobileLayout } from "@/components/layouts/MobileLayout";
-import { FaUser, FaEnvelope, FaPhone, FaFloppyDisk, FaRightFromBracket } from "react-icons/fa6";
+import { Icons } from "@/lib/icons";
 
 export default function ProfilePage() {
   const { user, logout, updateUser } = useAuth();
@@ -130,7 +130,7 @@ export default function ProfilePage() {
               </label>
               <div className="flex items-center gap-4">
                 <div className="flex h-20 w-20 items-center justify-center rounded-full bg-indigo-100 text-indigo-600">
-                  <FaUser size={32} />
+                  <Icons.User className="h-8 w-8" />
                 </div>
                 <div>
                   <p className="text-sm text-slate-600 mb-1">
@@ -153,7 +153,7 @@ export default function ProfilePage() {
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <FaUser className="h-5 w-5 text-slate-400" />
+                  <Icons.User className="h-5 w-5 text-slate-400" />
                 </div>
                 <input
                   id="name"
@@ -175,7 +175,7 @@ export default function ProfilePage() {
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <FaEnvelope className="h-5 w-5 text-slate-400" />
+                  <Icons.Mail className="h-5 w-5 text-slate-400" />
                 </div>
                 <input
                   id="email"
@@ -197,7 +197,7 @@ export default function ProfilePage() {
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <FaPhone className="h-5 w-5 text-slate-400" />
+                  <Icons.Phone className="h-5 w-5 text-slate-400" />
                 </div>
                 <input
                   id="phone"
@@ -244,7 +244,7 @@ export default function ProfilePage() {
                   </>
                 ) : (
                   <>
-                    <FaFloppyDisk className="h-4 w-4" />
+                    <Icons.Save className="h-4 w-4" />
                     Save Changes
                   </>
                 )}
@@ -255,7 +255,7 @@ export default function ProfilePage() {
                 onClick={handleLogout}
                 className="flex items-center justify-center gap-2 rounded-lg border border-red-300 bg-white px-6 py-3 text-sm font-semibold text-red-600 hover:bg-red-50 transition focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
               >
-                <FaRightFromBracket className="h-4 w-4" />
+                <Icons.LogOut className="h-4 w-4" />
                 Logout
               </button>
             </div>

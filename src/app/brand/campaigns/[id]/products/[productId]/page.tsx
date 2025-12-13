@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { brandApi, type CampaignProductOrder } from "@/lib/backend-api";
-import { FaSpinner, FaTriangleExclamation, FaArrowLeft, FaCircleCheck, FaImage, FaLink, FaXmark, FaChevronLeft, FaChevronRight } from "react-icons/fa6";
+import { Icons } from "@/lib/icons";
 
 export default function CampaignProductOrdersPage() {
   const params = useParams();
@@ -129,7 +129,7 @@ export default function CampaignProductOrdersPage() {
       <div className="page-wrapper bg-slate-50">
         <div className="container-responsive py-10">
           <div className="flex items-center justify-center py-20">
-            <FaSpinner className="h-8 w-8 animate-spin text-blue-600" />
+            <Icons.Spinner className="h-8 w-8 text-blue-600" />
           </div>
         </div>
       </div>
@@ -143,7 +143,7 @@ export default function CampaignProductOrdersPage() {
           onClick={() => router.push(`/brand/campaigns/${campaignId}`)}
           className="flex items-center gap-2 text-slate-600 hover:text-slate-900"
         >
-          <FaArrowLeft className="h-4 w-4" />
+          <Icons.ArrowLeft className="h-4 w-4" />
           Back to Campaign
         </button>
 
@@ -158,7 +158,7 @@ export default function CampaignProductOrdersPage() {
           <div className="rounded-lg border border-red-200 bg-red-50 p-4 text-red-800">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <FaTriangleExclamation className="h-5 w-5" />
+                <Icons.AlertTriangle className="h-5 w-5" />
                 <span>{error}</span>
               </div>
               <div className="flex items-center gap-2">
@@ -172,7 +172,7 @@ export default function CampaignProductOrdersPage() {
                   onClick={() => setError(null)}
                   className="text-red-600 hover:text-red-800"
                 >
-                  <FaXmark className="h-4 w-4" />
+                  <Icons.X className="h-4 w-4" />
                 </button>
               </div>
             </div>
@@ -183,14 +183,14 @@ export default function CampaignProductOrdersPage() {
           <div className="rounded-lg border border-green-200 bg-green-50 p-4 text-green-800">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <FaCircleCheck className="h-5 w-5" />
+                <Icons.CircleCheck className="h-5 w-5" />
                 <span>{success}</span>
               </div>
               <button
                 onClick={() => setSuccess(null)}
                 className="text-green-600 hover:text-green-800"
               >
-                <FaXmark className="h-4 w-4" />
+                <Icons.X className="h-4 w-4" />
               </button>
             </div>
           </div>
@@ -257,7 +257,7 @@ export default function CampaignProductOrdersPage() {
                     {order.review && (
                       <div className="mt-4 rounded-lg border border-green-200 bg-green-50 p-3">
                         <div className="flex items-center gap-2">
-                          <FaCircleCheck className="h-4 w-4 text-green-600" />
+                          <Icons.CircleCheck className="h-4 w-4 text-green-600" />
                           <p className="text-sm font-semibold text-green-800">Review Submitted</p>
                         </div>
                         <div className="mt-2 text-sm text-green-700">
@@ -269,7 +269,7 @@ export default function CampaignProductOrdersPage() {
                               rel="noopener noreferrer"
                               className="mt-1 flex items-center gap-1 text-blue-600 hover:underline"
                             >
-                              <FaLink className="h-3 w-3" />
+                              <Icons.Link className="h-3 w-3" />
                               View Review
                             </a>
                           )}
@@ -289,7 +289,7 @@ export default function CampaignProductOrdersPage() {
                         rel="noopener noreferrer"
                         className="flex items-center gap-2 text-blue-600 hover:underline"
                       >
-                        <FaImage className="h-4 w-4" />
+                        <Icons.Image className="h-4 w-4" />
                         View Screenshot
                       </a>
                     ) : (
@@ -306,7 +306,7 @@ export default function CampaignProductOrdersPage() {
                           rel="noopener noreferrer"
                           className="flex items-center gap-2 text-blue-600 hover:underline"
                         >
-                          <FaImage className="h-4 w-4" />
+                        <Icons.Image className="h-4 w-4" />
                           View Review
                         </a>
                       ) : (
@@ -325,12 +325,12 @@ export default function CampaignProductOrdersPage() {
                     >
                       {approvingOrderId === order.id ? (
                         <>
-                          <FaSpinner className="h-4 w-4 animate-spin" />
+                          <Icons.Spinner className="h-4 w-4" />
                           Approving...
                         </>
                       ) : (
                         <>
-                          <FaCircleCheck className="h-4 w-4" />
+                          <Icons.CircleCheck className="h-4 w-4" />
                           Approve Order
                         </>
                       )}
@@ -363,7 +363,7 @@ export default function CampaignProductOrdersPage() {
                 disabled={currentPage === 1}
                 className="rounded-lg border border-slate-300 px-3 py-1 text-sm disabled:opacity-50 hover:bg-slate-50"
               >
-                <FaChevronLeft className="h-4 w-4" />
+                <Icons.ChevronLeft className="h-4 w-4" />
               </button>
               <span className="text-sm text-slate-700">
                 Page {currentPage} of {totalPages}
@@ -373,7 +373,7 @@ export default function CampaignProductOrdersPage() {
                 disabled={currentPage === totalPages}
                 className="rounded-lg border border-slate-300 px-3 py-1 text-sm disabled:opacity-50 hover:bg-slate-50"
               >
-                <FaChevronRight className="h-4 w-4" />
+                <Icons.ChevronRight className="h-4 w-4" />
               </button>
             </div>
           </div>
@@ -404,12 +404,12 @@ export default function CampaignProductOrdersPage() {
                 >
                   {approvingOrderId !== null ? (
                     <>
-                      <FaSpinner className="h-4 w-4 animate-spin" />
+                      <Icons.Spinner className="h-4 w-4" />
                       Approving...
                     </>
                   ) : (
                     <>
-                      <FaCircleCheck className="h-4 w-4" />
+                      <Icons.CircleCheck className="h-4 w-4" />
                       Approve
                     </>
                   )}
@@ -452,7 +452,7 @@ export default function CampaignProductOrdersPage() {
                 >
                   {rejectingOrderId !== null ? (
                     <>
-                      <FaSpinner className="h-4 w-4 animate-spin" />
+                      <Icons.Spinner className="h-4 w-4" />
                       Rejecting...
                     </>
                   ) : (
